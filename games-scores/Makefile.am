@@ -4,6 +4,7 @@ libgames_scores_la_SOURCES = \
 	games-score.c \
 	games-scores.c \
 	games-scores-backend.c \
+	games-scores-backend.h \
 	games-scores-dialog.c
 
 libgames_scores_la_CFLAGS = \
