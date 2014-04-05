@@ -84,16 +84,23 @@ games_scores_backend_new (GamesScoreStyle style,
                           char *name)
 {
   GamesScoresBackend *backend;
+  gchar *fullname;
   char *pkguserdatadir;
 
   backend = GAMES_SCORES_BACKEND (g_object_new (GAMES_TYPE_SCORES_BACKEND,
                                                 NULL));
 
+  if (name[0] == '\0')                /* Name is "" */
+    fullname = g_strjoin (".", base_name, "scores", NULL);
+  else
+    fullname = g_strjoin (".", base_name, name, "scores", NULL);
+
   backend->priv->timestamp = 0;
   backend->priv->style = style;
   backend->priv->scores_list = NULL;
   pkguserdatadir = g_build_filename (g_get_user_data_dir (), base_name, NULL);
-  backend->priv->filename = g_build_filename (pkguserdatadir, name, NULL);
+  backend->priv->filename = g_build_filename (pkguserdatadir, name, fullname, NULL);
+  g_free (fullname);
 
   if (access (pkguserdatadir, O_RDWR) == -1) {
     /* Don't return NULL because games-scores.c does not
@@ -183,6 +190,7 @@ games_scores_backend_get_scores (GamesScoresBackend * self)
   gchar *eol;
   gchar *scorestr;
   gchar *timestr;
+  gchar *namestr;
   GamesScore *newscore;
   struct stat info;
   int error;
@@ -246,7 +254,11 @@ games_scores_backend_get_scores (GamesScoresBackend * self)
       if (timestr == NULL)
         break;
       *timestr++ = '\0';
-      /* At this point we have two strings, both null terminated. All
+      namestr = strchr (timestr, ' ');
+      if (namestr == NULL)
+        break;
+      *namestr++ = '\0';
+      /* At this point we have three strings, both null terminated. All
        * part of the original buffer. */
       switch (self->priv->style) {
       case GAMES_SCORES_STYLE_PLAIN_DESCENDING:
@@ -260,6 +272,7 @@ games_scores_backend_get_scores (GamesScoresBackend * self)
       default:
         g_assert_not_reached ();
       }
+      games_score_set_name (newscore, namestr);
       games_score_set_time (newscore, g_ascii_strtoull (timestr, NULL, 10));
       self->priv->scores_list = g_list_append (self->priv->scores_list, newscore);
       /* Setup again for the next time around. */
@@ -293,6 +306,7 @@ games_scores_backend_set_scores (GamesScoresBackend * self, GList * list)
   while (s != NULL) {
     gdouble rscore;
     guint64 rtime;
+    const gchar *rname;
 
     d = (GamesScore *) s->data;
     rscore = 0.0;
@@ -309,10 +323,11 @@ games_scores_backend_set_scores (GamesScoresBackend * self, GList * list)
       g_assert_not_reached ();
     }
     rtime = games_score_get_time (d);
+    rname = games_score_get_name (d);
 
-    buffer = g_strdup_printf ("%s %"G_GUINT64_FORMAT"\n",
+    buffer = g_strdup_printf ("%s %"G_GUINT64_FORMAT" %s\n",
                               g_ascii_dtostr (dtostrbuf, sizeof (dtostrbuf),
-                                              rscore), rtime);
+                                              rscore), rtime, rname);
     write (self->priv->fd, buffer, strlen (buffer));
     output_length += strlen (buffer);
     /* Ignore any errors and blunder on. */
