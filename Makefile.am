@@ -2,6 +2,10 @@ SUBDIRS = include games-scores po
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
+pkgconfigdir = $(libdir)/pkgconfig
+
+pkgconfig_DATA = libgames-scores.pc
+
 EXTRA_DIST = \
 	autogen.sh \
 	COPYING \

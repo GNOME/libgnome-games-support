@@ -45,6 +45,7 @@ IT_PROG_INTLTOOL(0.40)
 
 AC_CONFIG_FILES([
 	Makefile
+	libgames-scores.pc
 	include/Makefile
 	games-scores/Makefile
 	po/Makefile.in
