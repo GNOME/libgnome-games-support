@@ -178,9 +178,8 @@ games_score_init (GamesScore *score)
   score->priv = G_TYPE_INSTANCE_GET_PRIVATE (score, GAMES_TYPE_SCORE, GamesScorePrivate);
 
   score->priv->time = time (NULL);
-  /* FIXME: We don't handle the "Unknown" case. */
   name = g_get_real_name ();
-  if (name[0] == '\0' || g_utf8_validate (name, -1, NULL) != TRUE) {
+  if (name[0] == '\0' || g_utf8_validate (name, -1, NULL) != TRUE || strcmp (name, "Unknown") == 0) {
     name = g_get_user_name ();
     if (g_utf8_validate (name, -1, NULL) != TRUE) {
       name = "";
