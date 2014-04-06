@@ -97,10 +97,6 @@ games_scores_get_current (GamesScores * self)
   return cat;
 }
 
-/* FIXME: Static games_score_init function to initialise the setgid stuff. */
-/* FIXME: This is actually an argument for a helper-app since this function
- * won't know what files we are after until _new is called. */
-
 G_DEFINE_TYPE (GamesScores, games_scores, G_TYPE_OBJECT);
 
 /**
