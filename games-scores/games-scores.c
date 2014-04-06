@@ -52,7 +52,9 @@ struct GamesScoresPrivate {
 void
 games_scores_startup (void)
 {
-  games_scores_backend_startup ();
+  /* Previously, this function was needed to initialize the setgid_io
+     functionality. Now it is a no-op. It's handy to leave it -- we can use it
+     to migrate scores from old locations. */
 }
 
 static void

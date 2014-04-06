@@ -47,7 +47,6 @@ typedef struct {
   GObjectClass parent_class;
 } GamesScoresBackendClass;
 
-void                games_scores_backend_startup        (void);
 GType               games_scores_backend_get_type       (void);
 GamesScoresBackend *games_scores_backend_new            (GamesScoreStyle style,
                                                          char *base_name,

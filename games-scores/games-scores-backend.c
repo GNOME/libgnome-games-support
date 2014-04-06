@@ -43,12 +43,6 @@ struct GamesScoresBackendPrivate {
 
 G_DEFINE_TYPE (GamesScoresBackend, games_scores_backend, G_TYPE_OBJECT);
 
-void
-games_scores_backend_startup (void)
-{
-  /* Retained for compatibility */
-}
-
 static void
 games_scores_backend_finalize (GObject *object)
 {
