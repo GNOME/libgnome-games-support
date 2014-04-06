@@ -1,5 +1,5 @@
 AC_PREREQ([2.63])
-AC_INIT([libgames-scores], [3.13.0], [https://bugzilla.gnome.org])
+AC_INIT([libgames-scores], [0.1], [https://bugzilla.gnome.org])
 
 dnl * If the library source code has changed at all since the last update, then
 dnl   increment revision (‘c:r:a’ becomes ‘c:r+1:a’).
