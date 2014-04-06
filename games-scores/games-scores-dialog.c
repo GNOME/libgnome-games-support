@@ -234,7 +234,7 @@ static gboolean games_scores_dialog_set_edit (GamesScoresDialog *self)
 
   /* Just in case we've been closed as soon as we're created. */
   if (!gtk_widget_get_realized (GTK_WIDGET (self)))
-    return FALSE;
+    return G_SOURCE_REMOVE;
 
   /* Temporarily disable the code that prevents editing when the
    * cursor changes position. */
@@ -250,7 +250,7 @@ static gboolean games_scores_dialog_set_edit (GamesScoresDialog *self)
 			      self->priv->cursor_handler_id);
   gtk_tree_path_free (path);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 /* Yet another part of the puzzle that lets the correct high-score be
