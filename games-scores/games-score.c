@@ -81,11 +81,28 @@ games_score_get_name (GamesScore *score)
   return score->priv->name;
 }
 
+static gchar *
+get_default_player_name ()
+{
+  const gchar *name = g_get_real_name ();
+  if (name[0] == '\0' || g_utf8_validate (name, -1, NULL) != TRUE || strcmp (name, "Unknown") == 0) {
+    name = g_get_user_name ();
+    if (g_utf8_validate (name, -1, NULL) != TRUE) {
+      name = "";
+    }
+  }
+  return g_strdup (name);
+}
+
 void
 games_score_set_name (GamesScore *score, const gchar *name)
 {
   g_free (score->priv->name);
-  score->priv->name = g_strdup (name);
+  if (name != NULL) {
+    score->priv->name = g_strdup (name);
+  } else {
+    score->priv->name = get_default_player_name ();
+  }
 }
 
 
@@ -173,17 +190,7 @@ games_score_class_init (GamesScoreClass * klass)
 static void
 games_score_init (GamesScore *score)
 {
-  const gchar* name;
-
   score->priv = G_TYPE_INSTANCE_GET_PRIVATE (score, GAMES_TYPE_SCORE, GamesScorePrivate);
-
   score->priv->time = time (NULL);
-  name = g_get_real_name ();
-  if (name[0] == '\0' || g_utf8_validate (name, -1, NULL) != TRUE || strcmp (name, "Unknown") == 0) {
-    name = g_get_user_name ();
-    if (g_utf8_validate (name, -1, NULL) != TRUE) {
-      name = "";
-    }
-  }
-  score->priv->name = g_strdup (name);
+  score->priv->name = get_default_player_name ();
 }

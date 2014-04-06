@@ -242,9 +242,10 @@ games_scores_backend_get_scores (GamesScoresBackend * self)
         break;
       *timestr++ = '\0';
       namestr = strchr (timestr, ' ');
-      if (namestr == NULL)
-        break;
-      *namestr++ = '\0';
+      /* The player's name might not be stored in the scores file, if the file
+       * was saved by certain 3.12 games. This is fine, indicated by NULL. */
+      if (namestr != NULL)
+        *namestr++ = '\0';
       /* At this point we have three strings, both null terminated. All
        * part of the original buffer. */
       switch (self->priv->style) {
