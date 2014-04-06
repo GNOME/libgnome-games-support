@@ -257,6 +257,8 @@ static gboolean games_scores_dialog_set_edit (GamesScoresDialog *self)
  * editable. */
 static void games_scores_dialog_set_hilight_private (GamesScoresDialog *self)
 {
+  guint id;
+
   if (self->priv->hilight == 0) {
     g_object_set (self->priv->namerenderer, "editable", FALSE, NULL);
     return;
@@ -272,7 +274,8 @@ static void games_scores_dialog_set_hilight_private (GamesScoresDialog *self)
    * gets put in the wrong place. Attaching to the expose signal
    * doesn't seem to have the desired effect, so instead we just
    * wait until all other work is done. */
-  g_idle_add ((GSourceFunc)games_scores_dialog_set_edit, self);
+  id = g_idle_add ((GSourceFunc)games_scores_dialog_set_edit, self);
+  g_source_set_name_by_id (id, "[libgames-scores] games_scores_dialog_set_edit");
 }
 
 /* Load up the list with the current set of scores. */
