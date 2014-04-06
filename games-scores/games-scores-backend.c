@@ -78,23 +78,16 @@ games_scores_backend_new (GamesScoreStyle style,
                           char *name)
 {
   GamesScoresBackend *backend;
-  gchar *fullname;
   char *pkguserdatadir;
 
   backend = GAMES_SCORES_BACKEND (g_object_new (GAMES_TYPE_SCORES_BACKEND,
                                                 NULL));
 
-  if (name[0] == '\0')                /* Name is "" */
-    fullname = g_strjoin (".", base_name, "scores", NULL);
-  else
-    fullname = g_strjoin (".", base_name, name, "scores", NULL);
-
   backend->priv->timestamp = 0;
   backend->priv->style = style;
   backend->priv->scores_list = NULL;
   pkguserdatadir = g_build_filename (g_get_user_data_dir (), base_name, NULL);
-  backend->priv->filename = g_build_filename (pkguserdatadir, name, fullname, NULL);
-  g_free (fullname);
+  backend->priv->filename = g_build_filename (pkguserdatadir, name, NULL);
 
   if (access (pkguserdatadir, O_RDWR) == -1) {
     /* Don't return NULL because games-scores.c does not
