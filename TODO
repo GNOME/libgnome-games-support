@@ -2,9 +2,10 @@ Before first development release:
 
 * Support importing scores from Vala games' single history file format
 * Switch scores dialog to use GtkHeaderBar
+* Save all games, not just the top 10 games
+* Possibly also save games that were abandoned, specially marked
 
 Future:
 
-* Save all games, not just the top 10 games
 * Add API to provide difficulty level suggestions
 * Rewrite the library in Vala
