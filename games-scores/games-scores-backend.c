@@ -297,7 +297,6 @@ games_scores_backend_set_scores (GamesScoresBackend * self, GList * list)
     const gchar *rname;
 
     d = (GamesScore *) s->data;
-    rscore = 0.0;
     switch (self->priv->style) {
     case GAMES_SCORES_STYLE_PLAIN_DESCENDING:
     case GAMES_SCORES_STYLE_PLAIN_ASCENDING:
