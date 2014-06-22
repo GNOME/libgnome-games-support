@@ -280,6 +280,7 @@ games_scores_add_score (GamesScores * self, GamesScore *score)
 
   if (g_list_length (scores_list) > GAMES_SCORES_SIGNIFICANT) {
     s = g_list_nth (scores_list, GAMES_SCORES_SIGNIFICANT - 1);
+    g_return_val_if_fail (s != NULL, 0);
     /* Note that we are guaranteed to only need to remove one link
      * and it is also guaranteed not to be the first one. */
     g_object_unref (g_list_next (s)->data);
