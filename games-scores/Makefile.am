@@ -1,6 +1,7 @@
 lib_LTLIBRARIES = libgames-scores.la
 
 libgames_scores_la_SOURCES = \
+	games-score.h \
 	games-score.c \
 	games-scores.c \
 	games-scores-backend.c \

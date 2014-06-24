@@ -26,8 +26,6 @@
 
 G_BEGIN_DECLS
 
-#include "games-score.h"
-
 /* How many scores get counted as significant. */
 #define GAMES_SCORES_SIGNIFICANT 10
 
@@ -36,6 +34,13 @@ typedef struct {
                          * scores file name, so it should match the old domains) */
   gchar *name;			/* A human-readable description. */
 } GamesScoresCategory;
+
+typedef enum {
+  GAMES_SCORES_STYLE_PLAIN_DESCENDING,
+  GAMES_SCORES_STYLE_PLAIN_ASCENDING,
+  GAMES_SCORES_STYLE_TIME_DESCENDING,
+  GAMES_SCORES_STYLE_TIME_ASCENDING,
+} GamesScoreStyle;
 
 typedef void (*GamesScoresCategoryForeachFunc) (GamesScoresCategory * cat,
                                                 gpointer data);
@@ -69,7 +74,6 @@ GamesScores    *games_scores_new               (const char *app_name,
                                                 int default_category_index,
                                                 GamesScoreStyle style);
 void            games_scores_set_category      (GamesScores * self, const gchar * category);
-gint            games_scores_add_score         (GamesScores * self, GamesScore *score);
 gint            games_scores_add_plain_score   (GamesScores * self, guint32 value);
 gint            games_scores_add_time_score    (GamesScores * self, gdouble value);
 void            games_scores_update_score      (GamesScores * self, gchar * new_name);

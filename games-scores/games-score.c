@@ -18,6 +18,7 @@
 #include <config.h>
 
 #include "games-score.h"
+#include "games-scores.h"
 
 G_DEFINE_TYPE (GamesScore, games_score, G_TYPE_OBJECT)
 

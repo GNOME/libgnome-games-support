@@ -23,7 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#include "games-score.h" /* For GamesScoreStyle. */
 #include "games-scores.h"
 
 G_BEGIN_DECLS

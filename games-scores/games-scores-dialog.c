@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+#include "games-score.h"
 #include "games-scores-dialog.h"
 
 G_DEFINE_TYPE (GamesScoresDialog, games_scores_dialog, GTK_TYPE_DIALOG);
