@@ -142,7 +142,7 @@ games_scores_new (const char *app_name,
         display_name = dgettext (categories_domain, category->name);
       }
 
-      games_scores_add_category (self, category->key, display_name);
+      _games_scores_add_category (self, category->key, display_name);
     }
 
     self->priv->defcat = g_strdup (categories[default_category_index].key);
@@ -162,7 +162,7 @@ games_scores_new (const char *app_name,
 }
 
 /**
- * games_scores_add_category:
+ * _games_scores_add_category:
  * @self:
  * @key: the key for the new category
  * @name: the user visible label for the new category
@@ -172,7 +172,7 @@ games_scores_new (const char *app_name,
  *
  **/
 void
-games_scores_add_category (GamesScores *self,
+_games_scores_add_category (GamesScores *self,
                            const char *key,
                            const char *name)
 {
@@ -305,7 +305,7 @@ games_scores_add_time_score (GamesScores * self, gdouble value)
 }
 
 /**
- * games_scores_update_score_name:
+ * _games_scores_update_score_name:
  * @self: A scores object.
  * @new_name: The new name to use.
  * @old_name: (allow-none):
@@ -317,7 +317,7 @@ games_scores_add_time_score (GamesScores * self, gdouble value)
  *
  **/
 void
-games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * old_name)
+_games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * old_name)
 {
   GamesScoresPrivate *priv = self->priv;
   GamesScoresCategoryInternal *cat;
@@ -367,7 +367,7 @@ games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * ol
 }
 
 /**
- * games_scores_update_score:
+ * _games_scores_update_score:
  * @self: A scores object.
  * @new_name: The new name to use.
  *
@@ -378,24 +378,24 @@ games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * ol
  *
  **/
 void
-games_scores_update_score (GamesScores * self, gchar * new_name)
+_games_scores_update_score (GamesScores * self, gchar * new_name)
 {
-    games_scores_update_score_name (self, new_name, NULL);
+    _games_scores_update_score_name (self, new_name, NULL);
 }
 
 /**
- * games_scores_get:
+ * _games_scores_get:
  * @self: A scores object.
  *
  * Get a list of GamesScore objects for the current category. The list
  * is still owned by the GamesScores object and is not guaranteed to
  * be the either the same or accurate after any games_scores call
- * except games_scores_get. Do not alter the data either.
+ * except _games_scores_get. Do not alter the data either.
  *
  * Returns: (element-type GnomeGamesSupport.Score) (transfer none): A list of GamesScore objects.
  **/
 GList *
-games_scores_get (GamesScores * self)
+_games_scores_get (GamesScores * self)
 {
   GamesScoresCategoryInternal *cat;
   GList *scores;
@@ -439,14 +439,14 @@ _games_scores_category_foreach (GamesScores * self,
 }
 
 /**
- * games_scores_get_style:
+ * _games_scores_get_style:
  * @self: A scores object.
  *
  * Returns the style of the scores.
  *
  **/
 GamesScoreStyle
-games_scores_get_style (GamesScores * self)
+_games_scores_get_style (GamesScores * self)
 {
   GamesScoresPrivate *priv = self->priv;
 
@@ -456,7 +456,7 @@ games_scores_get_style (GamesScores * self)
 }
 
 /**
- * games_scores_get_category:
+ * _games_scores_get_category:
  * @self: A scores object.
  *
  * Returns the current category key. It is owned by the GamesScores object and
@@ -465,7 +465,7 @@ games_scores_get_style (GamesScores * self)
  *
  **/
 const gchar *
-games_scores_get_category (GamesScores * self)
+_games_scores_get_category (GamesScores * self)
 {
   GamesScoresPrivate *priv = self->priv;
 

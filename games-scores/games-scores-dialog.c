@@ -183,7 +183,7 @@ GtkWidget * games_scores_dialog_new (GtkWindow *parent_window, GamesScores *scor
   GamesScoresDialog *dialog = GAMES_SCORES_DIALOG (g_object_new (GAMES_TYPE_SCORES_DIALOG, NULL));
 
   dialog->priv->scores = g_object_ref (scores);
-  games_scores_dialog_set_style (dialog, games_scores_get_style (scores));
+  games_scores_dialog_set_style (dialog, _games_scores_get_style (scores));
   dialog->priv->preservehilight = FALSE;
 
   gtk_window_set_title (GTK_WINDOW (dialog), title);
@@ -217,7 +217,7 @@ static void games_scores_dialog_name_edited (GtkCellRendererText *cell,
 
   gtk_list_store_set (self->priv->list, &iter, 0, new_text, -1);
 
-  games_scores_update_score_name (self->priv->scores, new_text, old_name);
+  _games_scores_update_score_name (self->priv->scores, new_text, old_name);
 }
 
 /* Prevent editing of any cell in the high score list but the one we set. */
@@ -294,7 +294,7 @@ static void games_scores_dialog_redraw (GamesScoresDialog *self) {
 
   gtk_list_store_clear (self->priv->list);
 
-  scorelist = games_scores_get (self->priv->scores);
+  scorelist = _games_scores_get (self->priv->scores);
 
   while (scorelist) {
     name = games_score_get_name ((GamesScore *)scorelist->data);
@@ -340,7 +340,7 @@ static void games_scores_dialog_change_category (GtkComboBox *widget,
   /* This seems like a bit of a hack, but since we're trying to
    * temporarily change the category it sort of makes sense. */
 
-  catcopy = g_strdup (games_scores_get_category (self->priv->scores));
+  catcopy = g_strdup (_games_scores_get_category (self->priv->scores));
   idx = gtk_combo_box_get_active (widget);
   newcat = g_hash_table_lookup (self->priv->catindices,
 				 GINT_TO_POINTER (idx));
@@ -365,7 +365,7 @@ static void games_scores_dialog_show (GamesScoresDialog *self)
 {
   const gchar *cat;
 
-  cat = games_scores_get_category (self->priv->scores);
+  cat = _games_scores_get_category (self->priv->scores);
   if (cat)
     games_scores_dialog_set_category (self, cat);
   games_scores_dialog_redraw (self);
