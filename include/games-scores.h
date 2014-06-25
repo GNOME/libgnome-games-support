@@ -42,9 +42,6 @@ typedef enum {
   GAMES_SCORES_STYLE_TIME_ASCENDING,
 } GamesScoreStyle;
 
-typedef void (*GamesScoresCategoryForeachFunc) (GamesScoresCategory * cat,
-                                                gpointer data);
-
 #define GAMES_TYPE_SCORES (games_scores_get_type())
 #define GAMES_SCORES(obj) G_TYPE_CHECK_INSTANCE_CAST((obj), games_scores_get_type(), GamesScores)
 #define GAMES_SCORES_CONST(obj)	G_TYPE_CHECK_INSTANCE_CAST((obj), games_scores_get_type(), GamesScores const)

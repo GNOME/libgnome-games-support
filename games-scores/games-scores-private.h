@@ -1,6 +1,7 @@
-/* Games Scores Dialog - Display high scores
+/* Games Scores private header file
  *
  * Copyright (c) 2005 by Callum McKenzie
+ * Copyright (c) 2014 by Nikhar Agrawal
  *
  * This library is free software; you can redistribute it and'or modify
  * it under the terms of the GNU Library General Public License as published
@@ -23,17 +24,21 @@
 
 #include <glib.h>
 #include <glib-object.h>
+
 #include "games-scores.h"
 
-void            games_scores_update_score      (GamesScores * self, gchar * new_name);
-void            games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * old_name);
-GList *         games_scores_get               (GamesScores * self);
+typedef void (*GamesScoresCategoryForeachFunc) (GamesScoresCategory * cat, 
+		                                gpointer data);
+
+void            _games_scores_update_score      (GamesScores * self, gchar * new_name);
+void            _games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * old_name);
+GList *         _games_scores_get               (GamesScores * self);
 void            _games_scores_category_foreach (GamesScores * self,
                                                 GamesScoresCategoryForeachFunc func,
                                                 gpointer userdata);
-GamesScoreStyle games_scores_get_style         (GamesScores * self);
-const gchar    *games_scores_get_category      (GamesScores * self);
-void            games_scores_add_category      (GamesScores *self,
+GamesScoreStyle _games_scores_get_style         (GamesScores * self);
+const gchar    *_games_scores_get_category      (GamesScores * self);
+void            _games_scores_add_category      (GamesScores *self,
                                                 const char *key,
                                                 const char *name);
 
