@@ -29,6 +29,7 @@
 #include "games-scores-backend.h"
 #include "games-score.h"
 #include "games-scores.h"
+#include "games-scores-private.h"
 
 /* The local version of the GamesScoresCategory. */
 typedef struct {
@@ -48,14 +49,6 @@ struct GamesScoresPrivate {
   GamesScoreStyle style;
   GamesScoresCategoryInternal dummycat;
 };
-
-void
-games_scores_startup (void)
-{
-  /* Previously, this function was needed to initialize the setgid_io
-     functionality. Now it is a no-op. It's handy to leave it -- we can use it
-     to migrate scores from old locations. */
-}
 
 static void
 games_scores_category_free (GamesScoresCategoryInternal *cat)

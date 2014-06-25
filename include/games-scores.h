@@ -64,7 +64,6 @@ typedef struct {
   GObjectClass parent;
 } GamesScoresClass;
 
-void            games_scores_startup           (void);
 GType           games_scores_get_type          (void);
 GamesScores    *games_scores_new               (const char *app_name,
                                                 const GamesScoresCategory *categories,
@@ -76,18 +75,6 @@ GamesScores    *games_scores_new               (const char *app_name,
 void            games_scores_set_category      (GamesScores * self, const gchar * category);
 gint            games_scores_add_plain_score   (GamesScores * self, guint32 value);
 gint            games_scores_add_time_score    (GamesScores * self, gdouble value);
-void            games_scores_update_score      (GamesScores * self, gchar * new_name);
-void            games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * old_name);
-GList *         games_scores_get               (GamesScores * self);
-void            _games_scores_category_foreach (GamesScores * self,
-                                                GamesScoresCategoryForeachFunc func,
-                                                gpointer userdata);
-GamesScoreStyle games_scores_get_style         (GamesScores * self);
-const gchar    *games_scores_get_category      (GamesScores * self);
-void            games_scores_add_category      (GamesScores *self,
-                                                const char *key,
-                                                const char *name);
 
 G_END_DECLS
-
 #endif /* GAMES_SCORES_H */
