@@ -37,11 +37,6 @@
 #include "games-scores.h"
 #include "games-scores-private.h"
 
-/* The local version of the GamesScoresCategory. */
-typedef struct {
-  GamesScoresCategory category;
-} GamesScoresCategoryInternal;
-
 struct GamesScoresPrivate {
   GHashTable *categories;
   GSList *catsordered;
@@ -52,7 +47,7 @@ struct GamesScoresPrivate {
   gint last_score_position;
   GamesScore *last_score;
   GamesScoreStyle style;
-  GamesScoresCategoryInternal dummycat;
+  GamesScoresCategory dummycat;
   GList *scores_list;
   time_t timestamp;
   gchar *filename;
@@ -60,10 +55,10 @@ struct GamesScoresPrivate {
 };
 
 static void
-games_scores_category_free (GamesScoresCategoryInternal *cat)
+games_scores_category_free (GamesScoresCategory *cat)
 {
-  g_free (cat->category.key);
-  g_free (cat->category.name);
+  g_free (cat->key);
+  g_free (cat->name);
   g_free (cat);
 }
 
@@ -74,11 +69,11 @@ games_scores_category_free (GamesScoresCategoryInternal *cat)
  * Retrieves the current category and make sure it is in a state to be used.
  *
  **/
-static GamesScoresCategoryInternal *
+static GamesScoresCategory *
 games_scores_get_current (GamesScores * self)
 {
   GamesScoresPrivate *priv = self->priv;
-  GamesScoresCategoryInternal *cat;
+  GamesScoresCategory *cat;
 
   if (priv->currentcat == NULL) {
     /* We have a single, anonymous, category. */
@@ -94,7 +89,7 @@ games_scores_get_current (GamesScores * self)
 	char * pkguserdatadir;  
 	  
 	pkguserdatadir = g_build_filename (g_get_user_data_dir (), priv->basename, NULL);
-	self->priv->filename = g_build_filename (pkguserdatadir, cat->category.key, NULL);
+	self->priv->filename = g_build_filename (pkguserdatadir, cat->key, NULL);
 	
 	if (access (pkguserdatadir, O_RDWR) == -1) {
     /* Don't return NULL because games-scores.c does not
@@ -171,8 +166,8 @@ games_scores_new (const char *app_name,
   self->priv->style = style;
 
   /* Set up the anonymous category for use when no categories are specified. */
-  self->priv->dummycat.category.key = (char *) "";
-  self->priv->dummycat.category.name = (char *) "";
+  self->priv->dummycat.key = (char *) "";
+  self->priv->dummycat.name = (char *) "";
   
   self->priv->timestamp = 0;
   
@@ -201,11 +196,11 @@ _games_scores_add_category (GamesScores *self,
                            const char *name)
 {
   GamesScoresPrivate *priv = self->priv;
-  GamesScoresCategoryInternal *cat;
+  GamesScoresCategory *cat;
 
-  cat = g_new (GamesScoresCategoryInternal, 1);
-  cat->category.key = g_strdup (key);
-  cat->category.name = g_strdup (name);
+  cat = g_new (GamesScoresCategory, 1);
+  cat->key = g_strdup (key);
+  cat->name = g_strdup (name);
 
   g_hash_table_insert (priv->categories, g_strdup (key), cat);
   priv->catsordered = g_slist_append (priv->catsordered, cat);
@@ -256,7 +251,7 @@ gint
 games_scores_add_score (GamesScores * self, GamesScore *score)
 {
   GamesScoresPrivate *priv = self->priv;
-  GamesScoresCategoryInternal *cat;
+  GamesScoresCategory *cat;
   gint place, n;
   GList *s, *scores_list;
 
@@ -343,7 +338,7 @@ void
 _games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * old_name)
 {
   GamesScoresPrivate *priv = self->priv;
-  GamesScoresCategoryInternal *cat;
+  GamesScoresCategory *cat;
   GList *s, *scores_list;
   gint n, place;
   GamesScore *sc;
@@ -420,7 +415,7 @@ _games_scores_update_score (GamesScores * self, gchar * new_name)
 GList *
 _games_scores_get (GamesScores * self)
 {
-  GamesScoresCategoryInternal *cat;
+  GamesScoresCategory *cat;
   GList *scores;
 
   g_return_val_if_fail (self != NULL, NULL);
