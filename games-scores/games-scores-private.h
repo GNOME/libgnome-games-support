@@ -41,6 +41,10 @@ const gchar    *_games_scores_get_category      (GamesScores * self);
 void            _games_scores_add_category      (GamesScores *self,
                                                 const char *key,
                                                 const char *name);
+GList          *_games_scores_get_scores     (GamesScores * self);
+gboolean        _games_scores_set_scores     (GamesScores * self,
+                                                         GList * list);
+void            _games_scores_discard_scores (GamesScores * self);
 
 G_END_DECLS
 

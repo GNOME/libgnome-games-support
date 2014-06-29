@@ -21,12 +21,18 @@
 
 #include <config.h>
 
+#include <errno.h>
 #include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <glib/gi18n.h>
+#include <glib.h>
+#include <glib-object.h>
 
-#include "games-scores-backend.h"
 #include "games-score.h"
 #include "games-scores.h"
 #include "games-scores-private.h"
@@ -34,7 +40,6 @@
 /* The local version of the GamesScoresCategory. */
 typedef struct {
   GamesScoresCategory category;
-  GamesScoresBackend *backend;
 } GamesScoresCategoryInternal;
 
 struct GamesScoresPrivate {
@@ -48,6 +53,10 @@ struct GamesScoresPrivate {
   GamesScore *last_score;
   GamesScoreStyle style;
   GamesScoresCategoryInternal dummycat;
+  GList *scores_list;
+  time_t timestamp;
+  gchar *filename;
+  gint fd;
 };
 
 static void
@@ -55,8 +64,6 @@ games_scores_category_free (GamesScoresCategoryInternal *cat)
 {
   g_free (cat->category.key);
   g_free (cat->category.name);
-  if (cat->backend)
-    g_object_unref (cat->backend);
   g_free (cat);
 }
 
@@ -82,9 +89,18 @@ games_scores_get_current (GamesScores * self)
       return NULL;
   }
 
-  if (cat->backend == NULL) {
-    cat->backend = games_scores_backend_new (priv->style, priv->basename,
-                                             cat->category.key);
+  if (self->priv->filename == NULL)
+  {
+	char * pkguserdatadir;  
+	  
+	pkguserdatadir = g_build_filename (g_get_user_data_dir (), priv->basename, NULL);
+	self->priv->filename = g_build_filename (pkguserdatadir, cat->category.key, NULL);
+	
+	if (access (pkguserdatadir, O_RDWR) == -1) {
+    /* Don't return NULL because games-scores.c does not
+     * expect it, and can't do anything about it anyway. */
+	  mkdir (pkguserdatadir, 0775);
+	}
   }
 
   return cat;
@@ -157,7 +173,15 @@ games_scores_new (const char *app_name,
   /* Set up the anonymous category for use when no categories are specified. */
   self->priv->dummycat.category.key = (char *) "";
   self->priv->dummycat.category.name = (char *) "";
-
+  
+  self->priv->timestamp = 0;
+  
+  self->priv->scores_list = NULL;
+  
+  self->priv->filename = NULL;
+  
+  self->priv->fd = -1;
+  
   return self;
 }
 
@@ -182,7 +206,6 @@ _games_scores_add_category (GamesScores *self,
   cat = g_new (GamesScoresCategoryInternal, 1);
   cat->category.key = g_strdup (key);
   cat->category.name = g_strdup (name);
-  cat->backend = NULL;
 
   g_hash_table_insert (priv->categories, g_strdup (key), cat);
   priv->catsordered = g_slist_append (priv->catsordered, cat);
@@ -241,7 +264,7 @@ games_scores_add_score (GamesScores * self, GamesScore *score)
 
   cat = games_scores_get_current (self);
 
-  scores_list = games_scores_backend_get_scores (cat->backend);
+  scores_list = _games_scores_get_scores (self);
 
   s = scores_list;
   place = 0;
@@ -281,7 +304,7 @@ games_scores_add_score (GamesScores * self, GamesScore *score)
     s->next = NULL;
   }
 
-  if (games_scores_backend_set_scores (cat->backend, scores_list) == FALSE)
+  if (_games_scores_set_scores (self, scores_list) == FALSE)
     place = 0;
 
   priv->last_score_significant = place > 0;
@@ -339,7 +362,7 @@ _games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * o
 
   cat = games_scores_get_current (self);
 
-  scores_list = games_scores_backend_get_scores (cat->backend);
+  scores_list = _games_scores_get_scores (self);
 
   s = g_list_last (scores_list);
   n = g_list_length (scores_list);
@@ -361,7 +384,7 @@ _games_scores_update_score_name (GamesScores * self, gchar * new_name, gchar * o
     n--;
   }
 
-  games_scores_backend_set_scores (cat->backend, scores_list);
+  _games_scores_set_scores (self, scores_list);
 
   g_free (old_name);
 }
@@ -404,10 +427,10 @@ _games_scores_get (GamesScores * self)
 
   cat = games_scores_get_current (self);
 
-  scores = games_scores_backend_get_scores (cat->backend);
-  /* Tell the backend that we won't be altering the scores so it
+  scores = _games_scores_get_scores (self);
+  /* Tell GamesScores object that we won't be altering the scores so it
    * can release the lock. */
-  games_scores_backend_discard_scores (cat->backend);
+  _games_scores_discard_scores (self);
 
   return scores;
 }
@@ -512,4 +535,244 @@ games_scores_class_init (GamesScoresClass * klass)
   GObjectClass *object_class = (GObjectClass *) klass;
   object_class->finalize = games_scores_finalize;
   g_type_class_add_private (klass, sizeof (GamesScoresPrivate));
+}
+
+/* Get a lock on the scores file. Block until it is available.
+ * This also supplies the file descriptor we need. The return value
+ * is whether we were succesful or not. */
+static gboolean
+games_scores_get_lock (GamesScores * self)
+{
+  gint error;
+  struct flock lock;
+
+  if (self->priv->fd != -1) {
+    /* Assume we already have the lock and rewind the file to
+     * the beginning. */
+    lseek (self->priv->fd, 0, SEEK_SET);
+    return TRUE;                /* Assume we already have the lock. */
+  }
+
+  self->priv->fd = open (self->priv->filename, O_RDWR | O_CREAT, 0755);
+  if (self->priv->fd == -1) {
+    return FALSE;
+  }
+
+  lock.l_type = F_WRLCK;
+  lock.l_whence = SEEK_SET;
+  lock.l_start = 0;
+  lock.l_len = 0;
+
+  error = fcntl (self->priv->fd, F_SETLKW, &lock);
+
+  if (error == -1) {
+    close (self->priv->fd);
+    self->priv->fd = -1;
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/* Release the lock on the scores file and dispose of the fd. */
+/* We ignore errors, there is nothing we can do about them. */
+static void
+games_scores_release_lock (GamesScores * self)
+{
+  struct flock lock;
+
+  /* We don't have a lock, ignore this call. */
+  if (self->priv->fd == -1)
+    return;
+
+  lock.l_type = F_UNLCK;
+  lock.l_whence = SEEK_SET;
+  lock.l_start = 0;
+  lock.l_len = 0;
+
+  fcntl (self->priv->fd, F_SETLKW, &lock);
+
+  close (self->priv->fd);
+
+  self->priv->fd = -1;
+}
+
+/**
+ * _games_scores_get_scores:
+ * @self: the function to get the scores from
+ *
+ * You can alter the list returned by this function, but you must
+ * make sure you set it again with the _set_scores method or discard it
+ * with with the _discard_scores method. Otherwise deadlocks will ensue.
+ *
+ * Return value: (transfer none) (allow-none) (element-type GnomeGamesSupport.Score): The list of scores
+ */
+GList *
+_games_scores_get_scores (GamesScores * self)
+{
+  gchar *buffer;
+  gchar *eol;
+  gchar *scorestr;
+  gchar *timestr;
+  gchar *namestr;
+  GamesScore *newscore;
+  struct stat info;
+  int error;
+  ssize_t length, target;
+  GList *t;
+
+  /* Check for a change in the scores file and update if necessary. */
+  error = stat (self->priv->filename, &info);
+
+  /* If an error occurs then we give up on the file and return NULL. */
+  if (error != 0) {
+    return NULL;
+  }
+
+  if ((info.st_mtime > self->priv->timestamp) || (self->priv->scores_list == NULL)) {
+    self->priv->timestamp = info.st_mtime;
+
+    /* Dump the old list of scores. */
+    t = self->priv->scores_list;
+    while (t != NULL) {
+      g_object_unref (t->data);
+      t = g_list_next (t);
+    }
+    g_list_free (self->priv->scores_list);
+    self->priv->scores_list = NULL;
+
+    /* Lock the file and get the list. */
+    if (!games_scores_get_lock (self))
+      return NULL;
+
+    buffer = g_malloc (info.st_size + 1);
+    if (buffer == NULL) {
+      games_scores_release_lock (self);
+      return NULL;
+    }
+
+    target = info.st_size;
+    length = 0;
+    do {
+      target -= length;
+      length = read (self->priv->fd, buffer, info.st_size);
+      if (length == -1) {
+        games_scores_release_lock (self);
+        g_free (buffer);
+        return NULL;
+      }
+    } while (length < target);
+
+    buffer[info.st_size] = '\0';
+
+    /* FIXME: These details should be in a sub-class. */
+
+    /* Parse the list. We start by breaking it into lines. */
+    /* Since the buffer is null-terminated
+     * we can do the string stuff reasonably safely. */
+    eol = strchr (buffer, '\n');
+    scorestr = buffer;
+    while (eol != NULL) {
+      *eol++ = '\0';
+      timestr = strchr (scorestr, ' ');
+      if (timestr == NULL)
+        break;
+      *timestr++ = '\0';
+      namestr = strchr (timestr, ' ');
+      /* The player's name might not be stored in the scores file, if the file
+       * was saved by certain 3.12 games. This is fine, indicated by NULL. */
+      if (namestr != NULL)
+        *namestr++ = '\0';
+      /* At this point we have three strings, both null terminated. All
+       * part of the original buffer. */
+      switch (self->priv->style) {
+      case GAMES_SCORES_STYLE_PLAIN_DESCENDING:
+      case GAMES_SCORES_STYLE_PLAIN_ASCENDING:
+        newscore = games_score_new_plain (g_ascii_strtod (scorestr, NULL));
+        break;
+      case GAMES_SCORES_STYLE_TIME_DESCENDING:
+      case GAMES_SCORES_STYLE_TIME_ASCENDING:
+        newscore = games_score_new_time (g_ascii_strtod (scorestr, NULL));
+        break;
+      default:
+        g_assert_not_reached ();
+      }
+      games_score_set_name (newscore, namestr);
+      games_score_set_time (newscore, g_ascii_strtoull (timestr, NULL, 10));
+      self->priv->scores_list = g_list_append (self->priv->scores_list, newscore);
+      /* Setup again for the next time around. */
+      scorestr = eol;
+      eol = strchr (eol, '\n');
+    }
+
+    g_free (buffer);
+  }
+
+  /* FIXME: Sort the scores! We shouldn't rely on the file being sorted. */
+
+  return self->priv->scores_list;
+}
+
+gboolean
+_games_scores_set_scores (GamesScores * self, GList * list)
+{
+  GList *s;
+  GamesScore *d;
+  gchar *buffer;
+  gint output_length = 0;
+  gchar dtostrbuf[G_ASCII_DTOSTR_BUF_SIZE];
+
+  if (!games_scores_get_lock (self))
+    return FALSE;
+
+  self->priv->scores_list = list;
+
+  s = list;
+  while (s != NULL) {
+    gdouble rscore;
+    guint64 rtime;
+    const gchar *rname;
+
+    d = (GamesScore *) s->data;
+    switch (self->priv->style) {
+    case GAMES_SCORES_STYLE_PLAIN_DESCENDING:
+    case GAMES_SCORES_STYLE_PLAIN_ASCENDING:
+      rscore = games_score_get_value_as_plain (d);
+      break;
+    case GAMES_SCORES_STYLE_TIME_DESCENDING:
+    case GAMES_SCORES_STYLE_TIME_ASCENDING:
+      rscore = games_score_get_value_as_time(d);
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+    rtime = games_score_get_time (d);
+    rname = games_score_get_name (d);
+
+    buffer = g_strdup_printf ("%s %"G_GUINT64_FORMAT" %s\n",
+                              g_ascii_dtostr (dtostrbuf, sizeof (dtostrbuf),
+                                              rscore), rtime, rname);
+    write (self->priv->fd, buffer, strlen (buffer));
+    output_length += strlen (buffer);
+    /* Ignore any errors and blunder on. */
+    g_free (buffer);
+
+    s = g_list_next (s);
+  }
+
+  /* Remove any content in the file that hasn't yet been overwritten. */
+  ftruncate (self->priv->fd, output_length--);
+
+  /* Update the timestamp so we don't reread the scores unnecessarily. */
+  self->priv->timestamp = time (NULL);
+
+  games_scores_release_lock (self);
+
+  return TRUE;
+}
+
+void
+_games_scores_discard_scores (GamesScores * self)
+{
+  games_scores_release_lock (self);
 }
