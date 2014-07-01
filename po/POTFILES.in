@@ -1,1 +1,3 @@
-games-scores/games-scores-dialog.c
+src/dialog.vala
+src/score.vala
+src/scores.vala

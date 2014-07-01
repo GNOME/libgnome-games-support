@@ -1,23 +1,11 @@
-Before first development release:
-
-* Support importing scores from Vala games' single history file format
-* Switch scores dialog to use GtkHeaderBar
-* Save all games, not just the top 10 games
-* Possibly also save games that were abandoned, specially marked
-
-Future:
-
-* Add API to provide difficulty level suggestions
-* Rewrite the library in Vala
+Please read through the README. It describes pretty clearly what all we want to do.
 
 
-From Etherpad:
-
-Proposal for public interface
+API Plan:
 
 We expose only one GObject, GamesScores. It has the following public interface:
 
-/* Called ONCE. I think all the i18n parameters that used to be here are probably not really necessary? */
+/* Called ONCE. */
 GamesScores * games_scores_new (const char *app_name, GamesScoresStyle style);
 
 /* If GamesScores does not already know about a category, it is added now. */
@@ -25,7 +13,7 @@ gboolean games_scores_add_score (GamesScores *self, gint64 value, const GamesSco
 
 void games_scores_run_score_dialog (GamesScores *self, GtkWindow *parent, const char *category_description);
 
-Signals should be implemented once the rest of the API is done.
+Signals should be emitted only during the call to games_scores_add_score:
 
 The "difficulty-suggestion" signal:
     
@@ -36,122 +24,4 @@ The "new-player" signal:
 /* Should this pass the player's name? */
 void user_function (GamesScores *scores, gpointer user_data);
 
-
-                                   
-libgames-scores API Review
-
-Note that the API should be the same regardless of whether it is implemented directly in C or compiled into C from Vala.
-The current API consists of three GObjects: GamesScore, GamesScores, and GamesScoresDialog.
-
-This is a list of the CURRENT API, not the proposed API.  Proposal comes below.
-
-GamesScore
-
-GType games_score_get_type (void);
-        
-GamesScore * games_score_new (void);
-        
-GamesScore * games_score_new_plain (guint32 value);
-        
-GamesScore * games_score_new_time (gdouble value);
-        
-const gchar * games_score_get_name (GamesScore *score);
-        
-void games_score_set_name (GamesScore *score, const gchar *name);
-        
-time_t games_score_get_time (GamesScore *score);
-        
-void games_score_set_time (GamesScore *score, time_t time);
-        
-guint32 games_score_get_value_as_plain (GamesScore *score);
-        
-gdouble  games_score_get_value_as_time  (GamesScore *score);
-        
-gint games_score_compare (GamesScoreStyle style, GamesScore * a, GamesScore * b);
-
-This class should not need to be exposed to the user. Should it be an interface with three subclasses: GamesScorePlain, GamesScoreTime, and GamesScoreCount?
-
-GamesScores
-
-void  games_scores_startup  (void);
-        
-GType games_scores_get_type (void);
-        
-GamesScores *games_scores_new (const char*app_name,  constGamesScoresCategory *categories,  int n_categories, const char *categories_context,  const char *categories_domain, int   default_category_index,     GamesScoreStyle   style);
-        
-void   games_scores_set_category    (GamesScores * self,  const gchar * category);
-        
-gint  games_scores_add_score (GamesScores * self, GamesScore *score);
-        
-gint  games_scores_add_plain_score  (GamesScores * self, guint32 value);
-        
-gint  games_scores_add_time_score (GamesScores * self, gdouble value);
-        
-void  games_scores_update_score (GamesScores * self, gchar * new_name);
-        
-void  games_scores_update_score_name (GamesScores * self, gchar * new_name,        gchar * old_name);
-        
-GList  *games_scores_get  (GamesScores * self);
-        
-void  _games_scores_category_foreach  (GamesScores * self, GamesScoresCategoryForeachFunc        func,   gpointer  userdata);
-        
-GamesScoreStyle  games_scores_get_style  (GamesScores * self);
-        
-const gchar *games_scores_get_category (GamesScores * self);
-        
-void games_scores_add_category (GamesScores *self, const char *key, const char *name);
-
-
-The library consists of one additional GObject, GamesScoresBackend, that is not a public interface. GamesScoresBackend no longer seems to be useful or necessary, but rather just additional complexity. It would make sense if we desired to have multiple such backends, but we do not. We can easily eliminate a fair amount of glue code by merging GamesScoresBackend into GamesScores.
-With that in mind, what other changes should we make here?
-
-games_scores_startup() no longer does anything and can be removed.
-
-Currently, games_scores_add_plain_score() and games_scores_add_time_score() are wrappers around games_scores_add_score(). I think we can remove the two wrappers...
-
-Proposal #1) ...and change games_scores_add_score() to take a time_t rather than a GamesScore. This means the data type will be big enough to represent a time. It may be a bit confusing to use it for non-time scores, so maybe this requires a rethink. Perhaps a new type, games_score_t, that is typedefed to time_t. (It's not necessary to have separate functions to distinguish between time and non-time scores because GamesScores has a style: plain ascending, plain descending, time ascending, or time descending. Not that time ascending could ever make any sense – that should be removed (This could make sense for time-remaining games. Time Attack style).)
-
-Proposal #2) ... actually, it would probably be better for GamesScores to be an interface, and GamesScoresStyle to be removed. Each valid style would be a different implementation of GamesScores, and each would have an add_score() function with a different signature as appropriate to that type of score. (E.g. one would take a time_t, the other an int (to facilitate negative scores).)
-add_score should block while GamesScores fires off any number of signals, see below. It also needs to take a GError, since it could fail.
-
-games_scores_update_score() should be removed, or possibly renamed. It is a confusing wrapper around games_scores_update_score_name(). On that note, neither of these functions should be exposed in public headers.
-
-_games_scores_category_foreach() should be moved to an internal header.
-
-games_scores_get_style() probably does not need to be exposed to the user. It is needed by GamesScoresDialog, but it can be moved to an internal header.
-
-Lastly, we should think about whether games_scores_set_category() and games_scores_get_category() are actually necessary. Probably it should suffice to make the category a parameter of games_scores_add_score().
-
-GamesScores Signals
-
-We want an optional API that makes it easy for a game to decide whether to suggest the player change difficulty level. (“You seem to be good at this. Do you want to try a harder difficulty level?” “You seem to be struggling. Do you want to try an easier difficulty level?”)  This should be a signal fired during add_score, which returns a struct of type DifficultySuggestion. Haven't figured out what goes in this struct, though.
-
-A different name is entered to the usual name:
-    If the game is actually a two-player-game, we could suggest that two players can play against each other
-
-GamesScoresDialog
-
-GType games_scores_dialog_get_type (void);
-        
-GtkWidget *games_scores_dialog_new (GtkWindow *parent_window, GamesScores *scores, const gchar *title);
-        
-void games_scores_dialog_set_category_description (GamesScoresDialog *self, const gchar *description);
-
-void games_scores_dialog_set_hilight (GamesScoresDialog *self, guint pos);
-        
-void games_scores_dialog_set_message (GamesScoresDialog *self, const gchar *message);
-        
-void games_scores_dialog_set_buttons (GamesScoresDialog *self, guintbuttons);
-
-Working from bottom to top....
-
-Check out our scores dialog mockups in the bottom-right: https://raw.githubusercontent.com/gnome-design-team/gnome-mockups/master/games/mines/mines2-new.png
-We no longer have any buttons (besides Done when setting a name), so let's remove games_scores_dialog_set_buttons().
-
-I think games_scores_dialog_set_message() can become internal. libgames-scores should know that a score has been added by use of games_scores_add_score(). It should know whether the player made the top-10 or not on its own. The same applies to games_scores_dialog_set_hilight(). If the most recently-added score is in the top 10 and does not have a name associated with it, then the game must have just ended, and that player's row should be highlighted and the player congratulated. If it does have a name, then the scores dialog must have been opened manually and no congratulations or highlight is in order. (Or is this too complicated? Maybe games_scores_dialog_new() could take GamesScoresDialogFlags, where the valid flags are GAMES_SCORES_DIALOG_FLAGS_GAME_ENDED and GAMES_SCORES_DIALOG_FLAGS_NONE.)
-
-games_scores_dialog_set_category_description() is stupid. The description should be set in games_scores_dialog_new().
-
-To be determined
-
-* A third type of scores, to track games won/lost/abandoned? For four-in-a-row, chess, iagno, sudoku, tetravex... (everything puzzle-ish or two-playered)  (tetravex tracks time; this should only be for games that don't have another method of scoring. right?)
+Internally, more objects may be needed, such as GamesScore, GamesScoresCategory, and GamesScoresDialog.
