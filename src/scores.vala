@@ -88,6 +88,11 @@ public class Scores : Object
         }
     }
 
+    ~Scores ()
+    {
+        this.save_scores_to_files ();
+    }
+
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
@@ -127,10 +132,10 @@ public class Scores : Object
         }
     }
 
-    public bool save_scores_to_file ()
+    private bool save_scores_to_files ()
     {
         string home_dir = Environment.get_home_dir ();
-        string user_score_dir = Path.build_filename (home_dir,this.base_name + "_scores",null);
+        string user_score_dir = Path.build_filename (home_dir,"." + this.base_name + "_scores",null);
 
         /*create the directory if it doesn' exist*/
         if (!FileUtils.test (user_score_dir,FileTest.EXISTS))
@@ -178,10 +183,10 @@ public class Scores : Object
         return true;
     }
 
-    public bool load_scores_from_files ()
+    private bool load_scores_from_files ()
     {
         string home_dir = Environment.get_home_dir ();
-        string user_score_dir = Path.build_filename (home_dir,this.base_name + "_scores",null);
+        string user_score_dir = Path.build_filename (home_dir,"." + this.base_name + "_scores",null);
 
         var directory = File.new_for_path (user_score_dir);
 
@@ -267,7 +272,7 @@ void main()
     s.add_score (21, cat);
     s.add_score (24, cat);
     s.print_scores();
-    s.save_scores_to_file();
+    //  s.save_scores_to_files();
     Scores a = new Scores("second_app",Style.PLAIN_ASCENDING);
     a.add_score (111, cat);
     a.add_score (123, cat);
@@ -275,7 +280,7 @@ void main()
     a.add_score (21, cat);
     a.add_score (24, cat);
     a.print_scores();
-    a.save_scores_to_file();
+//    a.save_scores_to_files();
 }
 
 } /* namespace Scores */
