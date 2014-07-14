@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 namespace Games
 {
 namespace Scores
@@ -35,13 +34,6 @@ public struct Category
 {
     string key;
     string name;
-}
-
-struct Score
-{
-    public long score;
-    public string user;
-    public time_t time;
 }
 
 public class Scores : Object

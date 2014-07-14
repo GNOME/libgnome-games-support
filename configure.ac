@@ -18,7 +18,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/scores.vala])
 
-AM_INIT_AUTOMAKE([1.13 no-dist-gzip dist-xz foreign])
+AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign])
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
@@ -33,6 +33,7 @@ PKG_CHECK_MODULES(LIBGAMES_SCORES, [
   glib-2.0 >= 2.40
   gio-2.0 >= 2.40
   gtk+-3.0 >= 3.12
+  gee-0.8
 ])
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME

@@ -21,11 +21,11 @@
 namespace Games {
 namespace Scores {
 
-private class Score : Object
+struct Score
 {
-    public int score { get; set; }
-
-    public string player_name { get; set; }
+    public long score;
+    public string user;
+    public time_t time;
 }
 
 } /* namespace Scores */
