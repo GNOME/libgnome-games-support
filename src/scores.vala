@@ -45,12 +45,12 @@ public class Scores : Object
     private Gee.HashMap <Category?, Gee.PriorityQueue<Score?> > scores_per_category = new Gee.HashMap <Category?, Gee.PriorityQueue<Score?>> ((owned) category_hash, (owned) category_equal);
     private string base_name;
 
-    public CompareDataFunc<Score?> scorecmp;
-    public static Gee.HashDataFunc<Category?> category_hash = (a) =>
+    private CompareDataFunc<Score?> scorecmp;
+    private static Gee.HashDataFunc<Category?> category_hash = (a) =>
     {
         return str_hash (a.name);
     };
-    public static Gee.EqualDataFunc<Category?> category_equal = (a,b) =>
+    private static Gee.EqualDataFunc<Category?> category_equal = (a,b) =>
     {
         return str_equal (a.name, b.name);
     };
@@ -246,33 +246,6 @@ public class Scores : Object
         {
         new Dialog (this).run ();
         }*/
-}
-
-void main()
-{
-    /*   Scores s = new Scores("app");
-       s.load_scores_from_files();
-       s.print_scores();
-       Scores a = new Scores ("second_app");
-       a.load_scores_from_files();
-       a.print_scores();*/
-    Scores s = new Scores ("app");
-    Category cat = {"cat1", "cat1"};
-    s.add_score (101, cat);
-    s.add_score (102, cat);
-    cat = {"cat2", "cat2"};
-    s.add_score (21, cat);
-    s.add_score (24, cat);
-    s.print_scores();
-    //  s.save_scores_to_files();
-    Scores a = new Scores("second_app",Style.PLAIN_ASCENDING);
-    a.add_score (111, cat);
-    a.add_score (123, cat);
-    cat = {"cat3","cat3"};
-    a.add_score (21, cat);
-    a.add_score (24, cat);
-    a.print_scores();
-//    a.save_scores_to_files();
 }
 
 } /* namespace Scores */
