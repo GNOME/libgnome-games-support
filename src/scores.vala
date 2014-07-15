@@ -42,8 +42,9 @@ public class Scores : Object
     private Category? current_category = null;
     private Style style;
     /* A priority queue should enable us to easily fetch the top 10 scores */
-    private Gee.HashMap <Category?, Gee.PriorityQueue<Score?> > scores_per_category = new Gee.HashMap <Category?, Gee.PriorityQueue<Score?>> ((owned) category_hash, (owned) category_equal);
+    private Gee.HashMap <Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap <Category?, Gee.PriorityQueue<Score>> ((owned) category_hash, (owned) category_equal);
     private string base_name;
+    private string user_score_dir;
 
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) =>
@@ -73,16 +74,29 @@ public class Scores : Object
             };
         }
         this.base_name = app_name;
-
-        if (this.load_scores_from_files ())
+        this.user_score_dir = Path.build_filename (Environment.get_user_data_dir (), this.base_name, "scores", null);
+        try
         {
-            // loading scores from files succeeded
+            this.load_scores_from_files ();
+        }
+        catch (Error e)
+        {
+            stderr.printf ("%s\n", e.message);
         }
     }
 
     ~Scores ()
     {
-        this.save_scores_to_files ();
+// FIXME: Destructor not being called
+debug("Destructor\n");
+        try
+        {
+            this.save_scores_to_files ();
+        }
+        catch (Error e)
+        {
+            stderr.printf ("%s\n", e.message);
+        }
     }
 
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
@@ -92,12 +106,15 @@ public class Scores : Object
         var current_time = new DateTime.now_local ().to_unix ();
         //TODO: Find a way around lossy conversion when long is 32 bit
         time_t time = (long) current_time;
-        Score score = { score_value, user, time };
+        Score score = new Score ();
+        score.score = score_value;
+        score.user = user;
+        score.time = time;
         /* check if category exists in the HashTable. Insert one if not */
         if (this.scores_per_category.has_key (category) ==  false)
         {
             // TODO: check if insert was successful. Glib.HashMap.set returns void
-            this.scores_per_category.set (category, new Gee.PriorityQueue<Score?> ((owned) scorecmp));
+            this.scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
         }
         if (scores_per_category[category].add (score))
         {
@@ -124,21 +141,21 @@ public class Scores : Object
         }
     }
 
-    private bool save_scores_to_files ()
+    private void save_scores_to_files () throws Error
     {
-        string home_dir = Environment.get_home_dir ();
-        string user_score_dir = Path.build_filename (home_dir,"." + this.base_name + "_scores",null);
-
         /*create the directory if it doesn' exist*/
-        if (!FileUtils.test (user_score_dir,FileTest.EXISTS))
+        if (!FileUtils.test (this.user_score_dir,FileTest.EXISTS))
         {
-            DirUtils.create_with_parents (user_score_dir, 0766);
+            if (DirUtils.create_with_parents (this.user_score_dir, 0766) == -1)
+            {
+                throw new FileError.ACCES ("Could not create directory.");
+            }
         }
 
         var category_iterator = scores_per_category.map_iterator ();
         while (category_iterator.next ())
         {
-            string filename = Path.build_filename (user_score_dir, category_iterator.get_key ().name);
+            string filename = Path.build_filename (this.user_score_dir, category_iterator.get_key ().name);
 
             var file = File.new_for_path (filename);
 
@@ -167,25 +184,20 @@ public class Scores : Object
             }
             catch (Error e)
             {
-                stderr.printf ("%s\n", e.message);
-                return false;
+                throw e;
             }
 
         }
-        return true;
     }
 
-    private bool load_scores_from_files ()
+    private void load_scores_from_files () throws Error
     {
-        string home_dir = Environment.get_home_dir ();
-        string user_score_dir = Path.build_filename (home_dir,"." + this.base_name + "_scores",null);
-
-        var directory = File.new_for_path (user_score_dir);
+        var directory = File.new_for_path (this.user_score_dir);
 
         // return false if directory doesn't exist
         if (!directory.query_exists ())
         {
-            return false;
+            throw new FileError.ACCES ("Directory doesn't exist to load scores from.");
         }
 
         try
@@ -196,9 +208,9 @@ public class Scores : Object
             while ((file_info = enumerator.next_file ()) != null)
             {
                 string category_name = file_info.get_name ();
-                string filename = Path.build_filename (user_score_dir, category_name);
+                string filename = Path.build_filename (this.user_score_dir, category_name);
 
-                var scores_of_single_category = new Gee.PriorityQueue<Score?> ((owned) scorecmp);
+                var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
 
                 var file = File.new_for_path (filename);
 
@@ -211,14 +223,17 @@ public class Scores : Object
                 {
                     //TODO: better error handling here?
                     string[] tokens = line.split (" ", 3);
-                    if (tokens.	length < 3)
+                    if (tokens.length < 3)
                     {
-                        return false;
+                        throw new FileError.ACCES ("Failed to parse file for scores.");
                     }
                     long score_value = long.parse (tokens[0]);
                     time_t time = long.parse (tokens[1]);
                     string user = tokens[2];
-                    Score score = {score_value, user, time};
+                    Score score = new Score ();
+                    score.score = score_value;
+                    score.user = user;
+                    score.time = time;
                     scores_of_single_category.add (score);
                 }
                 //TODO: How to retrieve key of category?
@@ -228,10 +243,8 @@ public class Scores : Object
         }
         catch (Error e)
         {
-            stderr.printf ("%s\n", e.message);
-            return false;
+            throw e;
         }
-        return true;
     }
 
     /*  public Scores (string app_name, Style style)
