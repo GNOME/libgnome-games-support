@@ -85,20 +85,6 @@ public class Scores : Object
         }
     }
 
-    ~Scores ()
-    {
-// FIXME: Destructor not being called
-debug("Destructor\n");
-        try
-        {
-            this.save_scores_to_files ();
-        }
-        catch (Error e)
-        {
-            stderr.printf ("%s\n", e.message);
-        }
-    }
-
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
@@ -116,13 +102,25 @@ debug("Destructor\n");
             // TODO: check if insert was successful. Glib.HashMap.set returns void
             this.scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
         }
-        if (scores_per_category[category].add (score))
+        try
         {
-            last_score = score;
-            current_category = category;
+            /* We first try and save the score to disc. If it succeeds, then we add the score to in-memory HashMap.
+               Even if adding score to in-memory HashMap fails, the score would be retrieved the next
+               time scores are loaded from the disc. */
+            save_score_to_file (score, category);
+            if (scores_per_category[category].add (score))
+            {
+                last_score = score;
+                current_category = category;
+            }
             return true;
+
         }
-        return false;
+        catch (Error e)
+        {
+            stderr.printf ("%s\n", e.message);
+            return false;
+        }
     }
 
     /* for debugging purposes */
@@ -141,52 +139,34 @@ debug("Destructor\n");
         }
     }
 
-    private void save_scores_to_files () throws Error
+    private void save_score_to_file (Score score, Category category) throws Error
     {
         /*create the directory if it doesn' exist*/
         if (!FileUtils.test (this.user_score_dir,FileTest.EXISTS))
         {
             if (DirUtils.create_with_parents (this.user_score_dir, 0766) == -1)
             {
-                throw new FileError.ACCES ("Could not create directory.");
+                throw new FileError.ACCES ("Error: Could not create directory.");
             }
         }
 
-        var category_iterator = scores_per_category.map_iterator ();
-        while (category_iterator.next ())
+        string filename = Path.build_filename (this.user_score_dir, category.key);
+
+        var file = File.new_for_path (filename);
+
+        try
         {
-            string filename = Path.build_filename (this.user_score_dir, category_iterator.get_key ().name);
+            var dos = new DataOutputStream (file.append_to (FileCreateFlags.NONE));
 
-            var file = File.new_for_path (filename);
+            string time_string = score.time.to_string ();
 
-            try
-            {
-                /* if the file already exists, delete it since we wish to overwrite the contents.*/
-                if (file.query_exists ())
-                {
-                    file.delete ();
-                }
-
-                var dos = new DataOutputStream (file.create (FileCreateFlags.REPLACE_DESTINATION));
-
-                var score_iterator = category_iterator.get_value ().iterator ();
-
-                while (score_iterator.next ())
-                {
-                    Score single_score = score_iterator.get ();
-
-                    string s = single_score.time.to_string();
-
-                    dos.put_string (single_score.score.to_string() + " " +
-                                    s + " " +
-                                    single_score.user + "\n");
-                }
-            }
-            catch (Error e)
-            {
-                throw e;
-            }
-
+            dos.put_string (score.score.to_string () + " " +
+                            time_string + " " +
+                            score.user + "\n");
+        }
+        catch (Error e)
+        {
+            throw e;
         }
     }
 
