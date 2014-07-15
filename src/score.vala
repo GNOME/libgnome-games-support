@@ -25,7 +25,7 @@ private class Score: Object
 {
     public long score {get; set;}
     public string user {get; set;}
-    public time_t time {get; set;}
+    public int64 time {get; set;}
 }
 
 } /* namespace Scores */

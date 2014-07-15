@@ -105,7 +105,7 @@ debug("Destructor\n");
         string user = Environment.get_user_name ();
         var current_time = new DateTime.now_local ().to_unix ();
         //TODO: Find a way around lossy conversion when long is 32 bit
-        time_t time = (long) current_time;
+        int64 time = current_time;
         Score score = new Score ();
         score.score = score_value;
         score.user = user;
@@ -135,7 +135,7 @@ debug("Destructor\n");
             var queue_iterator = iterator.get_value ().iterator ();
             while (queue_iterator.next ())
             {
-                var time = new DateTime.from_unix_local ((int64) queue_iterator.get ().time);
+                var time = new DateTime.from_unix_local (queue_iterator.get ().time);
                 stdout.printf("%ld\t%s\t%s\n",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
             }
         }
@@ -175,7 +175,7 @@ debug("Destructor\n");
                 {
                     Score single_score = score_iterator.get ();
 
-                    string s = "%ld".printf (single_score.time);
+                    string s = single_score.time.to_string();
 
                     dos.put_string (single_score.score.to_string() + " " +
                                     s + " " +
@@ -207,8 +207,8 @@ debug("Destructor\n");
             FileInfo file_info;
             while ((file_info = enumerator.next_file ()) != null)
             {
-                string category_name = file_info.get_name ();
-                string filename = Path.build_filename (this.user_score_dir, category_name);
+                string category_key = file_info.get_name ();
+                string filename = Path.build_filename (this.user_score_dir, category_key);
 
                 var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
 
@@ -228,7 +228,7 @@ debug("Destructor\n");
                         throw new FileError.ACCES ("Failed to parse file for scores.");
                     }
                     long score_value = long.parse (tokens[0]);
-                    time_t time = long.parse (tokens[1]);
+                    int64 time = int64.parse (tokens[1]);
                     string user = tokens[2];
                     Score score = new Score ();
                     score.score = score_value;
@@ -236,8 +236,8 @@ debug("Destructor\n");
                     score.time = time;
                     scores_of_single_category.add (score);
                 }
-                //TODO: How to retrieve key of category?
-                Category category = {category_name, category_name};
+                //TODO: How to retrieve name of category?
+                Category category = {category_key, category_key};
                 this.scores_per_category.set (category, scores_of_single_category);
             }
         }
