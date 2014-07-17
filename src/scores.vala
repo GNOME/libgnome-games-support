@@ -227,25 +227,44 @@ public class Scores : Object
         }
     }
 
-    /*  public Scores (string app_name, Style style)
+    /* Get a maximum of best n scores from the given category */
+    private List<Score> get_best_n_scores (Category category, int n) throws Error
+    {
+        if (!this.scores_per_category.has_key (category))
         {
+            //TODO: Throw appropriate error
         }
 
-        public void add_score (int score, Category category) throws Error
+        List<Score> n_scores = new List<Score> ();
+        var scores_of_this_category = this.scores_per_category[category];
+
+        for (int i = 0; i < n; i++)
         {
+            if (scores_of_this_category.size == 0)
+            {
+                break;
+            }
+            n_scores.append (scores_of_this_category.poll ());
         }
 
-        public void run_dialog ()
-        {
-        new Dialog (this).run ();
-        }*/
+        /* insert the scores back into the priority queue*/
+        n_scores.foreach ((x) =>
+                             {
+                                 scores_of_this_category.add (x);
+                             }
+                         );
+        return n_scores;
+
+    }
+    /* public void run_dialog ()
+     {
+     new Dialog (this).run ();
+     }*/
 }
 
 } /* namespace Scores */
 } /* namespace Games */
 
 /*TODO: Discuss following issues
- Scores can easily be changed by user by editing the file. (sol: binary files?)
  Retreive category name and category key from file names (sol: another file that stores the mapping)
- trying to read scores from non_score files (sol: another file that stores the category names and category files)
  */
