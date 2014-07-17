@@ -23,9 +23,9 @@ namespace Scores {
 
 private class Dialog : Gtk.Dialog
 {
-    private Scores scores;
+    private Context scores;
 
-    public Dialog (Scores scores)
+    public Dialog (Context scores)
     {
         this.scores = scores;
     }

@@ -24,13 +24,13 @@ namespace Scores {
 // FIXME - make these real tests
 void main()
 {
-    /*   Scores s = new Scores("app");
+    /*   Context s = new Context("app");
        s.load_scores_from_files();
        s.print_scores();
-       Scores a = new Scores ("second_app");
+       Context a = new Context ("second_app");
        a.load_scores_from_files();
        a.print_scores();*/
-    Scores s = new Scores ("app");
+    Context s = new Context ("app");
     Category cat = {"cat1", "cat1"};
     s.add_score (101, cat);
     s.add_score (102, cat);
@@ -39,7 +39,7 @@ void main()
     s.add_score (24, cat);
     s.print_scores();
     //  s.save_scores_to_files();
-    Scores a = new Scores("second_app",Style.PLAIN_ASCENDING);
+    Context a = new Context("second_app",Style.PLAIN_ASCENDING);
     a.add_score (111, cat);
     a.add_score (123, cat);
     cat = {"cat3","cat3"};

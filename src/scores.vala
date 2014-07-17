@@ -36,7 +36,7 @@ public struct Category
     string name;
 }
 
-public class Scores : Object
+public class Context : Object
 {
     private Score? last_score = null;
     private Category? current_category = null;
@@ -56,7 +56,7 @@ public class Scores : Object
         return str_equal (a.name, b.name);
     };
 
-    public Scores (string app_name, Style style = Style.PLAIN_DESCENDING)
+    public Context (string app_name, Style style = Style.PLAIN_DESCENDING)
     {
         this.style = style;
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
