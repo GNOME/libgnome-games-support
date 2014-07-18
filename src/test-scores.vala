@@ -18,18 +18,13 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games {
-namespace Scores {
-
-// FIXME - make these real tests
-void main()
+namespace Games
 {
-    /*   Context s = new Context("app");
-       s.load_scores_from_files();
-       s.print_scores();
-       Context a = new Context ("second_app");
-       a.load_scores_from_files();
-       a.print_scores();*/
+namespace Scores
+{
+
+private void create_scores ()
+{
     Context s = new Context ("app");
     Category cat = {"cat1", "cat1"};
     s.add_score (101, cat);
@@ -37,16 +32,91 @@ void main()
     cat = {"cat2", "cat2"};
     s.add_score (21, cat);
     s.add_score (24, cat);
-    s.print_scores();
-    //  s.save_scores_to_files();
-    Context a = new Context("second_app",Style.PLAIN_ASCENDING);
-    a.add_score (111, cat);
-    a.add_score (123, cat);
-    cat = {"cat3","cat3"};
-    a.add_score (21, cat);
-    a.add_score (24, cat);
-    a.print_scores();
-//    a.save_scores_to_files();
+}
+
+private string get_filename (string category_name)
+{
+    var base_name = "app";
+    var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
+    return Path.build_filename (user_score_dir, category_name);
+}
+
+private void delete_scores ()
+{
+    try
+    {
+        var filename = get_filename ("cat1");
+        var file = File.new_for_path (filename);
+        file.delete ();
+        filename = get_filename ("cat2");
+        file = File.new_for_path (filename);
+        file.delete ();
+        filename = get_filename ("");
+        file = File.new_for_path (filename);
+        file.delete ();
+    }
+    catch (Error e)
+    {
+        assert_not_reached ();
+    }
+}
+
+private void test_scores_files_exist ()
+{
+    create_scores ();
+    var filename = get_filename ("cat1");
+    var file = File.new_for_path (filename);
+    assert (file.query_exists () == true);
+    filename = get_filename ("cat2");
+    file = File.new_for_path (filename);
+    assert (file.query_exists () == true);
+    delete_scores ();
+}
+
+private void test_save_score_to_file ()
+{
+    try
+    {
+        create_scores ();
+        var filename = get_filename ("cat1");
+        var file = File.new_for_path (filename);
+        var dis = new DataInputStream (file.read ());
+        string line;
+        assert ((line = dis.read_line (null)) != null);
+        var tokens = line.split (" ", 3);
+        assert (tokens.length == 3);
+        assert (tokens[0] == "101");
+        assert ((line = dis.read_line (null)) != null);
+        tokens = line.split (" ", 3);
+        assert (tokens.length == 3);
+        assert (tokens[0] == "102");
+        assert ((line = dis.read_line (null)) == null);
+        filename = get_filename ("cat2");
+        file = File.new_for_path (filename);
+        dis = new DataInputStream (file.read ());
+        assert ((line = dis.read_line (null)) != null);
+        tokens = line.split (" ", 3);
+        assert (tokens.length == 3);
+        assert (tokens[0] == "21");
+        assert ((line = dis.read_line (null)) != null);
+        tokens = line.split (" ", 3);
+        assert (tokens.length == 3);
+        assert (tokens[0] == "24");
+        assert ((line = dis.read_line (null)) == null);
+        delete_scores ();
+    }
+    catch (Error e)
+    {
+        assert_not_reached ();
+    }
+}
+
+public int main (string args[])
+{
+    Test.init (ref args);
+    Test.add_func ("/Scores/Scores Files Exist", test_scores_files_exist);
+    Test.add_func ("/Scores/Save Score To File", test_save_score_to_file);
+    return Test.run ();
 }
 
 }

@@ -163,10 +163,10 @@ public class Context : Object
     {
         var directory = File.new_for_path (user_score_dir);
 
-        // return false if directory doesn't exist
+        // return if directory doesn't exist
         if (!directory.query_exists ())
         {
-            throw new FileError.FAILED ("Directory doesn't exist to load scores from.");
+	    return;
         }
 
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
