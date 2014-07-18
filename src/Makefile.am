@@ -6,9 +6,9 @@ TESTS = test-scores
 
 libgames_scores_la_SOURCES = \
 	config.vapi \
+	context.vala \
 	dialog.vala \
-	score.vala \
-	scores.vala
+	score.vala
 
 libgames_scores_la_CFLAGS = \
 	-w
