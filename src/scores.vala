@@ -73,34 +73,30 @@ public class Context : Object
                 return (int) (b.score < a.score) - (int) (a.score < b.score);
             };
         }
-        this.base_name = app_name;
-        this.user_score_dir = Path.build_filename (Environment.get_user_data_dir (), this.base_name, "scores", null);
+        base_name = app_name;
+        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
         try
         {
-            this.load_scores_from_files ();
+            load_scores_from_files ();
         }
         catch (Error e)
         {
-            stderr.printf ("%s\n", e.message);
+            warning ("%s\n", e.message);
         }
     }
 
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
-        string user = Environment.get_user_name ();
+        var user = Environment.get_user_name ();
         var current_time = new DateTime.now_local ().to_unix ();
-        //TODO: Find a way around lossy conversion when long is 32 bit
-        int64 time = current_time;
-        Score score = new Score ();
-        score.score = score_value;
-        score.user = user;
-        score.time = time;
+        var time = current_time;
+        Score score = new Score (score_value, time, user);
         /* check if category exists in the HashTable. Insert one if not */
-        if (this.scores_per_category.has_key (category) ==  false)
+        if (scores_per_category.has_key (category) ==  false)
         {
             // TODO: check if insert was successful. Glib.HashMap.set returns void
-            this.scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
+            scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
         }
         try
         {
@@ -118,7 +114,7 @@ public class Context : Object
         }
         catch (Error e)
         {
-            stderr.printf ("%s\n", e.message);
+            warning ("%s\n", e.message);
             return false;
         }
     }
@@ -129,12 +125,12 @@ public class Context : Object
         var iterator = scores_per_category.map_iterator ();
         while (iterator.next ())
         {
-            stdout.printf("Key:%s\n", iterator.get_key ().name);
+            debug ("Key:%s\n", iterator.get_key ().name);
             var queue_iterator = iterator.get_value ().iterator ();
             while (queue_iterator.next ())
             {
                 var time = new DateTime.from_unix_local (queue_iterator.get ().time);
-                stdout.printf("%ld\t%s\t%s\n",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
+                debug ("%ld\t%s\t%s\n",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
             }
         }
     }
@@ -142,119 +138,95 @@ public class Context : Object
     private void save_score_to_file (Score score, Category category) throws Error
     {
         /*create the directory if it doesn' exist*/
-        if (!FileUtils.test (this.user_score_dir,FileTest.EXISTS))
+        if (!FileUtils.test (user_score_dir,FileTest.EXISTS))
         {
-            if (DirUtils.create_with_parents (this.user_score_dir, 0766) == -1)
+            if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
             {
-                throw new FileError.ACCES ("Error: Could not create directory.");
+                throw new FileError.FAILED ("Error: Could not create directory.");
             }
         }
 
-        string filename = Path.build_filename (this.user_score_dir, category.key);
+        var filename = Path.build_filename (user_score_dir, category.key);
 
         var file = File.new_for_path (filename);
 
-        try
-        {
-            var dos = new DataOutputStream (file.append_to (FileCreateFlags.NONE));
+        var dos = new DataOutputStream (file.append_to (FileCreateFlags.NONE));
 
-            string time_string = score.time.to_string ();
+        var time_string = score.time.to_string ();
 
-            dos.put_string (score.score.to_string () + " " +
-                            time_string + " " +
-                            score.user + "\n");
-        }
-        catch (Error e)
-        {
-            throw e;
-        }
+        dos.put_string (score.score.to_string () + " " +
+                        time_string + " " +
+                        score.user + "\n");
     }
 
     private void load_scores_from_files () throws Error
     {
-        var directory = File.new_for_path (this.user_score_dir);
+        var directory = File.new_for_path (user_score_dir);
 
         // return false if directory doesn't exist
         if (!directory.query_exists ())
         {
-            throw new FileError.ACCES ("Directory doesn't exist to load scores from.");
+            throw new FileError.FAILED ("Directory doesn't exist to load scores from.");
         }
 
-        try
-        {
-            var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+        var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
 
-            FileInfo file_info;
-            while ((file_info = enumerator.next_file ()) != null)
+        FileInfo file_info;
+        while ((file_info = enumerator.next_file ()) != null)
+        {
+            var category_key = file_info.get_name ();
+            var filename = Path.build_filename (user_score_dir, category_key);
+
+            var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
+
+            var file = File.new_for_path (filename);
+
+            /* Open file for reading and wrap returned FileInputStream into a
+             DataInputStream, so we can read line by line */
+            var dis = new DataInputStream (file.read ());
+            string line;
+            /* Read lines until end of file (null) is reached */
+            while ((line = dis.read_line (null)) != null)
             {
-                string category_key = file_info.get_name ();
-                string filename = Path.build_filename (this.user_score_dir, category_key);
+                //TODO: better error handling here?
+                var tokens = line.split (" ", 3);
+                if (tokens.length < 3)
+                    throw new FileError.FAILED ("Failed to parse file for scores.");
 
-                var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
-
-                var file = File.new_for_path (filename);
-
-                /* Open file for reading and wrap returned FileInputStream into a
-                 DataInputStream, so we can read line by line */
-                var dis = new DataInputStream (file.read ());
-                string line;
-                /* Read lines until end of file (null) is reached */
-                while ((line = dis.read_line (null)) != null)
-                {
-                    //TODO: better error handling here?
-                    string[] tokens = line.split (" ", 3);
-                    if (tokens.length < 3)
-                    {
-                        throw new FileError.ACCES ("Failed to parse file for scores.");
-                    }
-                    long score_value = long.parse (tokens[0]);
-                    int64 time = int64.parse (tokens[1]);
-                    string user = tokens[2];
-                    Score score = new Score ();
-                    score.score = score_value;
-                    score.user = user;
-                    score.time = time;
-                    scores_of_single_category.add (score);
-                }
-                //TODO: How to retrieve name of category?
-                Category category = {category_key, category_key};
-                this.scores_per_category.set (category, scores_of_single_category);
+                var score_value = long.parse (tokens[0]);
+                var time = int64.parse (tokens[1]);
+                var user = tokens[2];
+                Score score = new Score (score_value, time, user);
+                scores_of_single_category.add (score);
             }
-        }
-        catch (Error e)
-        {
-            throw e;
+            //TODO: How to retrieve name of category?
+            Category category = {category_key, category_key};
+            scores_per_category.set (category, scores_of_single_category);
         }
     }
 
     /* Get a maximum of best n scores from the given category */
     private List<Score> get_best_n_scores (Category category, int n) throws Error
     {
-        if (!this.scores_per_category.has_key (category))
+        if (!scores_per_category.has_key (category))
         {
             //TODO: Throw appropriate error
         }
 
-        List<Score> n_scores = new List<Score> ();
-        var scores_of_this_category = this.scores_per_category[category];
+        var n_scores = new List<Score> ();
+        var scores_of_this_category = scores_per_category[category];
 
         for (int i = 0; i < n; i++)
         {
             if (scores_of_this_category.size == 0)
-            {
                 break;
-            }
+
             n_scores.append (scores_of_this_category.poll ());
         }
 
         /* insert the scores back into the priority queue*/
-        n_scores.foreach ((x) =>
-                             {
-                                 scores_of_this_category.add (x);
-                             }
-                         );
+        n_scores.foreach ((x) => scores_of_this_category.add (x));
         return n_scores;
-
     }
     /* public void run_dialog ()
      {

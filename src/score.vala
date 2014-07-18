@@ -24,8 +24,15 @@ namespace Scores {
 private class Score: Object
 {
     public long score {get; set;}
-    public string user {get; set;}
+    public string? user {get; set;}
     public int64 time {get; set;}
+
+    public Score (long score, int64 time, string? user = null)
+    {
+	    this.score = score;
+	    this.time = time;
+	    this.user = user;
+    }
 }
 
 } /* namespace Scores */
