@@ -163,7 +163,6 @@ public class Context : Object
     {
         var directory = File.new_for_path (user_score_dir);
 
-        // return if directory doesn't exist
         if (!directory.query_exists ())
         {
 	    return;

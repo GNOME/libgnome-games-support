@@ -25,7 +25,7 @@ namespace Scores
 
 private void create_scores ()
 {
-    Context s = new Context ("app");
+    Context s = new Context ("libgames-scores-test");
     Category cat = {"cat1", "cat1"};
     s.add_score (101, cat);
     s.add_score (102, cat);
@@ -36,7 +36,7 @@ private void create_scores ()
 
 private string get_filename (string category_name)
 {
-    var base_name = "app";
+    var base_name = "libgames-scores-test";
     var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
     return Path.build_filename (user_score_dir, category_name);
 }
@@ -45,15 +45,22 @@ private void delete_scores ()
 {
     try
     {
-        var filename = get_filename ("cat1");
-        var file = File.new_for_path (filename);
-        file.delete ();
-        filename = get_filename ("cat2");
-        file = File.new_for_path (filename);
-        file.delete ();
-        filename = get_filename ("");
-        file = File.new_for_path (filename);
-        file.delete ();
+        var directory_name = get_filename ("");
+        var directory = File.new_for_path (directory_name);
+        var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+
+        FileInfo file_info;
+        while ((file_info = enumerator.next_file ()) != null)
+        {
+            var file_name = file_info.get_name ();
+            var file = directory.get_child (file_name);
+            file.delete ();
+        }
+
+        directory.delete ();
+        var parent_name = Path.build_filename (Environment.get_user_data_dir (), "libgames-scores-test", null);
+        var parent_directory = File.new_for_path (parent_name);
+        parent_directory.delete ();
     }
     catch (Error e)
     {
