@@ -81,7 +81,7 @@ public class Context : Object
         }
         catch (Error e)
         {
-            warning ("%s\n", e.message);
+            warning ("%s", e.message);
         }
     }
 
@@ -114,7 +114,7 @@ public class Context : Object
         }
         catch (Error e)
         {
-            warning ("%s\n", e.message);
+            warning ("%s", e.message);
             return false;
         }
     }
@@ -125,12 +125,12 @@ public class Context : Object
         var iterator = scores_per_category.map_iterator ();
         while (iterator.next ())
         {
-            debug ("Key:%s\n", iterator.get_key ().name);
+            debug ("Key:%s", iterator.get_key ().name);
             var queue_iterator = iterator.get_value ().iterator ();
             while (queue_iterator.next ())
             {
                 var time = new DateTime.from_unix_local (queue_iterator.get ().time);
-                debug ("%ld\t%s\t%s\n",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
+                debug ("%ld\t%s\t%s",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
             }
         }
     }
