@@ -21,6 +21,8 @@
 namespace Games {
 namespace Scores {
 
+using Gtk;
+
 private class Dialog : Gtk.Dialog
 {
     private Context scores;
@@ -28,6 +30,44 @@ private class Dialog : Gtk.Dialog
     public Dialog (Context scores)
     {
         this.scores = scores;
+    }
+
+    public void run_dialog ()
+    {
+	//Widget listview;
+	TreeViewColumn column;
+        CellRenderer renderer;
+
+	var vbox = new Box (Orientation.VERTICAL, 6);
+	set_border_width (5);
+
+	var scroll = new ScrolledWindow (null, null);
+	scroll.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
+	scroll.set_size_request (250, 265);
+	scroll.set_shadow_type (ShadowType.ETCHED_IN);
+	vbox.pack_end (scroll);
+
+	//var hdiv = new Separator (Orientation.HORIZONTAL);
+	var list = new ListStore (3, typeof (string), typeof (string), typeof (string));
+	var listview = new TreeView.with_model (list);
+
+	var name_renderer = new CellRendererText ();
+	var name_column = new TreeViewColumn.with_attributes (_("Name"), name_renderer, "text", 0, null);
+
+	listview.append_column (name_column);
+
+	var time_renderer = new CellRendererText ();
+	var time_column = new TreeViewColumn.with_attributes (_("Time"), time_renderer, "text", 1, null);
+
+	listview.append_column (time_column);
+
+	var score_renderer = new CellRendererText ();
+	var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 2, null);
+
+	listview.append_column (score_column);
+	scroll.add (listview);
+
+	vbox.show_all ();
     }
 }
 

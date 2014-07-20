@@ -219,7 +219,6 @@ public class Context : Object
         {
             if (scores_of_this_category.size == 0)
                 break;
-
             n_scores.append (scores_of_this_category.poll ());
         }
 
@@ -227,10 +226,11 @@ public class Context : Object
         n_scores.foreach ((x) => scores_of_this_category.add (x));
         return n_scores;
     }
-    /* public void run_dialog ()
+
+     public void run_dialog ()
      {
-     new Dialog (this).run ();
-     }*/
+         new Dialog (this).run ();
+     }
 }
 
 } /* namespace Scores */

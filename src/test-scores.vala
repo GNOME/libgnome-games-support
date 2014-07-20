@@ -25,6 +25,7 @@ namespace Scores
 
 private void create_scores ()
 {
+debug ("reached created scores");
     Context s = new Context ("libgames-scores-test");
     Category cat = {"cat1", "cat1"};
     s.add_score (101, cat);
@@ -32,6 +33,9 @@ private void create_scores ()
     cat = {"cat2", "cat2"};
     s.add_score (21, cat);
     s.add_score (24, cat);
+    s.run_dialog ();
+    stdout.printf ("write\n");
+    string? name = stdin.read_line ();
 }
 
 private string get_filename (string category_name)
@@ -64,12 +68,14 @@ private void delete_scores ()
     }
     catch (Error e)
     {
+	warning (e.message);
         assert_not_reached ();
     }
 }
 
 private void test_scores_files_exist ()
 {
+debug ("reached this func!");
     create_scores ();
     var filename = get_filename ("cat1");
     var file = File.new_for_path (filename);
@@ -121,8 +127,13 @@ private void test_save_score_to_file ()
 public int main (string args[])
 {
     Test.init (ref args);
-    Test.add_func ("/Scores/Scores Files Exist", test_scores_files_exist);
-    Test.add_func ("/Scores/Save Score To File", test_save_score_to_file);
+    var test_suite = TestSuite.get_root ();
+    var test_case = new TestCase ("Scores Files Exist", () => {}, test_scores_files_exist, delete_scores);
+    test_suite.add (test_case);
+    test_case = new TestCase ("Save Score To File", () => {}, test_save_score_to_file, delete_scores);
+    test_suite.add (test_case);
+    /*Test.add_func ("/Scores/Scores Files Exist", test_scores_files_exist);
+    Test.add_func ("/Scores/Save Score To File", test_save_score_to_file);*/
     return Test.run ();
 }
 
