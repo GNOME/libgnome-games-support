@@ -230,7 +230,7 @@ public class Context : Object
 
      public void run_dialog ()
      {
-         var dialog = new Dialog (this);
+         new Dialog (this).run ();
      }
 }
 
