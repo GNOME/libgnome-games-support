@@ -133,7 +133,7 @@ public class Context : Object
                 debug ("%ld\t%s\t%s",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
             }
         }
-//	run_dialog ();
+	run_dialog ();
     }
 
     private void save_score_to_file (Score score, Category category) throws Error
