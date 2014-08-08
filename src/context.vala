@@ -74,7 +74,7 @@ public class Context : Object
             };
         }
         base_name = app_name;
-        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
+        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
         try
         {
             load_scores_from_files ();
@@ -88,7 +88,7 @@ public class Context : Object
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
-        var user = Environment.get_user_name ();
+        var user = Environment.get_real_name ();
         var current_time = new DateTime.now_local ().to_unix ();
         var time = current_time;
         Score score = new Score (score_value, time, user);
@@ -133,6 +133,7 @@ public class Context : Object
                 debug ("%ld\t%s\t%s",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
             }
         }
+//	run_dialog ();
     }
 
     private void save_score_to_file (Score score, Category category) throws Error
@@ -229,7 +230,7 @@ public class Context : Object
 
      public void run_dialog ()
      {
- //        new Dialog (this).run ();
+         var dialog = new Dialog (this);
      }
 }
 

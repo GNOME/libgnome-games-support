@@ -30,16 +30,12 @@ private class Dialog : Gtk.Dialog
     public Dialog (Context scores)
     {
         this.scores = scores;
-    }
-
-    public void run_dialog ()
-    {
-	//Widget listview;
-	TreeViewColumn column;
-        CellRenderer renderer;
 
 	var vbox = new Box (Orientation.VERTICAL, 6);
 	set_border_width (5);
+
+	TreeViewColumn column;
+        CellRenderer renderer;
 
 	var scroll = new ScrolledWindow (null, null);
 	scroll.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
