@@ -56,6 +56,17 @@ public class Context : Object
         return str_equal (a.name, b.name);
     };
 
+    public List <Category?> get_categories ()
+    {
+        var categories = new List <Category?> ();
+        var iterator = scores_per_category.map_iterator ();
+        while (iterator.next ())
+        {
+            categories.append (iterator.get_key ());
+        }
+        return categories;
+    }
+
     public Context (string app_name, Style style = Style.PLAIN_DESCENDING)
     {
         this.style = style;
@@ -133,7 +144,7 @@ public class Context : Object
                 debug ("%ld\t%s\t%s",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
             }
         }
-	run_dialog ();
+        run_dialog ();
     }
 
     private void save_score_to_file (Score score, Category category) throws Error
@@ -166,7 +177,7 @@ public class Context : Object
 
         if (!directory.query_exists ())
         {
-	    return;
+            return;
         }
 
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
@@ -228,10 +239,10 @@ public class Context : Object
         return n_scores;
     }
 
-     public void run_dialog ()
-     {
-         new Dialog (this).run ();
-     }
+    public void run_dialog ()
+    {
+        new Dialog (this).run ();
+    }
 }
 
 } /* namespace Scores */

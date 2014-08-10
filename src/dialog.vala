@@ -18,52 +18,71 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games {
-namespace Scores {
+namespace Games
+{
+namespace Scores
+{
 
 using Gtk;
 
 private class Dialog : Gtk.Dialog
 {
     private Context scores;
+    private ComboBoxText combo;
 
     public Dialog (Context scores)
     {
+        Object (use_header_bar : 1);
         this.scores = scores;
 
-	var vbox = new Box (Orientation.VERTICAL, 6);
-	set_border_width (5);
+        var vbox = this.get_content_area ();
+        set_border_width (5);
 
-	TreeViewColumn column;
+        TreeViewColumn column;
         CellRenderer renderer;
 
-	var scroll = new ScrolledWindow (null, null);
-	scroll.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
-	scroll.set_size_request (250, 265);
-	scroll.set_shadow_type (ShadowType.ETCHED_IN);
-	vbox.pack_end (scroll);
+        var scroll = new ScrolledWindow (null, null);
+        scroll.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
+        scroll.set_size_request (250, 265);
+        scroll.set_shadow_type (ShadowType.ETCHED_IN);
+        vbox.pack_end (scroll);
 
-	//var hdiv = new Separator (Orientation.HORIZONTAL);
-	var list = new ListStore (3, typeof (string), typeof (string), typeof (string));
-	var listview = new TreeView.with_model (list);
+        var catbar = new Box (Orientation.HORIZONTAL, 12);
+        vbox.pack_start (catbar, false, false, 0);
 
-	var name_renderer = new CellRendererText ();
-	var name_column = new TreeViewColumn.with_attributes (_("Name"), name_renderer, "text", 0, null);
+        combo = new ComboBoxText ();
+        combo.set_focus_on_click (false);
+        catbar.pack_start (combo, true, true, 0);
 
-	listview.append_column (name_column);
+        //var hdiv = new Separator (Orientation.HORIZONTAL);
+        var list = new ListStore (3, typeof (string), typeof (string), typeof (string));
+        var listview = new TreeView.with_model (list);
 
-	var time_renderer = new CellRendererText ();
-	var time_column = new TreeViewColumn.with_attributes (_("Time"), time_renderer, "text", 1, null);
+        var name_renderer = new CellRendererText ();
+        var name_column = new TreeViewColumn.with_attributes (_("Name"), name_renderer, "text", 0, null);
 
-	listview.append_column (time_column);
+        listview.append_column (name_column);
 
-	var score_renderer = new CellRendererText ();
-	var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 2, null);
+        var time_renderer = new CellRendererText ();
+        var time_column = new TreeViewColumn.with_attributes (_("Time"), time_renderer, "text", 1, null);
 
-	listview.append_column (score_column);
-	scroll.add (listview);
+        listview.append_column (time_column);
 
-	vbox.show_all ();
+        var score_renderer = new CellRendererText ();
+        var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 2, null);
+
+        listview.append_column (score_column);
+        scroll.add (listview);
+
+        load_categories ();
+
+        vbox.show_all ();
+    }
+
+    private void load_categories ()
+    {
+        var categories = scores.get_categories ();
+        categories.foreach ((x) => combo.append (x.key, x.name));
     }
 }
 
