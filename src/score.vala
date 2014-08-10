@@ -21,7 +21,7 @@
 namespace Games {
 namespace Scores {
 
-private class Score: Object
+public class Score: Object
 {
     public long score {get; set;}
     public string? user {get; set;}

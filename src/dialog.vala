@@ -29,6 +29,8 @@ private class Dialog : Gtk.Dialog
 {
     private Context scores;
     private ComboBoxText combo;
+    private ListStore list;
+    private Category? active_category;
 
     public Dialog (Context scores)
     {
@@ -53,9 +55,10 @@ private class Dialog : Gtk.Dialog
         combo = new ComboBoxText ();
         combo.set_focus_on_click (false);
         catbar.pack_start (combo, true, true, 0);
+        combo.changed.connect (load_scores);
 
         //var hdiv = new Separator (Orientation.HORIZONTAL);
-        var list = new ListStore (3, typeof (string), typeof (string), typeof (string));
+        list = new ListStore (3, typeof (string), typeof (string), typeof (string));
         var listview = new TreeView.with_model (list);
 
         var name_renderer = new CellRendererText ();
@@ -79,10 +82,34 @@ private class Dialog : Gtk.Dialog
         vbox.show_all ();
     }
 
+    /* load names and keys of all categories in ComboBoxText */
     private void load_categories ()
     {
         var categories = scores.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
+        if (categories.length() > 0)
+        {
+            combo.set_active_id (categories.nth_data (0).key);
+            active_category = {categories.nth_data (0).key, categories.nth_data (0).name};
+        }
+        else
+            active_category = null;
+    }
+
+    /* loads the scores of current active_category */
+    private void load_scores()
+    {
+        active_category = { combo.get_active_id (), combo.get_active_text ()};
+        var best_10_scores = scores.get_best_n_scores (active_category, 10);
+
+        list.clear ();
+        best_10_scores.foreach ((x) =>
+        {
+            TreeIter iter;
+            list.append (out iter);
+            list.set (iter, 0, x.user, 1, x.time.to_string (), 2, x.score.to_string (), -1);
+        });
+
     }
 }
 
