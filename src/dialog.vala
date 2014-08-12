@@ -53,9 +53,9 @@ private class Dialog : Gtk.Dialog
         var catbar = new Box (Orientation.HORIZONTAL, 12);
         vbox.pack_start (catbar, false, false, 0);
 
-	var label = new Label (dialog_label);
-	label.set_use_markup (true);
-	catbar.pack_start (label, false, false, 0);
+        var label = new Label (dialog_label);
+        label.set_use_markup (true);
+        catbar.pack_start (label, false, false, 0);
 
         combo = new ComboBoxText ();
         combo.set_focus_on_click (false);
@@ -63,22 +63,21 @@ private class Dialog : Gtk.Dialog
         combo.changed.connect (load_scores);
 
 /*	var headerbar = new HeaderBar ();
-	headerbar.show_close_button = true;
+        headerbar.show_close_button = true;
 	headerbar.custom_title = catbar;
-	headerbar.show ();
+        headerbar.show ();
 	set_titlebar (headerbar);*/
 
-        //var hdiv = new Separator (Orientation.HORIZONTAL);
         list = new ListStore (3, typeof (string), typeof (string), typeof (string));
         var listview = new TreeView.with_model (list);
 
         var name_renderer = new CellRendererText ();
         var name_column = new TreeViewColumn.with_attributes (_("Name"), name_renderer, "text", 0, null);
-	name_column.expand = true;
+        name_column.expand = true;
         listview.append_column (name_column);
 
-	var score_renderer = new CellRendererText ();
-	score_renderer.xalign = 1;
+        var score_renderer = new CellRendererText ();
+        score_renderer.xalign = 1;
         var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 1, null);
         listview.append_column (score_column);
         scroll.add (listview);
@@ -95,7 +94,10 @@ private class Dialog : Gtk.Dialog
         categories.foreach ((x) => combo.append (x.key, x.name));
         if (categories.length() > 0)
         {
-            combo.set_active_id (categories.nth_data (0).key);
+            if (scores.active_category == null)
+                combo.set_active_id (categories.nth_data (0).key);
+            else
+                combo.set_active_id (scores.active_category.key);
             active_category = {categories.nth_data (0).key, categories.nth_data (0).name};
         }
         else

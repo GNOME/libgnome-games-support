@@ -46,7 +46,7 @@ public class Context : Object
     private string base_name;
     private string user_score_dir;
     private string dialog_label;
- //   private Window window;
+//   private Window window;
 
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) =>
@@ -58,6 +58,13 @@ public class Context : Object
         return str_equal (a.name, b.name);
     };
 
+    public Category? active_category
+    {
+        get
+        {
+            return current_category;
+        }
+    }
     public List <Category?> get_categories ()
     {
         var categories = new List <Category?> ();
@@ -87,9 +94,9 @@ public class Context : Object
             };
         }
 
-	base_name = app_name;
-	this.dialog_label = dialog_label;
-	//this.window = window;
+        base_name = app_name;
+        this.dialog_label = dialog_label;
+        //this.window = window;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
         try
@@ -117,9 +124,6 @@ public class Context : Object
         }
         try
         {
-            /* We first try and save the score to disc. If it succeeds, then we add the score to in-memory HashMap.
-               Even if adding score to in-memory HashMap fails, the score would be retrieved the next
-               time scores are loaded from the disc. */
             save_score_to_file (score, category);
             if (scores_per_category[category].add (score))
             {
