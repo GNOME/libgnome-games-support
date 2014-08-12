@@ -46,6 +46,7 @@ public class Context : Object
     private string base_name;
     private string user_score_dir;
     private string dialog_label;
+    private string user_name = Environment.get_real_name ();
 //   private Window window;
 
     private CompareDataFunc<Score?> scorecmp;
@@ -64,6 +65,18 @@ public class Context : Object
         {
             return current_category;
         }
+    }
+
+    public string player_name
+    {
+	    get
+	    {
+		    return user_name;
+	    }
+	    set
+	    {
+		user_name = value;
+	    }
     }
 
     public List <Category?> get_categories ()
@@ -115,10 +128,11 @@ public class Context : Object
     {
         if (is_high_score (score_value, category))
         {
+		new Name (this).run ();
 		    /*ask for new name*/
 	}
 
-        var user = Environment.get_real_name ();
+        var user = user_name;
         var current_time = new DateTime.now_local ().to_unix ();
         var time = current_time;
         Score score = new Score (score_value, time, user);
