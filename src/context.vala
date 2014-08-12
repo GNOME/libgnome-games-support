@@ -65,6 +65,7 @@ public class Context : Object
             return current_category;
         }
     }
+
     public List <Category?> get_categories ()
     {
         var categories = new List <Category?> ();
@@ -112,6 +113,11 @@ public class Context : Object
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
+        if (is_high_score (score_value, category))
+        {
+		    /*ask for new name*/
+	}
+
         var user = Environment.get_real_name ();
         var current_time = new DateTime.now_local ().to_unix ();
         var time = current_time;
@@ -130,6 +136,7 @@ public class Context : Object
                 last_score = score;
                 current_category = category;
             }
+
             return true;
 
         }
@@ -226,6 +233,20 @@ public class Context : Object
         }
     }
 
+    private bool is_high_score (long score_value, Category category)
+    {
+	var best_scores = get_best_n_scores (category, 10);
+	if (best_scores.length () < 10)
+		return true;
+
+	var lowest = best_scores.nth_data (9).score;
+
+	if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
+		return score_value < lowest;
+
+	return score_value > lowest;
+
+    }
     /* Get a maximum of best n scores from the given category */
     public List<Score> get_best_n_scores (Category category, int n) throws Error
     {
