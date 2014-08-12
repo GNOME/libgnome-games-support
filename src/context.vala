@@ -21,7 +21,7 @@ namespace Games
 {
 namespace Scores
 {
-
+//using Gtk;
 public enum Style
 {
     PLAIN_DESCENDING,
@@ -45,6 +45,8 @@ public class Context : Object
     private Gee.HashMap <Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap <Category?, Gee.PriorityQueue<Score>> ((owned) category_hash, (owned) category_equal);
     private string base_name;
     private string user_score_dir;
+    private string dialog_label;
+ //   private Window window;
 
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) =>
@@ -67,7 +69,7 @@ public class Context : Object
         return categories;
     }
 
-    public Context (string app_name, Style style = Style.PLAIN_DESCENDING)
+    public Context (string app_name, string dialog_label, /*Window window, */Style style = Style.PLAIN_DESCENDING)
     {
         this.style = style;
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
@@ -84,7 +86,11 @@ public class Context : Object
                 return (int) (b.score < a.score) - (int) (a.score < b.score);
             };
         }
-        base_name = app_name;
+
+	base_name = app_name;
+	this.dialog_label = dialog_label;
+	//this.window = window;
+
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
         try
         {
@@ -241,7 +247,7 @@ public class Context : Object
 
     public void run_dialog ()
     {
-        new Dialog (this).run ();
+        new Dialog (this, dialog_label/*, window*/).run ();
     }
 }
 

@@ -32,10 +32,11 @@ private class Dialog : Gtk.Dialog
     private ListStore list;
     private Category? active_category;
 
-    public Dialog (Context scores)
+    public Dialog (Context scores, string dialog_label/*, Window window*/)
     {
         Object (use_header_bar : 1);
         this.scores = scores;
+//	this.transient_for = window;
 
         var vbox = this.get_content_area ();
         set_border_width (5);
@@ -52,10 +53,20 @@ private class Dialog : Gtk.Dialog
         var catbar = new Box (Orientation.HORIZONTAL, 12);
         vbox.pack_start (catbar, false, false, 0);
 
+	var label = new Label (dialog_label);
+	label.set_use_markup (true);
+	catbar.pack_start (label, false, false, 0);
+
         combo = new ComboBoxText ();
         combo.set_focus_on_click (false);
         catbar.pack_start (combo, true, true, 0);
         combo.changed.connect (load_scores);
+
+/*	var headerbar = new HeaderBar ();
+	headerbar.show_close_button = true;
+	headerbar.custom_title = catbar;
+	headerbar.show ();
+	set_titlebar (headerbar);*/
 
         //var hdiv = new Separator (Orientation.HORIZONTAL);
         list = new ListStore (3, typeof (string), typeof (string), typeof (string));
@@ -63,17 +74,12 @@ private class Dialog : Gtk.Dialog
 
         var name_renderer = new CellRendererText ();
         var name_column = new TreeViewColumn.with_attributes (_("Name"), name_renderer, "text", 0, null);
-
+	name_column.expand = true;
         listview.append_column (name_column);
 
-        var time_renderer = new CellRendererText ();
-        var time_column = new TreeViewColumn.with_attributes (_("Time"), time_renderer, "text", 1, null);
-
-        listview.append_column (time_column);
-
-        var score_renderer = new CellRendererText ();
-        var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 2, null);
-
+	var score_renderer = new CellRendererText ();
+	score_renderer.xalign = 1;
+        var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 1, null);
         listview.append_column (score_column);
         scroll.add (listview);
 
@@ -107,7 +113,7 @@ private class Dialog : Gtk.Dialog
         {
             TreeIter iter;
             list.append (out iter);
-            list.set (iter, 0, x.user, 1, x.time.to_string (), 2, x.score.to_string (), -1);
+            list.set (iter, 0, x.user, 1, x.score.to_string (), -1);
         });
 
     }
