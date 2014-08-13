@@ -21,7 +21,6 @@ namespace Games
 {
 namespace Scores
 {
-//using Gtk;
 public enum Style
 {
     PLAIN_DESCENDING,
@@ -47,7 +46,7 @@ public class Context : Object
     private string user_score_dir;
     private string dialog_label;
     private string user_name = Environment.get_real_name ();
-//   private Window window;
+    private Gtk.Window? window;
 
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) =>
@@ -90,8 +89,11 @@ public class Context : Object
         return categories;
     }
 
-    public Context (string app_name, string dialog_label, /*Window window, */Style style = Style.PLAIN_DESCENDING)
+
+
+    public Context (string app_name, string dialog_label, Gtk.Window? window, Style style = Style.PLAIN_DESCENDING)
     {
+	this.window = window;
         this.style = style;
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
         {
@@ -110,7 +112,6 @@ public class Context : Object
 
         base_name = app_name;
         this.dialog_label = dialog_label;
-        //this.window = window;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
         try
@@ -126,9 +127,9 @@ public class Context : Object
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
-        if (is_high_score (score_value, category))
+        if (is_high_score (score_value, category) && window != null)
         {
-		new Name (this).run ();
+		new Name (this, window).run ();
 		    /*ask for new name*/
 	}
 
@@ -286,7 +287,8 @@ public class Context : Object
 
     public void run_dialog ()
     {
-        new Dialog (this, dialog_label/*, window*/).run ();
+        if (window != null)
+            new Dialog (this, dialog_label, window).run ();
     }
 }
 

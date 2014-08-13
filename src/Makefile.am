@@ -59,7 +59,8 @@ test_scores_LDADD = \
 test_scores_VALAFLAGS = \
 	--pkg gee-0.8 \
 	--pkg glib-2.0 \
-	--pkg gio-2.0
+	--pkg gio-2.0 \
+	--pkg gtk+-3.0
 
 MAINTAINERCLEANFILES = \
 	games-scores.h \

@@ -29,11 +29,11 @@ private class Name : Gtk.Dialog
 {
     private Context scores;
 
-    public Name (Context scores)
+    public Name (Context scores, Window window)
     {
         Object (use_header_bar : 1);
         this.scores = scores;
-//	this.transient_for = window;
+	this.transient_for = window;
 
         var vbox = this.get_content_area ();
         set_border_width (5);

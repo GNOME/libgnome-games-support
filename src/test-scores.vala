@@ -26,7 +26,7 @@ namespace Scores
 private void create_scores ()
 {
 //    Window window = new Window ();
-    Context s = new Context ("libgames-scores-test", "Games Type"/*, window*/);
+    Context s = new Context ("libgames-scores-test", "Games Type", null);
     Category cat = {"cat1", "cat1"};
     s.add_score (101, cat);
     s.add_score (102, cat);

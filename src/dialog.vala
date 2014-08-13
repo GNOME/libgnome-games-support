@@ -32,11 +32,11 @@ private class Dialog : Gtk.Dialog
     private ListStore list;
     private Category? active_category;
 
-    public Dialog (Context scores, string dialog_label/*, Window window*/)
+    public Dialog (Context scores, string dialog_label, Window window)
     {
         Object (use_header_bar : 1);
         this.scores = scores;
-//	this.transient_for = window;
+	this.transient_for = window;
 
         var vbox = this.get_content_area ();
         set_border_width (5);
