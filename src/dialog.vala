@@ -29,10 +29,10 @@ private class Dialog : Gtk.Dialog
 {
     private Context scores;
     private ComboBoxText combo;
-    private ListStore list;
     private Category? active_category;
     private Gtk.Grid grid;
     private int rows_to_display = 10;
+
     public Dialog (Context scores, string dialog_label, Window window)
     {
         Object (use_header_bar : 1);
@@ -40,13 +40,16 @@ private class Dialog : Gtk.Dialog
         this.transient_for = window;
 
         var header = (HeaderBar) this.get_header_bar ();
-        header.title = _("High Scores");
+        string header_title = "";
+        if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
+            header_title = "High Scores";
+        else
+            header_title = "Best Times";
+        header.title = _(header_title);
 
         var vbox = this.get_content_area ();
         vbox.set_spacing (20);
         set_border_width (5);
-
-        CellRenderer renderer;
 
         var catbar = new Box (Orientation.HORIZONTAL, 12);
         vbox.pack_start (catbar, false, false, 0);
@@ -69,19 +72,27 @@ private class Dialog : Gtk.Dialog
         grid.column_homogeneous = true;
         grid.row_homogeneous = true;
         grid.set_column_spacing (10);
-        grid.set_row_spacing (20);
+        grid.set_row_spacing (10);
+        grid.margin_left = 20;
+        grid.margin_right = 20;
 
         var label_column_1 = new Label (_("Rank"));
         label.set_use_markup (true);
         grid.attach (label_column_1, 0, 0, 1, 1);
 
-        var label_column_2 = new Label (_("Score"));
+        string score_or_time = "";
+        if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
+            score_or_time = "Score";
+        else
+            score_or_time = "Time";
+
+        var label_column_2 = new Label (_(score_or_time));
         label.set_use_markup (true);
         grid.attach (label_column_2, 1, 0, 1, 1);
 
-        var label_column_3 = new Label (_("Name"));
+        var label_column_3 = new Label (_("Player"));
         label.set_use_markup (true);
-        grid.attach (label_column_3, 2, 0, 1, 1);
+        grid.attach (label_column_3, 2, 0, 3, 1);
 
         grid.set_baseline_row (0);
         fill_grid_with_labels ();
@@ -98,7 +109,10 @@ private class Dialog : Gtk.Dialog
             for (int column = 0; column <= 2; column++)
             {
                 var label = new Label ("");
-                grid.attach (label, column, row, 1, 1);
+                if (column == 2)
+                    grid.attach (label, column, row, 3, 1);
+                else
+                    grid.attach (label, column, row, 1, 1);
             }
         }
     }

@@ -89,6 +89,14 @@ public class Context : Object
 
     }
 
+    public Style score_style
+    {
+        get
+	{
+            return style;
+	}
+    }
+
     public List <Category?> get_categories ()
     {
         var categories = new List <Category?> ();
@@ -99,8 +107,6 @@ public class Context : Object
         }
         return categories;
     }
-
-
 
     public Context (string app_name, string dialog_label, Gtk.Window? window, Style style = Style.PLAIN_DESCENDING)
     {
