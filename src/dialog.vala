@@ -31,27 +31,28 @@ private class Dialog : Gtk.Dialog
     private ComboBoxText combo;
     private ListStore list;
     private Category? active_category;
-
+    private Gtk.Grid grid;
+    private int rows_to_display = 10;
     public Dialog (Context scores, string dialog_label, Window window)
     {
         Object (use_header_bar : 1);
         this.scores = scores;
-	this.transient_for = window;
+        this.transient_for = window;
+
+        var header = (HeaderBar) this.get_header_bar ();
+        header.title = _("High Scores");
 
         var vbox = this.get_content_area ();
+        vbox.set_spacing (20);
         set_border_width (5);
 
-        TreeViewColumn column;
         CellRenderer renderer;
-
-        var scroll = new ScrolledWindow (null, null);
-        scroll.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
-        scroll.set_size_request (250, 265);
-        scroll.set_shadow_type (ShadowType.ETCHED_IN);
-        vbox.pack_end (scroll);
 
         var catbar = new Box (Orientation.HORIZONTAL, 12);
         vbox.pack_start (catbar, false, false, 0);
+
+        var hdiv = new Separator (Orientation.HORIZONTAL);
+        vbox.pack_start (hdiv, false, false, 0);
 
         var label = new Label (dialog_label);
         label.set_use_markup (true);
@@ -62,29 +63,44 @@ private class Dialog : Gtk.Dialog
         catbar.pack_start (combo, true, true, 0);
         combo.changed.connect (load_scores);
 
-/*	var headerbar = new HeaderBar ();
-        headerbar.show_close_button = true;
-	headerbar.custom_title = catbar;
-        headerbar.show ();
-	set_titlebar (headerbar);*/
+        grid = new Grid ();
+        vbox.pack_start (grid, false, false, 0);
 
-        list = new ListStore (3, typeof (string), typeof (string), typeof (string));
-        var listview = new TreeView.with_model (list);
+        grid.column_homogeneous = true;
+        grid.row_homogeneous = true;
+        grid.set_column_spacing (10);
+        grid.set_row_spacing (20);
 
-        var name_renderer = new CellRendererText ();
-        var name_column = new TreeViewColumn.with_attributes (_("Name"), name_renderer, "text", 0, null);
-        name_column.expand = true;
-        listview.append_column (name_column);
+        var label_column_1 = new Label (_("Rank"));
+        label.set_use_markup (true);
+        grid.attach (label_column_1, 0, 0, 1, 1);
 
-        var score_renderer = new CellRendererText ();
-        score_renderer.xalign = 1;
-        var score_column = new TreeViewColumn.with_attributes (_("Score"), score_renderer, "text", 1, null);
-        listview.append_column (score_column);
-        scroll.add (listview);
+        var label_column_2 = new Label (_("Score"));
+        label.set_use_markup (true);
+        grid.attach (label_column_2, 1, 0, 1, 1);
+
+        var label_column_3 = new Label (_("Name"));
+        label.set_use_markup (true);
+        grid.attach (label_column_3, 2, 0, 1, 1);
+
+        grid.set_baseline_row (0);
+        fill_grid_with_labels ();
 
         load_categories ();
 
         vbox.show_all ();
+    }
+
+    private void fill_grid_with_labels ()
+    {
+        for (int row = 1; row <= rows_to_display; row++)
+        {
+            for (int column = 0; column <= 2; column++)
+            {
+                var label = new Label ("");
+                grid.attach (label, column, row, 1, 1);
+            }
+        }
     }
 
     /* load names and keys of all categories in ComboBoxText */
@@ -108,16 +124,42 @@ private class Dialog : Gtk.Dialog
     private void load_scores()
     {
         active_category = { combo.get_active_id (), combo.get_active_text ()};
-        var best_10_scores = scores.get_best_n_scores (active_category, 10);
+        var best_n_scores = scores.get_best_n_scores (active_category, rows_to_display);
 
-        list.clear ();
-        best_10_scores.foreach ((x) =>
+        int row_count = 1;
+
+        best_n_scores.foreach ((x) =>
         {
-            TreeIter iter;
-            list.append (out iter);
-            list.set (iter, 0, x.user, 1, x.score.to_string (), -1);
+            var rank = (Label) grid.get_child_at (0, row_count);
+            rank.set_use_markup (true);
+            rank.set_text (row_count.to_string ());
+
+            var score = (Label) grid.get_child_at (1, row_count);
+            score.set_use_markup (true);
+            score.set_text (x.score.to_string ());
+
+            var name = (Label) grid.get_child_at (2, row_count);
+            name.set_use_markup (true);
+            name.set_text (x.user);
+
+            row_count++;
         });
 
+        if (row_count < rows_to_display + 1)
+            make_remaining_labels_empty (row_count);
+    }
+
+    /*Fill all labels from row row_count onwards with empty strings*/
+    private void make_remaining_labels_empty (int row_count)
+    {
+        for (int i = row_count; i <= rows_to_display; i++)
+        {
+            for (int j = 0; j <= 2; j++)
+            {
+                var label = (Label) grid.get_child_at (j, i);
+                label.set_text ("");
+            }
+        }
     }
 }
 

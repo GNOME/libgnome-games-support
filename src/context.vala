@@ -47,6 +47,8 @@ public class Context : Object
     private string dialog_label;
     private string user_name = Environment.get_real_name ();
     private Gtk.Window? window;
+    /*This variable would be used to identify if the dialog has opened due to adding of a score*/
+    public bool score_added = false;
 
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) =>
@@ -68,14 +70,23 @@ public class Context : Object
 
     public string player_name
     {
-	    get
-	    {
-		    return user_name;
-	    }
-	    set
-	    {
-		user_name = value;
-	    }
+        get
+        {
+            return user_name;
+        }
+        set
+        {
+            user_name = value;
+        }
+    }
+
+    public Score? latest_score
+    {
+        get
+        {
+            return last_score;
+        }
+
     }
 
     public List <Category?> get_categories ()
@@ -93,7 +104,7 @@ public class Context : Object
 
     public Context (string app_name, string dialog_label, Gtk.Window? window, Style style = Style.PLAIN_DESCENDING)
     {
-	this.window = window;
+        this.window = window;
         this.style = style;
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
         {
@@ -129,9 +140,9 @@ public class Context : Object
     {
         if (is_high_score (score_value, category) && window != null)
         {
-		new Name (this, window).run ();
-		    /*ask for new name*/
-	}
+            new Name (this, window).run ();
+            /*ask for new name*/
+        }
 
         var user = user_name;
         var current_time = new DateTime.now_local ().to_unix ();
@@ -148,6 +159,7 @@ public class Context : Object
             save_score_to_file (score, category);
             if (scores_per_category[category].add (score))
             {
+                score_added = true;
                 last_score = score;
                 current_category = category;
             }
@@ -250,16 +262,16 @@ public class Context : Object
 
     private bool is_high_score (long score_value, Category category)
     {
-	var best_scores = get_best_n_scores (category, 10);
-	if (best_scores.length () < 10)
-		return true;
+        var best_scores = get_best_n_scores (category, 10);
+        if (best_scores.length () < 10)
+            return true;
 
-	var lowest = best_scores.nth_data (9).score;
+        var lowest = best_scores.nth_data (9).score;
 
-	if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
-		return score_value < lowest;
+        if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
+            return score_value < lowest;
 
-	return score_value > lowest;
+        return score_value > lowest;
 
     }
     /* Get a maximum of best n scores from the given category */
