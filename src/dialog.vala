@@ -49,9 +49,10 @@ private class Dialog : Gtk.Dialog
 
         var vbox = this.get_content_area ();
         vbox.set_spacing (20);
-        set_border_width (5);
+        set_border_width (10);
 
         var catbar = new Box (Orientation.HORIZONTAL, 12);
+        catbar.margin_top = 10;
         vbox.pack_start (catbar, false, false, 0);
 
         var hdiv = new Separator (Orientation.HORIZONTAL);
@@ -71,7 +72,7 @@ private class Dialog : Gtk.Dialog
 
         grid.column_homogeneous = true;
         grid.row_homogeneous = true;
-        grid.set_column_spacing (10);
+        grid.set_column_spacing (30);
         grid.set_row_spacing (10);
         grid.margin_left = 20;
         grid.margin_right = 20;
@@ -109,6 +110,7 @@ private class Dialog : Gtk.Dialog
             for (int column = 0; column <= 2; column++)
             {
                 var label = new Label ("");
+                label.set_alignment ((float) 0.5, (float) 0.5);
                 if (column == 2)
                     grid.attach (label, column, row, 3, 1);
                 else
