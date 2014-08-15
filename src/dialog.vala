@@ -110,14 +110,17 @@ private class Dialog : Gtk.Dialog
             for (int column = 0; column <= 2; column++)
             {
                 var stack = new Stack ();
+        stack.visible = true;
 		stack.set_homogeneous (true);
 //		stack.set_transition_type (StackTransitionType.NONE);
 
                 var label = new Label ("");
+                label.visible = true;
                 label.set_alignment ((float) 0.5, (float) 0.5);
                 stack.add_named (label, "label");
 
 		var entry = new Entry ();
+        entry.visible = true;
 		stack.add_named (entry, "entry");
 
                 stack.set_visible_child_name ("label");
