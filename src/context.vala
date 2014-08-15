@@ -148,7 +148,6 @@ public class Context : Object
     {
         if (is_high_score (score_value, category) && window != null)
         {
-            new Name (this, window).run ();
             /*ask for new name*/
         }
 

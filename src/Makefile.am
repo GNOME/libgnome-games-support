@@ -8,7 +8,6 @@ libgames_scores_la_SOURCES = \
 	config.vapi \
 	context.vala \
 	dialog.vala \
-	name.vala \
 	score.vala
 
 libgames_scores_la_CFLAGS = \

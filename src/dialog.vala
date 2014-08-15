@@ -109,12 +109,23 @@ private class Dialog : Gtk.Dialog
         {
             for (int column = 0; column <= 2; column++)
             {
+                var stack = new Stack ();
+		stack.set_homogeneous (true);
+//		stack.set_transition_type (StackTransitionType.NONE);
+
                 var label = new Label ("");
                 label.set_alignment ((float) 0.5, (float) 0.5);
+                stack.add_named (label, "label");
+
+		var entry = new Entry ();
+		stack.add_named (entry, "entry");
+
+                stack.set_visible_child_name ("label");
+debug ("!!!!!!!!!!!!%s!!!!!!!!!!!!11", stack.get_visible_child_name ());
                 if (column == 2)
-                    grid.attach (label, column, row, 3, 1);
+                    grid.attach (stack, column, row, 3, 1);
                 else
-                    grid.attach (label, column, row, 1, 1);
+                    grid.attach (stack, column, row, 1, 1);
             }
         }
     }
@@ -146,15 +157,20 @@ private class Dialog : Gtk.Dialog
 
         best_n_scores.foreach ((x) =>
         {
-            var rank = (Label) grid.get_child_at (0, row_count);
+            var rank_stack = (Stack) grid.get_child_at (0, row_count);
+	    var rank = (Label) rank_stack.get_visible_child ();
+if (rank == null)
+debug ("THIS IS NULL*******************************************8");
             rank.set_use_markup (true);
             rank.set_text (row_count.to_string ());
 
-            var score = (Label) grid.get_child_at (1, row_count);
+            var score_stack = (Stack) grid.get_child_at (1, row_count);
+	    var score = (Label) score_stack.get_visible_child ();
             score.set_use_markup (true);
             score.set_text (x.score.to_string ());
 
-            var name = (Label) grid.get_child_at (2, row_count);
+            var name_stack = (Stack) grid.get_child_at (2, row_count);
+	    var name = (Label) name_stack.get_visible_child ();
             name.set_use_markup (true);
             name.set_text (x.user);
 
@@ -172,7 +188,8 @@ private class Dialog : Gtk.Dialog
         {
             for (int j = 0; j <= 2; j++)
             {
-                var label = (Label) grid.get_child_at (j, i);
+                var stack = (Stack) grid.get_child_at (j,i);
+                var label = (Label) stack.get_visible_child ();
                 label.set_text ("");
             }
         }
