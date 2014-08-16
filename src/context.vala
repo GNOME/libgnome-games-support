@@ -295,9 +295,9 @@ public class Context : Object
     {
         var best_scores = get_best_n_scores (category, 10);
 
-	/*The given category doesn't yet exist and thus this score would be the first score and hence a high score.*/
-	if (best_scores == null)
-	    return true;
+        /*The given category doesn't yet exist and thus this score would be the first score and hence a high score.*/
+        if (best_scores == null)
+            return true;
 
         if (best_scores.length () < 10)
             return true;
@@ -315,7 +315,7 @@ public class Context : Object
     {
         if (!scores_per_category.has_key (category))
         {
-		return null;
+            return null;
         }
 
         var n_scores = new List<Score> ();

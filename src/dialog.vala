@@ -63,19 +63,19 @@ private class Dialog : Gtk.Dialog
         label.set_use_markup (true);
         catbar.pack_start (label, false, false, 0);
 
-	/*if (scores.high_score_added)
-	{
-	    category_label = new Label (scores.active_category.name);
-	    category_label.set_use_markup (true);
-	    catbar.pack_start (category_label, false, false, 0);
-	}
-	else
-	{*/
-        combo = new ComboBoxText ();
-        combo.set_focus_on_click (false);
-        catbar.pack_start (combo, true, true, 0);
-        combo.changed.connect (load_scores);
-//	}
+        if (scores.high_score_added)
+        {
+            category_label = new Label (scores.active_category.name);
+            category_label.set_use_markup (true);
+            catbar.pack_start (category_label, false, false, 0);
+        }
+        else
+        {
+            combo = new ComboBoxText ();
+            combo.set_focus_on_click (false);
+            catbar.pack_start (combo, true, true, 0);
+            combo.changed.connect (load_scores);
+        }
 
         grid = new Grid ();
         vbox.pack_start (grid, false, false, 0);
@@ -89,7 +89,7 @@ private class Dialog : Gtk.Dialog
 
         var label_column_1 = new Label (_("Rank"));
         label_column_1.set_use_markup (true);
-	label_column_1.set_size_request (20,20);
+        label_column_1.set_size_request (20,20);
         grid.attach (label_column_1, 0, 0, 1, 1);
 
         string score_or_time = "";
@@ -100,12 +100,12 @@ private class Dialog : Gtk.Dialog
 
         var label_column_2 = new Label (_(score_or_time));
         label_column_2.set_use_markup (true);
-	label_column_2.set_size_request (20,20);
+        label_column_2.set_size_request (20,20);
         grid.attach (label_column_2, 1, 0, 1, 1);
 
         var label_column_3 = new Label (_("Player"));
         label_column_3.set_use_markup (true);
-	label_column_3.set_size_request (20,20);
+        label_column_3.set_size_request (20,20);
         grid.attach (label_column_3, 2, 0, 3, 1);
 
         grid.set_baseline_row (0);
@@ -124,23 +124,24 @@ private class Dialog : Gtk.Dialog
             {
                 var stack = new Stack ();
                 stack.visible = true;
-        //        stack.set_homogeneous (true);
+                stack.set_homogeneous (true);
                 stack.set_transition_type (StackTransitionType.NONE);
 
                 var label = new Label ("");
                 label.visible = true;
                 label.halign = Align.CENTER;
                 label.valign = Align.CENTER;
-		label.set_size_request (20,20);
+                label.set_size_request (20,20);
                 stack.add_named (label, "label");
 
                 var entry = new Entry ();
                 entry.visible = true;
-		entry.set_size_request (20,20);
+                entry.set_size_request (20,20);
+                entry.expand = false;
                 stack.add_named (entry, "entry");
 
                 stack.set_visible_child_name ("label");
-                debug ("!!!!!!!!!!!!%s!!!!!!!!!!!!11", stack.get_visible_child_name ());
+
                 if (column == 2)
                     grid.attach (stack, column, row, 3, 1);
                 else
@@ -152,8 +153,10 @@ private class Dialog : Gtk.Dialog
     /* load names and keys of all categories in ComboBoxText */
     private void load_categories ()
     {
-	if (combo == null)
-		return;
+        if (scores.high_score_added)
+            load_scores ();
+        if (combo == null)
+            return;
         var categories = scores.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
         if (categories.length() > 0)
@@ -163,13 +166,13 @@ private class Dialog : Gtk.Dialog
             else
                 combo.set_active_id (scores.active_category.key);
 
-	    if (active_category == null)
+            if (active_category == null)
                 active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
-	    else
-	    {
-		   active_category.key = categories.nth_data (0).key;
-		   active_category.name = categories.nth_data (0).name;
-	    }
+            else
+            {
+                active_category.key = categories.nth_data (0).key;
+                active_category.name = categories.nth_data (0).name;
+            }
         }
         else
             active_category = null;
@@ -178,10 +181,11 @@ private class Dialog : Gtk.Dialog
     /* loads the scores of current active_category */
     private void load_scores()
     {
-/*	if (scores.high_score_added)
-	    active_category = scores.active_category;
-	else*/
+        if (scores.high_score_added)
+            active_category = new Category (scores.active_category.key, scores.active_category.name);
+        else
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
+
         var best_n_scores = scores.get_best_n_scores (active_category, rows_to_display);
 
         int row_count = 1;
