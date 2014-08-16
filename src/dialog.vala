@@ -110,21 +110,22 @@ private class Dialog : Gtk.Dialog
             for (int column = 0; column <= 2; column++)
             {
                 var stack = new Stack ();
-        stack.visible = true;
-		stack.set_homogeneous (true);
+                stack.visible = true;
+                stack.set_homogeneous (true);
 //		stack.set_transition_type (StackTransitionType.NONE);
 
                 var label = new Label ("");
                 label.visible = true;
-                label.set_alignment ((float) 0.5, (float) 0.5);
+                label.halign = Align.CENTER;
+                label.valign = Align.CENTER;
                 stack.add_named (label, "label");
 
-		var entry = new Entry ();
-        entry.visible = true;
-		stack.add_named (entry, "entry");
+                var entry = new Entry ();
+                entry.visible = true;
+                stack.add_named (entry, "entry");
 
                 stack.set_visible_child_name ("label");
-debug ("!!!!!!!!!!!!%s!!!!!!!!!!!!11", stack.get_visible_child_name ());
+                debug ("!!!!!!!!!!!!%s!!!!!!!!!!!!11", stack.get_visible_child_name ());
                 if (column == 2)
                     grid.attach (stack, column, row, 3, 1);
                 else
@@ -161,21 +162,49 @@ debug ("!!!!!!!!!!!!%s!!!!!!!!!!!!11", stack.get_visible_child_name ());
         best_n_scores.foreach ((x) =>
         {
             var rank_stack = (Stack) grid.get_child_at (0, row_count);
-	    var rank = (Label) rank_stack.get_visible_child ();
-if (rank == null)
-debug ("THIS IS NULL*******************************************8");
+            var rank = (Label) rank_stack.get_visible_child ();
+
             rank.set_use_markup (true);
             rank.set_text (row_count.to_string ());
 
             var score_stack = (Stack) grid.get_child_at (1, row_count);
-	    var score = (Label) score_stack.get_visible_child ();
+            var score = (Label) score_stack.get_visible_child ();
             score.set_use_markup (true);
             score.set_text (x.score.to_string ());
 
+            if (scores.high_score_added
+            && x.score == scores.latest_score.score
+            && x.time == scores.latest_score.time
+            && x.user == scores.latest_score.user)
+            {
+                var temp_stack = (Stack) grid.get_child_at (2, row_count);
+                temp_stack.set_visible_child_name ("entry");
+                var visible = (Entry) temp_stack.get_visible_child ();
+                visible.set_text (x.user);
+                visible.activate.connect (() =>
+                {
+                    scores.update_score_name (x, visible.get_text (), active_category);
+                    x.user = visible.get_text ();
+                    temp_stack.set_visible_child_name ("label");
+                    var label = (Label) temp_stack.get_visible_child ();
+                    label.set_text (x.user);
+                });
+                scores.high_score_added = false;
+            }
+
             var name_stack = (Stack) grid.get_child_at (2, row_count);
-	    var name = (Label) name_stack.get_visible_child ();
-            name.set_use_markup (true);
-            name.set_text (x.user);
+            var widget =  name_stack.get_visible_child ();
+            Label? label = widget as Label;
+            if (label != null)
+            {
+                label.set_use_markup (true);
+                label.set_text (x.user);
+            }
+            else
+            {
+                var entry = (Entry) widget;
+                entry.set_text (x.user);
+            }
 
             row_count++;
         });

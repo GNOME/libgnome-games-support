@@ -48,7 +48,7 @@ public class Context : Object
     private string user_name = Environment.get_real_name ();
     private Gtk.Window? window;
     /*This variable would be used to identify if the dialog has opened due to adding of a score*/
-    public bool score_added = false;
+    public bool high_score_added = false;
     /*A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names.*/
     public signal Category request_category (string category_key);
 
@@ -94,9 +94,9 @@ public class Context : Object
     public Style score_style
     {
         get
-	{
+        {
             return style;
-	}
+        }
     }
 
     public List <Category?> get_categories ()
@@ -148,7 +148,7 @@ public class Context : Object
     {
         if (is_high_score (score_value, category) && window != null)
         {
-            /*ask for new name*/
+            high_score_added = true;
         }
 
         var user = user_name;
@@ -166,7 +166,6 @@ public class Context : Object
             save_score_to_file (score, category);
             if (scores_per_category[category].add (score))
             {
-                score_added = true;
                 last_score = score;
                 current_category = category;
             }
@@ -179,6 +178,41 @@ public class Context : Object
             warning ("%s", e.message);
             return false;
         }
+    }
+
+    /*Primarily used to change name of player*/
+    public void update_score_name (Score old_score, string new_name, Category category)
+    {
+        var n_scores = new List<Score> ();
+        var scores_of_this_category = scores_per_category[category];
+
+        while (scores_of_this_category.size > 0)
+        {
+            var score = scores_of_this_category.poll ();
+            if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
+            {
+                score.user = new_name;
+                n_scores.append (score);
+                break;
+            }
+            else
+                n_scores.append (score);
+        }
+
+        /* insert the scores back into the priority queue*/
+        n_scores.foreach ((x) => scores_of_this_category.add (x));
+        /*var scores = scores_per_category [category];
+        var queue_iterator = scores.iterator ();
+        while (queue_iterator.next ())
+        {
+            var score = queue_iterator.get ();
+            if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
+            {
+                queue_iterator.get ().user = new_score.user;
+                return true;
+            }
+        }
+        return false;*/
     }
 
     /* for debugging purposes */
@@ -237,8 +271,8 @@ public class Context : Object
         while ((file_info = enumerator.next_file ()) != null)
         {
             var category_key = file_info.get_name ();
-	    var category_full = request_category (category_key);
-debug ("%s\t%s",category_full.key, category_full.name);
+            var category_full = request_category (category_key);
+            debug ("%s\t%s",category_full.key, category_full.name);
             var filename = Path.build_filename (user_score_dir, category_key);
 
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
