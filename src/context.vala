@@ -287,12 +287,23 @@ public class Context : Object
             {
                 //TODO: better error handling here?
                 var tokens = line.split (" ", 3);
+                string? user = null;
+                if (tokens.length < 2)
+                {
+                    throw new FileError.FAILED ("Failed to parse %s for scores.", filename);
+                }
+
+                /*Used to import old C scores.*/
                 if (tokens.length < 3)
-                    throw new FileError.FAILED ("Failed to parse file for scores.");
+                {
+                    debug ("Importing old score from %s.", filename);
+                    user = Environment.get_real_name ();
+                }
 
                 var score_value = long.parse (tokens[0]);
                 var time = int64.parse (tokens[1]);
-                var user = tokens[2];
+                if (user == null)
+                    user = tokens[2];
                 Score score = new Score (score_value, time, user);
                 scores_of_single_category.add (score);
             }
