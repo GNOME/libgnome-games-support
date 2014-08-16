@@ -22,6 +22,7 @@ Tasks for Nikhar (DUE_DATE='23:59 UTC on Monday, August 18')
 After GSoC (Nikhar or Michael):
 
 * Import scores from Vala games
+* Import scores from /var/games (?)
 * Further reduce the space between rows (did this space grow?)
 * Use different style for table headings (Rank, Score, and Player)
 * Replace close button with Done button (using suggested-action style class) in congratulations mode, and do not allow pressing Enter to close the entry.
