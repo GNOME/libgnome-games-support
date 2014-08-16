@@ -347,7 +347,11 @@ public class Context : Object
     public void run_dialog ()
     {
         if (window != null)
-            new Dialog (this, dialog_label, window).run ();
+        {
+            var dialog = new Dialog (this, dialog_label, window);
+            dialog.run ();
+            dialog.visible = false;
+        }
     }
 }
 
