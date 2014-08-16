@@ -147,9 +147,7 @@ public class Context : Object
     public bool add_score (long score_value, Category category)
     {
         if (is_high_score (score_value, category) && window != null)
-        {
             high_score_added = true;
-        }
 
         var user = user_name;
         var current_time = new DateTime.now_local ().to_unix ();
@@ -163,7 +161,9 @@ public class Context : Object
         }
         try
         {
-            save_score_to_file (score, category);
+            /*Don't save the score to file yet, if it's a high score since the Player name be changed.*/
+            if (!high_score_added)
+                save_score_to_file (score, category);
             if (scores_per_category[category].add (score))
             {
                 last_score = score;
@@ -180,15 +180,16 @@ public class Context : Object
         }
     }
 
-    /*Primarily used to change name of player*/
+    /*Primarily used to change name of player and save the changed score to file*/
     public void update_score_name (Score old_score, string new_name, Category category)
     {
         var n_scores = new List<Score> ();
         var scores_of_this_category = scores_per_category[category];
 
+        Score? score = null;
         while (scores_of_this_category.size > 0)
         {
-            var score = scores_of_this_category.poll ();
+            score = scores_of_this_category.poll ();
             if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
             {
                 score.user = new_name;
@@ -201,6 +202,18 @@ public class Context : Object
 
         /* insert the scores back into the priority queue*/
         n_scores.foreach ((x) => scores_of_this_category.add (x));
+
+        /* Save the updated score to file */
+        try
+        {
+            if (score != null)
+                save_score_to_file (score, category);
+        }
+        catch (Error e)
+        {
+            warning ("%s", e.message);
+        }
+
     }
 
     /* for debugging purposes */
@@ -259,8 +272,6 @@ public class Context : Object
         while ((file_info = enumerator.next_file ()) != null)
         {
             var category_key = file_info.get_name ();
-            var category_full = request_category (category_key);
-            debug ("%s\t%s",category_full.key, category_full.name);
             var filename = Path.build_filename (user_score_dir, category_key);
 
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
