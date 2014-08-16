@@ -28,8 +28,9 @@ using Gtk;
 private class Dialog : Gtk.Dialog
 {
     private Context scores;
-    private ComboBoxText combo;
-    private Category? active_category;
+    private ComboBoxText? combo = null;
+    private Category? active_category = null;
+    private Label? category_label = null;
     private Gtk.Grid grid;
     private int rows_to_display = 10;
 
@@ -62,10 +63,19 @@ private class Dialog : Gtk.Dialog
         label.set_use_markup (true);
         catbar.pack_start (label, false, false, 0);
 
+	/*if (scores.high_score_added)
+	{
+	    category_label = new Label (scores.active_category.name);
+	    category_label.set_use_markup (true);
+	    catbar.pack_start (category_label, false, false, 0);
+	}
+	else
+	{*/
         combo = new ComboBoxText ();
         combo.set_focus_on_click (false);
         catbar.pack_start (combo, true, true, 0);
         combo.changed.connect (load_scores);
+//	}
 
         grid = new Grid ();
         vbox.pack_start (grid, false, false, 0);
@@ -142,6 +152,8 @@ private class Dialog : Gtk.Dialog
     /* load names and keys of all categories in ComboBoxText */
     private void load_categories ()
     {
+	if (combo == null)
+		return;
         var categories = scores.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
         if (categories.length() > 0)
@@ -150,7 +162,14 @@ private class Dialog : Gtk.Dialog
                 combo.set_active_id (categories.nth_data (0).key);
             else
                 combo.set_active_id (scores.active_category.key);
-            active_category = {categories.nth_data (0).key, categories.nth_data (0).name};
+
+	    if (active_category == null)
+                active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
+	    else
+	    {
+		   active_category.key = categories.nth_data (0).key;
+		   active_category.name = categories.nth_data (0).name;
+	    }
         }
         else
             active_category = null;
@@ -159,7 +178,10 @@ private class Dialog : Gtk.Dialog
     /* loads the scores of current active_category */
     private void load_scores()
     {
-        active_category = { combo.get_active_id (), combo.get_active_text ()};
+/*	if (scores.high_score_added)
+	    active_category = scores.active_category;
+	else*/
+            active_category = new Category (combo.get_active_id (), combo.get_active_text ());
         var best_n_scores = scores.get_best_n_scores (active_category, rows_to_display);
 
         int row_count = 1;

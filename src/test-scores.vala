@@ -27,10 +27,11 @@ private void create_scores ()
 {
 //    Window window = new Window ();
     Context s = new Context ("libgames-scores-test", "Games Type", null);
-    Category cat = {"cat1", "cat1"};
+    Category cat = new Category ("cat1", "cat1");
     s.add_score (101, cat);
     s.add_score (102, cat);
-    cat = {"cat2", "cat2"};
+    cat.key = "cat2";
+    cat.name = "cat2";
     s.add_score (21, cat);
     s.add_score (24, cat);
     s.run_dialog ();

@@ -29,11 +29,11 @@ public enum Style
     TIME_ASCENDING
 }
 
-public struct Category
+/*public struct Category
 {
     string key;
     string name;
-}
+}*/
 
 public class Context : Object
 {
@@ -286,7 +286,7 @@ public class Context : Object
                 scores_of_single_category.add (score);
             }
             //TODO: How to retrieve name of category?
-            Category category = {category_key, category_key};
+            Category category = new Category (category_key, category_key);
             scores_per_category.set (category, scores_of_single_category);
         }
     }
