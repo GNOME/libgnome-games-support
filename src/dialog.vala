@@ -31,6 +31,7 @@ private class Dialog : Gtk.Dialog
     private ComboBoxText? combo = null;
     private Category? active_category = null;
     private Label? category_label = null;
+    private HeaderBar? header = null;
     private Gtk.Grid grid;
     private int rows_to_display = 10;
 
@@ -40,13 +41,16 @@ private class Dialog : Gtk.Dialog
         this.scores = scores;
         this.transient_for = window;
 
-        var header = (HeaderBar) this.get_header_bar ();
+        header = (HeaderBar) this.get_header_bar ();
         string header_title = "";
-        if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
+        if (scores.high_score_added)
+            header_title = "Congratulations!";
+	else if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
             header_title = "High Scores";
         else
             header_title = "Best Times";
         header.title = _(header_title);
+	header.subtitle = "";
 
         var vbox = this.get_content_area ();
         vbox.set_spacing (20);
@@ -67,6 +71,8 @@ private class Dialog : Gtk.Dialog
         {
             category_label = new Label (scores.active_category.name);
             category_label.set_use_markup (true);
+            category_label.halign = Align.CENTER;
+            category_label.valign = Align.CENTER;
             catbar.pack_start (category_label, false, false, 0);
         }
         else
@@ -208,6 +214,13 @@ private class Dialog : Gtk.Dialog
             && x.time == scores.latest_score.time
             && x.user == scores.latest_score.user)
             {
+	        string subtitle = "";
+	        if (best_n_scores.length () > 1 && row_count == 1)
+			subtitle = "Your score is the best!";
+		else
+			subtitle = "Your score has made the top ten.";
+		header.subtitle = _(subtitle);
+
                 var temp_stack = (Stack) grid.get_child_at (2, row_count);
                 temp_stack.set_visible_child_name ("entry");
                 var visible = (Entry) temp_stack.get_visible_child ();
