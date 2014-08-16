@@ -201,18 +201,6 @@ public class Context : Object
 
         /* insert the scores back into the priority queue*/
         n_scores.foreach ((x) => scores_of_this_category.add (x));
-        /*var scores = scores_per_category [category];
-        var queue_iterator = scores.iterator ();
-        while (queue_iterator.next ())
-        {
-            var score = queue_iterator.get ();
-            if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
-            {
-                queue_iterator.get ().user = new_score.user;
-                return true;
-            }
-        }
-        return false;*/
     }
 
     /* for debugging purposes */
@@ -306,6 +294,11 @@ public class Context : Object
     private bool is_high_score (long score_value, Category category)
     {
         var best_scores = get_best_n_scores (category, 10);
+
+	/*The given category doesn't yet exist and thus this score would be the first score and hence a high score.*/
+	if (best_scores == null)
+	    return true;
+
         if (best_scores.length () < 10)
             return true;
 
@@ -318,11 +311,11 @@ public class Context : Object
 
     }
     /* Get a maximum of best n scores from the given category */
-    public List<Score> get_best_n_scores (Category category, int n) throws Error
+    public List<Score>? get_best_n_scores (Category category, int n)
     {
         if (!scores_per_category.has_key (category))
         {
-            //TODO: Throw appropriate error
+		return null;
         }
 
         var n_scores = new List<Score> ();

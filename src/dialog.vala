@@ -78,7 +78,8 @@ private class Dialog : Gtk.Dialog
         grid.margin_right = 20;
 
         var label_column_1 = new Label (_("Rank"));
-        label.set_use_markup (true);
+        label_column_1.set_use_markup (true);
+	label_column_1.set_size_request (20,20);
         grid.attach (label_column_1, 0, 0, 1, 1);
 
         string score_or_time = "";
@@ -88,11 +89,13 @@ private class Dialog : Gtk.Dialog
             score_or_time = "Time";
 
         var label_column_2 = new Label (_(score_or_time));
-        label.set_use_markup (true);
+        label_column_2.set_use_markup (true);
+	label_column_2.set_size_request (20,20);
         grid.attach (label_column_2, 1, 0, 1, 1);
 
         var label_column_3 = new Label (_("Player"));
-        label.set_use_markup (true);
+        label_column_3.set_use_markup (true);
+	label_column_3.set_size_request (20,20);
         grid.attach (label_column_3, 2, 0, 3, 1);
 
         grid.set_baseline_row (0);
@@ -111,17 +114,19 @@ private class Dialog : Gtk.Dialog
             {
                 var stack = new Stack ();
                 stack.visible = true;
-                stack.set_homogeneous (true);
-//		stack.set_transition_type (StackTransitionType.NONE);
+        //        stack.set_homogeneous (true);
+                stack.set_transition_type (StackTransitionType.NONE);
 
                 var label = new Label ("");
                 label.visible = true;
                 label.halign = Align.CENTER;
                 label.valign = Align.CENTER;
+		label.set_size_request (20,20);
                 stack.add_named (label, "label");
 
                 var entry = new Entry ();
                 entry.visible = true;
+		entry.set_size_request (20,20);
                 stack.add_named (entry, "entry");
 
                 stack.set_visible_child_name ("label");
