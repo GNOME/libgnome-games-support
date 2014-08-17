@@ -45,12 +45,12 @@ private class Dialog : Gtk.Dialog
         string header_title = "";
         if (scores.high_score_added)
             header_title = "Congratulations!";
-	else if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
+        else if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
             header_title = "High Scores";
         else
             header_title = "Best Times";
         header.title = _(header_title);
-	header.subtitle = "";
+        header.subtitle = "";
 
         var vbox = this.get_content_area ();
         vbox.set_spacing (20);
@@ -93,22 +93,24 @@ private class Dialog : Gtk.Dialog
         grid.margin_left = 20;
         grid.margin_right = 20;
 
-        var label_column_1 = new Label (_("Rank"));
-        label_column_1.set_use_markup (true);
+        string string_rank = _("Rank");
+        var label_column_1 = new Label ("<span weight='bold'>" + string_rank + "</span>");
+        label_column_1.use_markup = true;
         grid.attach (label_column_1, 0, 0, 1, 1);
 
         string score_or_time = "";
         if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
-            score_or_time = "Score";
+            score_or_time = _("Score");
         else
-            score_or_time = "Time";
+            score_or_time = _("Time");
 
-        var label_column_2 = new Label (_(score_or_time));
-        label_column_2.set_use_markup (true);
+        var label_column_2 = new Label ("<span weight='bold'>" + score_or_time + "</span>");
+        label_column_2.use_markup = true;
         grid.attach (label_column_2, 1, 0, 1, 1);
 
-        var label_column_3 = new Label (_("Player"));
-        label_column_3.set_use_markup (true);
+        string string_player = _("Player");
+        var label_column_3 = new Label ("<span weight='bold'>" + string_player + "</span>");
+        label_column_3.use_markup = true;
         grid.attach (label_column_3, 2, 0, 3, 1);
 
         grid.set_baseline_row (0);
@@ -210,12 +212,12 @@ private class Dialog : Gtk.Dialog
             && x.time == scores.latest_score.time
             && x.user == scores.latest_score.user)
             {
-	        string subtitle = "";
-	        if (best_n_scores.length () > 1 && row_count == 1)
-			subtitle = "Your score is the best!";
-		else
-			subtitle = "Your score has made the top ten.";
-		header.subtitle = _(subtitle);
+                string subtitle = "";
+                if (best_n_scores.length () > 1 && row_count == 1)
+                    subtitle = "Your score is the best!";
+                else
+                    subtitle = "Your score has made the top ten.";
+                header.subtitle = _(subtitle);
 
                 var temp_stack = (Stack) grid.get_child_at (2, row_count);
                 temp_stack.set_visible_child_name ("entry");
