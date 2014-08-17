@@ -58,13 +58,15 @@ private class Dialog : Gtk.Dialog
 
         var catbar = new Box (Orientation.HORIZONTAL, 12);
         catbar.margin_top = 10;
-        vbox.pack_start (catbar, false, false, 0);
+        catbar.halign = Align.CENTER;
+        vbox.pack_start (catbar, true, false, 0);
 
         var hdiv = new Separator (Orientation.HORIZONTAL);
         vbox.pack_start (hdiv, false, false, 0);
 
         var label = new Label (dialog_label);
         label.set_use_markup (true);
+        label.halign = Align.CENTER;
         catbar.pack_start (label, false, false, 0);
 
         if (scores.high_score_added)
@@ -73,7 +75,7 @@ private class Dialog : Gtk.Dialog
             category_label.set_use_markup (true);
             category_label.halign = Align.CENTER;
             category_label.valign = Align.CENTER;
-            catbar.pack_start (category_label, true, false, 0);
+            catbar.pack_start (category_label, false, false, 0);
         }
         else
         {
