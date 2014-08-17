@@ -73,7 +73,7 @@ private class Dialog : Gtk.Dialog
             category_label.set_use_markup (true);
             category_label.halign = Align.CENTER;
             category_label.valign = Align.CENTER;
-            catbar.pack_start (category_label, false, false, 0);
+            catbar.pack_start (category_label, true, false, 0);
         }
         else
         {
