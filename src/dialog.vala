@@ -46,7 +46,7 @@ private class Dialog : Gtk.Dialog
         if (scores.high_score_added)
             header.show_close_button = false;
         else
-	    header.show_close_button = true;
+            header.show_close_button = true;
 
         string header_title = "";
         if (scores.high_score_added)
@@ -125,7 +125,7 @@ private class Dialog : Gtk.Dialog
         fill_grid_with_labels ();
 
         if (scores.high_score_added)
-	    add_button ("Done", ResponseType.OK).get_style_context ().add_class ("suggested-action");
+            add_button ("Done", ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
         load_categories ();
 
