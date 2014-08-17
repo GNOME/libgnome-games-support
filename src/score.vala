@@ -18,8 +18,10 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games {
-namespace Scores {
+namespace Games
+{
+namespace Scores
+{
 
 public class Score: Object
 {
@@ -29,9 +31,9 @@ public class Score: Object
 
     public Score (long score, int64 time, string? user = null)
     {
-	    this.score = score;
-	    this.time = time;
-	    this.user = user;
+        this.score = score;
+        this.time = time;
+        this.user = user;
     }
 }
 

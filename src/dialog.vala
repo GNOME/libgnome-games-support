@@ -159,10 +159,13 @@ private class Dialog : Gtk.Dialog
     /* load names and keys of all categories in ComboBoxText */
     private void load_categories ()
     {
+        /*If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category.*/
         if (scores.high_score_added)
             load_scores ();
+
         if (combo == null)
             return;
+
         var categories = scores.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
         if (categories.length() > 0)
@@ -196,6 +199,8 @@ private class Dialog : Gtk.Dialog
 
         int row_count = 1;
 
+        /*Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
+        In which case, Label needs to be replaced by Entry allowing for player to enter name.*/
         best_n_scores.foreach ((x) =>
         {
             var rank_stack = (Stack) grid.get_child_at (0, row_count);

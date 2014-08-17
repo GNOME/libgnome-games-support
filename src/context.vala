@@ -29,12 +29,6 @@ public enum Style
     TIME_ASCENDING
 }
 
-/*public struct Category
-{
-    string key;
-    string name;
-}*/
-
 public class Context : Object
 {
     private Score? last_score = null;
@@ -158,15 +152,14 @@ public class Context : Object
         var current_time = new DateTime.now_local ().to_unix ();
         var time = current_time;
         Score score = new Score (score_value, time, user);
+
         /* check if category exists in the HashTable. Insert one if not */
         if (scores_per_category.has_key (category) ==  false)
-        {
-            // TODO: check if insert was successful. Glib.HashMap.set returns void
             scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
-        }
+
         try
         {
-            /*Don't save the score to file yet, if it's a high score since the Player name be changed.*/
+            /*Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog.*/
             if (!high_score_added)
                 save_score_to_file (score, category);
             if (scores_per_category[category].add (score))
@@ -219,23 +212,6 @@ public class Context : Object
             warning ("%s", e.message);
         }
 
-    }
-
-    /* for debugging purposes */
-    public void print_scores ()
-    {
-        var iterator = scores_per_category.map_iterator ();
-        while (iterator.next ())
-        {
-            debug ("Key:%s", iterator.get_key ().name);
-            var queue_iterator = iterator.get_value ().iterator ();
-            while (queue_iterator.next ())
-            {
-                var time = new DateTime.from_unix_local (queue_iterator.get ().time);
-                debug ("%ld\t%s\t%s",queue_iterator.get ().score, queue_iterator.get ().user, time.to_string());
-            }
-        }
-        run_dialog ();
     }
 
     private void save_score_to_file (Score score, Category category) throws Error
@@ -385,7 +361,3 @@ public class Context : Object
 
 } /* namespace Scores */
 } /* namespace Games */
-
-/*TODO: Discuss following issues
- Retreive category name and category key from file names (sol: another file that stores the mapping)
- */

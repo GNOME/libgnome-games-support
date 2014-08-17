@@ -18,8 +18,10 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games {
-namespace Scores {
+namespace Games
+{
+namespace Scores
+{
 
 public class Category: Object
 {
@@ -28,8 +30,8 @@ public class Category: Object
 
     public Category (string key, string name)
     {
-	    this.key = key;
-	    this.name = name;
+        this.key = key;
+        this.name = name;
     }
 }
 
