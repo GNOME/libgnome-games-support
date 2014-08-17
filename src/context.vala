@@ -47,6 +47,7 @@ public class Context : Object
     private string dialog_label;
     private string user_name = Environment.get_real_name ();
     private Gtk.Window? window;
+    private bool scores_loaded_from_file = false;
     /*This variable would be used to identify if the dialog has opened due to adding of a score*/
     public bool high_score_added = false;
     /*A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names.*/
@@ -133,19 +134,23 @@ public class Context : Object
         this.dialog_label = dialog_label;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
-        try
-        {
-            load_scores_from_files ();
-        }
-        catch (Error e)
-        {
-            warning ("%s", e.message);
-        }
     }
 
     /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
+        if (!scores_loaded_from_file)
+        {
+            try
+            {
+                load_scores_from_files ();
+                scores_loaded_from_file = true;
+            }
+            catch (Error e)
+            {
+                warning ("%s", e.message);
+            }
+        }
         if (is_high_score (score_value, category) && window != null)
             high_score_added = true;
 
@@ -262,9 +267,7 @@ public class Context : Object
         var directory = File.new_for_path (user_score_dir);
 
         if (!directory.query_exists ())
-        {
             return;
-        }
 
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
 
@@ -272,6 +275,7 @@ public class Context : Object
         while ((file_info = enumerator.next_file ()) != null)
         {
             var category_key = file_info.get_name ();
+            var category = request_category (category_key);
             var filename = Path.build_filename (user_score_dir, category_key);
 
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
@@ -307,8 +311,7 @@ public class Context : Object
                 Score score = new Score (score_value, time, user);
                 scores_of_single_category.add (score);
             }
-            //TODO: How to retrieve name of category?
-            Category category = new Category (category_key, category_key);
+
             scores_per_category.set (category, scores_of_single_category);
         }
     }
@@ -357,6 +360,18 @@ public class Context : Object
 
     public void run_dialog ()
     {
+        if (!scores_loaded_from_file)
+        {
+            try
+            {
+                load_scores_from_files ();
+                scores_loaded_from_file = true;
+            }
+            catch (Error e)
+            {
+                warning ("%s", e.message);
+            }
+        }
         if (window != null)
         {
             var dialog = new Dialog (this, dialog_label, window);
