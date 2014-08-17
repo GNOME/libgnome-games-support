@@ -125,7 +125,7 @@ private class Dialog : Gtk.Dialog
         fill_grid_with_labels ();
 
         if (scores.high_score_added)
-	    add_button ("Done", ResponseType.OK);
+	    add_button ("Done", ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
         load_categories ();
 
