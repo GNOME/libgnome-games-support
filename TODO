@@ -9,11 +9,12 @@ Tasks for Nikhar (DUE_DATE='23:59 UTC on Monday, August 18')
 * Horizontally center the game type above the list of high scores
 * Support subcategories of scores (requires converting combo box to menu button)
 * Filter categories and display nice category names (blocked on Michael's task "fix or replace signals")
+* Clean up code; fix anything that looks like bad style, and remove old comments or debugging code
+* Fix indentation. No tabs. I know you're using tabs with different editor settings because some of the indentation I see is pretty wild.
 * Integrate library with GNOME Mines and GNOME Robots.
   * Submit patches for these games on bugzilla.gnome.org.
   * Respond to code reviews and get patches to accepted status prior to $DUE_DATE.
 * libgames-scores code review
-  * Clean up code; fix anything that looks like bad style, and remove old comments or debugging code
   * Ask Michael for code review of libgames-scores. Do this as early as possible. Michael takes time to review.
   * Expect several iterations of review before your code is accepted!
   * Pass by $DUE_DATE. After passing, the repo will be moved to git.gnome.org.
