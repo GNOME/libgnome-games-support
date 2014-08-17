@@ -6,7 +6,7 @@ Tasks for Michael (due ASAP):
 
 Tasks for Nikhar (DUE_DATE='23:59 UTC on Monday, August 18')
 
-* Horizontally center the game type above the list of high scores
+* Horizontally center the game type above the list of high scores                                      DONE
 * Support subcategories of scores (requires converting combo box to menu button)
 * Filter categories and display nice category names (blocked on Michael's task "fix or replace signals")
 * Clean up code; fix anything that looks like bad style, and remove old comments or debugging code
