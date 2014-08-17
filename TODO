@@ -1,14 +1,14 @@
 Tasks for Michael (due ASAP):
 
 * Fix width of scores dialog (Michael)
-* Fix or replace signals (Michael)
 
 
 Tasks for Nikhar (DUE_DATE='23:59 UTC on Monday, August 18')
 
-* Horizontally center the game type above the list of high scores
-* Support subcategories of scores (requires converting combo box to menu button)
-* Filter categories and display nice category names (blocked on Michael's task "fix or replace signals")
+* Filter categories and display nice category names (requires emitting signal AFTER Context is created)
+* Further reduce the space between rows (did this space grow?)
+* Use different style for table headings (Rank, Score, and Player)
+* Replace close button with Done button (using suggested-action style class) in congratulations mode, and do not allow pressing Enter to close the entry.
 * Clean up code; fix anything that looks like bad style, and remove old comments or debugging code
 * Fix indentation. No tabs. I know you're using tabs with different editor settings because some of the indentation I see is pretty wild.
 * Integrate library with GNOME Mines and GNOME Robots.
@@ -24,9 +24,7 @@ After GSoC (Nikhar or Michael):
 
 * Import scores from Vala games
 * Import scores from /var/games (?)
-* Further reduce the space between rows (did this space grow?)
-* Use different style for table headings (Rank, Score, and Player)
-* Replace close button with Done button (using suggested-action style class) in congratulations mode, and do not allow pressing Enter to close the entry.
+* Support subcategories of scores (requires converting combo box to menu button)
 
 
 Integrate with:
