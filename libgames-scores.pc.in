@@ -6,6 +6,6 @@ includedir=@includedir@
 Name: libgames-scores
 Description: Tracks players' scores and presents a scores dialog
 Version: @VERSION@
-Requires: glib-2.0 gobject-2.0 gio-2.0
+Requires: glib-2.0 gio-2.0 gtk+-3.0
 Libs: -L${libdir} -lgames-scores
 Cflags: -I${includedir}/gnome-games
