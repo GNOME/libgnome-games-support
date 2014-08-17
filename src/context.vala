@@ -51,7 +51,7 @@ public class Context : Object
     /*This variable would be used to identify if the dialog has opened due to adding of a score*/
     public bool high_score_added = false;
     /*A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names.*/
-    public signal Category request_category (string category_key);
+    public signal Category? request_category (string category_key);
 
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) =>
@@ -276,6 +276,8 @@ public class Context : Object
         {
             var category_key = file_info.get_name ();
             var category = request_category (category_key);
+            if (category == null)
+                continue;
             var filename = Path.build_filename (user_score_dir, category_key);
 
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
