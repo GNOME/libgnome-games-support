@@ -1,19 +1,49 @@
-Please read through the README. It describes pretty clearly what all we want to do.
+Tasks for Michael (due ASAP):
+
+* Fix width of scores dialog (Michael)
+* Fix or replace signals (Michael)
 
 
-API Plan:
+Tasks for Nikhar (DUE_DATE='23:59 UTC on Monday, August 18')
 
-We expose only one GObject, GamesScores. It has the following public interface:
+* Horizontally center the game type above the list of high scores
+* Support subcategories of scores (requires converting combo box to menu button)
+* Filter categories and display nice category names (blocked on Michael's task "fix or replace signals")
+* Clean up code; fix anything that looks like bad style, and remove old comments or debugging code
+* Fix indentation. No tabs. I know you're using tabs with different editor settings because some of the indentation I see is pretty wild.
+* Integrate library with GNOME Mines and GNOME Robots.
+  * Submit patches for these games on bugzilla.gnome.org.
+  * Respond to code reviews and get patches to accepted status prior to $DUE_DATE.
+* libgames-scores code review
+  * Ask Michael for code review of libgames-scores. Do this as early as possible. Michael takes time to review.
+  * Expect several iterations of review before your code is accepted!
+  * Pass by $DUE_DATE. After passing, the repo will be moved to git.gnome.org.
 
-/* Called ONCE. */
-GamesScores * games_scores_new (const char *app_name, GamesScoresStyle style);
 
-/* If GamesScores does not already know about a category, it is added now. */
-gboolean games_scores_add_score (GamesScores *self, gint64 value, const GamesScoresCategory *category);
+After GSoC (Nikhar or Michael):
 
-void games_scores_run_score_dialog (GamesScores *self, GtkWindow *parent, const char *category_description);
+* Import scores from Vala games
+* Import scores from /var/games (?)
+* Further reduce the space between rows (did this space grow?)
+* Use different style for table headings (Rank, Score, and Player)
+* Replace close button with Done button (using suggested-action style class) in congratulations mode, and do not allow pressing Enter to close the entry.
 
-Signals should be emitted only during the call to games_scores_add_score:
+
+Integrate with:
+
+* Five or More
+* Klotski
+* Mahjongg
+* Tetravex
+* Quadrapassel
+* Swell Foop
+* Nibbles (maybe should use subcategories)
+* Tali
+
+
+Distant Future:
+
+Emit signals during the call to games_scores_add_score, but only once a game is actually going to use the signal. Possibilities:
 
 The "difficulty-suggestion" signal:
     
@@ -23,5 +53,3 @@ The "new-player" signal:
     
 /* Should this pass the player's name? */
 void user_function (GamesScores *scores, gpointer user_data);
-
-Internally, more objects may be needed, such as GamesScore, GamesScoresCategory, and GamesScoresDialog.
