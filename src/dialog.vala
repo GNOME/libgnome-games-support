@@ -42,6 +42,12 @@ private class Dialog : Gtk.Dialog
         this.transient_for = window;
 
         header = (HeaderBar) this.get_header_bar ();
+
+        if (scores.high_score_added)
+            header.show_close_button = false;
+        else
+	    header.show_close_button = true;
+
         string header_title = "";
         if (scores.high_score_added)
             header_title = "Congratulations!";
@@ -117,6 +123,9 @@ private class Dialog : Gtk.Dialog
 
         grid.set_baseline_row (0);
         fill_grid_with_labels ();
+
+        if (scores.high_score_added)
+	    add_button ("Done", ResponseType.OK);
 
         load_categories ();
 
@@ -234,9 +243,6 @@ private class Dialog : Gtk.Dialog
                 {
                     scores.update_score_name (x, visible.get_text (), active_category);
                     x.user = visible.get_text ();
-                    temp_stack.set_visible_child_name ("label");
-                    var label = (Label) temp_stack.get_visible_child ();
-                    label.set_text (x.user);
                 });
                 scores.high_score_added = false;
             }
