@@ -78,7 +78,8 @@ public class Context : Object
         while (scores_of_this_category.size > 0)
         {
             score = scores_of_this_category.poll ();
-            if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
+
+            if (Score.equals (score, old_score))
             {
                 score.user = new_name;
                 list_scores.append (score);
@@ -226,29 +227,31 @@ public class Context : Object
             return;
 
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-
         FileInfo file_info;
+
         while ((file_info = enumerator.next_file ()) != null)
         {
             var category_key = file_info.get_name ();
             var category = request_category (category_key);
+
             if (category == null)
                 continue;
+
             var filename = Path.build_filename (user_score_dir, category_key);
-
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
-
             var file = File.new_for_path (filename);
 
             /* Open file for reading and wrap returned FileInputStream into a
              DataInputStream, so we can read line by line */
             var dis = new DataInputStream (file.read ());
             string line;
+
             /* Read lines until end of file (null) is reached */
             while ((line = dis.read_line (null)) != null)
             {
                 var tokens = line.split (" ", 3);
                 string? user = null;
+
                 if (tokens.length < 2)
                 {
                     throw new FileError.FAILED ("Failed to parse %s for scores.", filename);
@@ -262,10 +265,11 @@ public class Context : Object
 
                 var score_value = long.parse (tokens[0]);
                 var time = int64.parse (tokens[1]);
+
                 if (user == null)
                     user = tokens[2];
-                Score score = new Score (score_value, time, user);
-                scores_of_single_category.add (score);
+
+                scores_of_single_category.add (new Score (score_value, time, user));
             }
 
             scores_per_category.set (category, scores_of_single_category);

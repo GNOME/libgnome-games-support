@@ -177,7 +177,7 @@ private class Dialog : Gtk.Dialog
     /* load names and keys of all categories in ComboBoxText */
     private void load_categories ()
     {
-        /*If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category.*/
+        /* If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category. */
         if (scores.high_score_added)
             load_scores ();
 
@@ -220,8 +220,8 @@ private class Dialog : Gtk.Dialog
 
         int row_count = 1;
 
-        /*Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
-        In which case, Label needs to be replaced by Entry allowing for player to enter name.*/
+        /* Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
+        In which case, Label needs to be replaced by Entry allowing for player to enter name. */
         best_n_scores.foreach ((x) =>
         {
             var rank_stack = (Stack) grid.get_child_at (0, row_count);
@@ -237,9 +237,7 @@ private class Dialog : Gtk.Dialog
 
             if (scores.high_score_added
                 && scores_latest_score != null
-                && x.score == scores_latest_score.score
-                && x.time == scores_latest_score.time
-                && x.user == scores_latest_score.user)
+                && Score.equals (x, scores_latest_score))
             {
                 string subtitle = "";
                 if (best_n_scores.length () > 1 && row_count == 1)
@@ -281,7 +279,7 @@ private class Dialog : Gtk.Dialog
             make_remaining_labels_empty (row_count);
     }
 
-    /*Fill all labels from row row_count onwards with empty strings*/
+    /* Fill all labels from row row_count onwards with empty strings. */
     private void make_remaining_labels_empty (int row_count)
     {
         for (int i = row_count; i <= rows_to_display; i++)

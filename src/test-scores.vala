@@ -18,28 +18,26 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games
-{
-namespace Scores
-{
+namespace Games {
+namespace Scores {
 
 private void create_scores ()
 {
-    Context s = new Context ("libgames-scores-test", "Games Type", null, Style.PLAIN_DESCENDING);
+    Context context = new Context ("libgames-scores-test", "Games Type", null, Style.PLAIN_DESCENDING);
     Category cat = new Category ("cat1", "cat1");
-    s.add_score (101, cat);
-    s.add_score (102, cat);
+    context.add_score (101, cat);
+    context.add_score (102, cat);
+
     cat.key = "cat2";
     cat.name = "cat2";
-    s.add_score (21, cat);
-    s.add_score (24, cat);
-    s.run_dialog ();
+    context.add_score (21, cat);
+    context.add_score (24, cat);
 }
 
 private string get_filename (string category_name)
 {
     var base_name = "libgames-scores-test";
-    var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
+    var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
     return Path.build_filename (user_score_dir, category_name);
 }
 
@@ -66,20 +64,21 @@ private void delete_scores ()
     }
     catch (Error e)
     {
-        warning (e.message);
-        assert_not_reached ();
+        error (e.message);
     }
 }
 
 private void test_scores_files_exist ()
 {
     create_scores ();
+
     var filename = get_filename ("cat1");
     var file = File.new_for_path (filename);
-    assert (file.query_exists () == true);
+    assert (file.query_exists ());
+
     filename = get_filename ("cat2");
     file = File.new_for_path (filename);
-    assert (file.query_exists () == true);
+    assert (file.query_exists ());
 }
 
 private void test_save_score_to_file ()
@@ -90,24 +89,30 @@ private void test_save_score_to_file ()
         var filename = get_filename ("cat1");
         var file = File.new_for_path (filename);
         var dis = new DataInputStream (file.read ());
+
         string line;
         assert ((line = dis.read_line (null)) != null);
+
         var tokens = line.split (" ", 3);
         assert (tokens.length == 3);
         assert (tokens[0] == "101");
         assert ((line = dis.read_line (null)) != null);
+
         tokens = line.split (" ", 3);
         assert (tokens.length == 3);
         assert (tokens[0] == "102");
         assert ((line = dis.read_line (null)) == null);
+
         filename = get_filename ("cat2");
         file = File.new_for_path (filename);
         dis = new DataInputStream (file.read ());
         assert ((line = dis.read_line (null)) != null);
+
         tokens = line.split (" ", 3);
         assert (tokens.length == 3);
         assert (tokens[0] == "21");
         assert ((line = dis.read_line (null)) != null);
+
         tokens = line.split (" ", 3);
         assert (tokens.length == 3);
         assert (tokens[0] == "24");
@@ -115,8 +120,7 @@ private void test_save_score_to_file ()
     }
     catch (Error e)
     {
-        warning (e.message);
-        assert_not_reached ();
+        error (e.message);
     }
 }
 
@@ -124,7 +128,7 @@ public int main (string args[])
 {
     Test.init (ref args);
     var test_suite = TestSuite.get_root ();
-    var test_case = new TestCase ("Scores Files Exist", () => {}, test_scores_files_exist, delete_scores);
+    var test_case = new TestCase ("Scores Files Exist", null, test_scores_files_exist, delete_scores);
     test_suite.add (test_case);
     test_case = new TestCase ("Save Score To File", () => {}, test_save_score_to_file, delete_scores);
     test_suite.add (test_case);
