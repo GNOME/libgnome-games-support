@@ -68,8 +68,8 @@ private class Dialog : Gtk.Dialog
         header.subtitle = "";
 
         var vbox = this.get_content_area ();
-        vbox.set_spacing (20);
-        set_border_width (10);
+        vbox.spacing = 20;
+        border_width = 10;
 
         var catbar = new Box (Orientation.HORIZONTAL, 12);
         catbar.margin_top = 10;
@@ -80,14 +80,14 @@ private class Dialog : Gtk.Dialog
         vbox.pack_start (hdiv, false, false, 0);
 
         var label = new Label (dialog_label);
-        label.set_use_markup (true);
+        label.use_markup = true;
         label.halign = Align.CENTER;
         catbar.pack_start (label, false, false, 0);
 
         if (scores.high_score_added)
         {
             category_label = new Label (scores_active_category.name);
-            category_label.set_use_markup (true);
+            category_label.use_markup = true;
             category_label.halign = Align.CENTER;
             category_label.valign = Align.CENTER;
             catbar.pack_start (category_label, false, false, 0);
@@ -95,7 +95,7 @@ private class Dialog : Gtk.Dialog
         else
         {
             combo = new ComboBoxText ();
-            combo.set_focus_on_click (false);
+            combo.focus_on_click = false;
             catbar.pack_start (combo, true, true, 0);
             combo.changed.connect (load_scores);
         }
@@ -105,10 +105,10 @@ private class Dialog : Gtk.Dialog
 
         grid.column_homogeneous = true;
         grid.row_homogeneous = true;
-        grid.set_column_spacing (30);
-        grid.set_row_spacing (1);
-        grid.margin_left = 20;
-        grid.margin_right = 20;
+        grid.column_spacing = 30;
+        grid.row_spacing = 1;
+        grid.margin_start = 20;
+        grid.margin_end = 20;
 
         string string_rank = _("Rank");
         var label_column_1 = new Label ("<span weight='bold'>" + string_rank + "</span>");
@@ -130,7 +130,7 @@ private class Dialog : Gtk.Dialog
         label_column_3.use_markup = true;
         grid.attach (label_column_3, 2, 0, 3, 1);
 
-        grid.set_baseline_row (0);
+        grid.baseline_row = 0;
         fill_grid_with_labels ();
 
         if (scores.high_score_added)
@@ -149,8 +149,8 @@ private class Dialog : Gtk.Dialog
             {
                 var stack = new Stack ();
                 stack.visible = true;
-                stack.set_homogeneous (true);
-                stack.set_transition_type (StackTransitionType.NONE);
+                stack.homogeneous = true;
+                stack.transition_type = StackTransitionType.NONE;
 
                 var label = new Label ("");
                 label.visible = true;
@@ -164,7 +164,7 @@ private class Dialog : Gtk.Dialog
                 entry.expand = false;
                 stack.add_named (entry, "entry");
 
-                stack.set_visible_child_name ("label");
+                stack.visible_child_name = "label";
 
                 if (column == 2)
                     grid.attach (stack, column, row, 3, 1);
@@ -190,9 +190,9 @@ private class Dialog : Gtk.Dialog
         if (categories.length() > 0)
         {
             if (scores_active_category == null)
-                combo.set_active_id (categories.nth_data (0).key);
+                combo.active_id = categories.nth_data (0).key;
             else
-                combo.set_active_id (scores_active_category.key);
+                combo.active_id = scores_active_category.key;
 
             if (active_category == null)
             {
@@ -205,11 +205,13 @@ private class Dialog : Gtk.Dialog
             }
         }
         else
+        {
             active_category = null;
+        }
     }
 
     /* loads the scores of current active_category */
-    private void load_scores()
+    private void load_scores ()
     {
         if (scores.high_score_added)
             active_category = new Category (scores_active_category.key, scores_active_category.name);
@@ -227,12 +229,12 @@ private class Dialog : Gtk.Dialog
             var rank_stack = (Stack) grid.get_child_at (0, row_count);
             var rank = (Label) rank_stack.get_visible_child ();
 
-            rank.set_use_markup (true);
+            rank.use_markup = true;
             rank.set_text (row_count.to_string ());
 
             var score_stack = (Stack) grid.get_child_at (1, row_count);
             var score = (Label) score_stack.get_visible_child ();
-            score.set_use_markup (true);
+            score.use_markup = true;
             score.set_text (x.score.to_string ());
 
             if (scores.high_score_added
@@ -247,29 +249,30 @@ private class Dialog : Gtk.Dialog
                 header.subtitle = _(subtitle);
 
                 var temp_stack = (Stack) grid.get_child_at (2, row_count);
-                temp_stack.set_visible_child_name ("entry");
+                temp_stack.visible_child_name = "entry";
+
                 var visible = (Entry) temp_stack.get_visible_child ();
-                visible.set_text (x.user);
-                visible.activate.connect (() =>
-                {
+                visible.text = x.user;
+                visible.activate.connect (() => {
                     scores.update_score_name (x, visible.get_text (), active_category);
                     x.user = visible.get_text ();
                 });
+
                 scores.high_score_added = false;
             }
 
             var name_stack = (Stack) grid.get_child_at (2, row_count);
-            var widget =  name_stack.get_visible_child ();
+            var widget = name_stack.get_visible_child ();
             Label? label = widget as Label;
             if (label != null)
             {
-                label.set_use_markup (true);
+                label.use_markup = true;
                 label.set_text (x.user);
             }
             else
             {
                 var entry = (Entry) widget;
-                entry.set_text (x.user);
+                entry.text = x.user;
             }
 
             row_count++;
