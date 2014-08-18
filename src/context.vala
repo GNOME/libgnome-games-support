@@ -40,7 +40,7 @@ public class Context : Object
     private Gtk.Window? game_window;
     private bool scores_loaded_from_file = false;
     /* This variable is used to identify if the dialog has opened due to adding of a score */
-    public bool high_score_added = false;
+    internal bool high_score_added = false;
     /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
     public signal Category? request_category (string category_key);
 
@@ -62,24 +62,7 @@ public class Context : Object
         }
     }
 
-    public Score? latest_score
-    {
-        get
-        {
-            return last_score;
-        }
-
-    }
-
-    public Style score_style
-    {
-        get
-        {
-            return style;
-        }
-    }
-
-    public List<Category?> get_categories ()
+    internal List<Category?> get_categories ()
     {
         var categories = new List<Category?> ();
         var iterator = scores_per_category.map_iterator ();
@@ -166,7 +149,7 @@ public class Context : Object
     }
 
     /* Primarily used to change name of player and save the changed score to file */
-    public void update_score_name (Score old_score, string new_name, Category category)
+    internal void update_score_name (Score old_score, string new_name, Category category)
     {
         var n_scores = new List<Score> ();
         var scores_of_this_category = scores_per_category[category];
@@ -331,7 +314,7 @@ public class Context : Object
         }
         if (game_window != null)
         {
-            var dialog = new Dialog (this, dialog_label, game_window);
+            var dialog = new Dialog (this, dialog_label, style, last_score, game_window);
             dialog.run ();
             dialog.visible = false;
         }

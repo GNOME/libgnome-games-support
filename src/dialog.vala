@@ -32,12 +32,17 @@ private class Dialog : Gtk.Dialog
     private HeaderBar? header = null;
     private Gtk.Grid grid;
     private int rows_to_display = 10;
+    private Style scores_style;
+    private Score? scores_latest_score;
 
-    public Dialog (Context scores, string dialog_label, Window window)
+    public Dialog (Context scores, string dialog_label, Style style, Score? latest_score, Window window)
     {
         Object (use_header_bar : 1);
+
         this.scores = scores;
         this.transient_for = window;
+        scores_latest_score = latest_score;
+        scores_style = style;
 
         header = (HeaderBar) this.get_header_bar ();
 
@@ -47,12 +52,14 @@ private class Dialog : Gtk.Dialog
             header.show_close_button = true;
 
         string header_title = "";
+
         if (scores.high_score_added)
             header_title = "Congratulations!";
-        else if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
+        else if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
             header_title = "High Scores";
         else
             header_title = "Best Times";
+
         header.title = _(header_title);
         header.subtitle = "";
 
@@ -105,7 +112,7 @@ private class Dialog : Gtk.Dialog
         grid.attach (label_column_1, 0, 0, 1, 1);
 
         string score_or_time = "";
-        if (scores.score_style == Style.PLAIN_ASCENDING || scores.score_style == Style.PLAIN_DESCENDING)
+        if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
             score_or_time = _("Score");
         else
             score_or_time = _("Time");
@@ -175,6 +182,7 @@ private class Dialog : Gtk.Dialog
 
         var categories = scores.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
+
         if (categories.length() > 0)
         {
             if (scores.active_category == null)
@@ -183,7 +191,9 @@ private class Dialog : Gtk.Dialog
                 combo.set_active_id (scores.active_category.key);
 
             if (active_category == null)
+            {
                 active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
+	    }
             else
             {
                 active_category.key = categories.nth_data (0).key;
@@ -222,9 +232,10 @@ private class Dialog : Gtk.Dialog
             score.set_text (x.score.to_string ());
 
             if (scores.high_score_added
-            && x.score == scores.latest_score.score
-            && x.time == scores.latest_score.time
-            && x.user == scores.latest_score.user)
+                && scores_latest_score != null
+                && x.score == scores_latest_score.score
+                && x.time == scores_latest_score.time
+                && x.user == scores_latest_score.user)
             {
                 string subtitle = "";
                 if (best_n_scores.length () > 1 && row_count == 1)
