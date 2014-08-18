@@ -154,7 +154,7 @@ public class Context : Object
     }
 
     /* Return true if a dialog was launched on attaining high score */
-    public bool add_score (long score_value, Category category)
+    public bool add_score (long score_value, Category category) throws Error
     {
         if (!scores_loaded_from_file)
         {
@@ -182,25 +182,23 @@ public class Context : Object
         if (!scores_per_category.has_key (category))
             scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
 
-        try
+        if (scores_per_category[category].add (score))
         {
-            /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
-            if (!high_score_added)
-                save_score_to_file (score, category);
-
-            if (scores_per_category[category].add (score))
-            {
-                last_score = score;
-                current_category = category;
-                score_added = true;
-            }
-
-            return true;
+            last_score = score;
+            current_category = category;
+            score_added = true;
         }
-        catch (Error e)
+
+        /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
+        if (!high_score_added)
         {
-            warning ("%s", e.message);
+            save_score_to_file (score, category);
             return false;
+        }
+        else
+        {
+            run_dialog ();
+            return true;
         }
     }
 
@@ -314,9 +312,7 @@ public class Context : Object
             }
         }
 
-        if (game_window != null
-            /* We do not wish to run the dialog if the added score is not a high score.*/
-            && !(score_added && !high_score_added))
+        if (game_window != null)
         {
             var dialog = new Dialog (this, dialog_label, style, last_score, current_category, game_window);
             dialog.run ();
