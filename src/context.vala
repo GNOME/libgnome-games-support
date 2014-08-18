@@ -30,22 +30,23 @@ public enum Style
 
 public class Context : Object
 {
+    /* All these variables are needed by dialog and as parameters to Dialog constructor. */
     private Score? last_score = null;
     private Category? current_category = null;
     private Style style;
-    /* A priority queue enables us to easily fetch the top 10 scores */
-    private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
-    private string user_score_dir;
     private string dialog_label;
     private Gtk.Window? game_window;
-    private bool scores_loaded_from_file = false;
+
+    /* A priority queue enables us to easily fetch the top 10 scores */
+    private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
+
     /* This variable is used to identify if the dialog has opened due to adding of a score */
     internal bool high_score_added = false;
-    /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
-    public signal Category? request_category (string category_key);
+    private string user_score_dir;
+    private bool scores_loaded_from_file = false;
 
+    /*Comparison and hash functions for Map and Priority Queue.*/
     private CompareDataFunc<Score?> scorecmp;
-
     private static Gee.HashDataFunc<Category?> category_hash = (a) => {
                                                                           return str_hash (a.name);
                                                                       };
@@ -53,14 +54,6 @@ public class Context : Object
     private static Gee.EqualDataFunc<Category?> category_equal = (a,b) => {
                                                                               return str_equal (a.name, b.name);
                                                                           };
-
-    public Category? active_category
-    {
-        get
-        {
-            return current_category;
-        }
-    }
 
     internal List<Category?> get_categories ()
     {
@@ -74,6 +67,64 @@ public class Context : Object
 
         return categories;
     }
+
+    /* Primarily used to change name of player and save the changed score to file */
+    internal void update_score_name (Score old_score, string new_name, Category category)
+    {
+        var list_scores = new List<Score> ();
+        var scores_of_this_category = scores_per_category[category];
+
+        Score? score = null;
+        while (scores_of_this_category.size > 0)
+        {
+            score = scores_of_this_category.poll ();
+            if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
+            {
+                score.user = new_name;
+                list_scores.append (score);
+                break;
+            }
+            else
+                list_scores.append (score);
+        }
+
+        list_scores.foreach ((x) => scores_of_this_category.add (x));
+
+        try
+        {
+            if (score != null)
+                save_score_to_file (score, category);
+        }
+        catch (Error e)
+        {
+            warning ("%s", e.message);
+        }
+    }
+
+    /* Get a maximum of best n scores from the given category */
+    internal List<Score>? get_best_n_scores (Category category, int n)
+    {
+        if (!scores_per_category.has_key (category))
+        {
+            return null;
+        }
+
+        var n_scores = new List<Score> ();
+        var scores_of_this_category = scores_per_category[category];
+
+        for (int i = 0; i < n; i++)
+        {
+            if (scores_of_this_category.size == 0)
+                break;
+            n_scores.append (scores_of_this_category.poll ());
+        }
+
+        n_scores.foreach ((x) => scores_of_this_category.add (x));
+        return n_scores;
+    }
+
+    /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
+    public signal Category? request_category (string category_key);
 
     public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style)
     {
@@ -115,8 +166,8 @@ public class Context : Object
         }
 
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
-	If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
-	we wish to save scores to file right now itself rather than waiting for a call to update_score.*/
+          If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
+          we wish to save scores to file right now itself rather than waiting for a call to update_score. */
         if (is_high_score (score_value, category) && game_window != null)
             high_score_added = true;
 
@@ -145,39 +196,6 @@ public class Context : Object
         {
             warning ("%s", e.message);
             return false;
-        }
-    }
-
-    /* Primarily used to change name of player and save the changed score to file */
-    internal void update_score_name (Score old_score, string new_name, Category category)
-    {
-        var n_scores = new List<Score> ();
-        var scores_of_this_category = scores_per_category[category];
-
-        Score? score = null;
-        while (scores_of_this_category.size > 0)
-        {
-            score = scores_of_this_category.poll ();
-            if (score.user == old_score.user && score.time == old_score.time && score.score == old_score.score)
-            {
-                score.user = new_name;
-                n_scores.append (score);
-                break;
-            }
-            else
-                n_scores.append (score);
-        }
-
-        n_scores.foreach ((x) => scores_of_this_category.add (x));
-
-        try
-        {
-            if (score != null)
-                save_score_to_file (score, category);
-        }
-        catch (Error e)
-        {
-            warning ("%s", e.message);
         }
     }
 
@@ -229,7 +247,6 @@ public class Context : Object
             /* Read lines until end of file (null) is reached */
             while ((line = dis.read_line (null)) != null)
             {
-                //TODO: better error handling here?
                 var tokens = line.split (" ", 3);
                 string? user = null;
                 if (tokens.length < 2)
@@ -237,7 +254,6 @@ public class Context : Object
                     throw new FileError.FAILED ("Failed to parse %s for scores.", filename);
                 }
 
-                /*Used to import old C scores.*/
                 if (tokens.length < 3)
                 {
                     debug ("Importing old score from %s.", filename);
@@ -260,7 +276,7 @@ public class Context : Object
     {
         var best_scores = get_best_n_scores (category, 10);
 
-        /*The given category doesn't yet exist and thus this score would be the first score and hence a high score.*/
+        /* The given category doesn't yet exist and thus this score would be the first score and hence a high score. */
         if (best_scores == null)
             return true;
 
@@ -273,29 +289,6 @@ public class Context : Object
             return score_value < lowest;
 
         return score_value > lowest;
-
-    }
-    /* Get a maximum of best n scores from the given category */
-    public List<Score>? get_best_n_scores (Category category, int n)
-    {
-        if (!scores_per_category.has_key (category))
-        {
-            return null;
-        }
-
-        var n_scores = new List<Score> ();
-        var scores_of_this_category = scores_per_category[category];
-
-        for (int i = 0; i < n; i++)
-        {
-            if (scores_of_this_category.size == 0)
-                break;
-            n_scores.append (scores_of_this_category.poll ());
-        }
-
-        /* insert the scores back into the priority queue*/
-        n_scores.foreach ((x) => scores_of_this_category.add (x));
-        return n_scores;
     }
 
     public void run_dialog ()
@@ -312,11 +305,12 @@ public class Context : Object
                 warning ("%s", e.message);
             }
         }
+
         if (game_window != null)
         {
-            var dialog = new Dialog (this, dialog_label, style, last_score, game_window);
+            var dialog = new Dialog (this, dialog_label, style, last_score, current_category, game_window);
             dialog.run ();
-            dialog.visible = false;
+            dialog.destroy ();
         }
     }
 }
