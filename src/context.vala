@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace Games {
 namespace Scores {
 
@@ -41,19 +42,20 @@ public class Context : Object
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
 
     /* This variable is used to identify if the dialog has opened due to adding of a score */
-    internal bool high_score_added = false;
+    internal bool high_score_added { get; set; default = false; }
+    private bool score_added = false;
     private string user_score_dir;
     private bool scores_loaded_from_file = false;
 
     /*Comparison and hash functions for Map and Priority Queue.*/
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) => {
-                                                                          return str_hash (a.name);
-                                                                      };
+        return str_hash (a.name);
+    };
 
     private static Gee.EqualDataFunc<Category?> category_equal = (a,b) => {
-                                                                              return str_equal (a.name, b.name);
-                                                                          };
+        return str_equal (a.name, b.name);
+    };
 
     internal List<Category?> get_categories ()
     {
@@ -135,14 +137,14 @@ public class Context : Object
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
         {
             scorecmp = (a,b) => {
-                                    return (int) (b.score > a.score) - (int) (a.score > b.score);
-                                };
+                return (int) (b.score > a.score) - (int) (a.score > b.score);
+            };
         }
         else
         {
             scorecmp = (a,b) => {
-                                    return (int) (b.score < a.score) - (int) (a.score < b.score);
-                                };
+                return (int) (b.score < a.score) - (int) (a.score < b.score);
+            };
         }
 
         var base_name = app_name;
@@ -151,6 +153,7 @@ public class Context : Object
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
     }
 
+    /* Return true if a dialog was launched on attaining high score */
     public bool add_score (long score_value, Category category)
     {
         if (!scores_loaded_from_file)
@@ -189,6 +192,7 @@ public class Context : Object
             {
                 last_score = score;
                 current_category = category;
+                score_added = true;
             }
 
             return true;
@@ -310,12 +314,15 @@ public class Context : Object
             }
         }
 
-        if (game_window != null)
+        if (game_window != null
+            /* We do not wish to run the dialog if the added score is not a high score.*/
+            && !(score_added && !high_score_added))
         {
             var dialog = new Dialog (this, dialog_label, style, last_score, current_category, game_window);
             dialog.run ();
             dialog.destroy ();
         }
+        score_added = false;
     }
 }
 

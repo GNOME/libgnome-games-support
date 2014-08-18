@@ -21,24 +21,22 @@
 namespace Games {
 namespace Scores {
 
-using Gtk;
-
 private class Dialog : Gtk.Dialog
 {
     private Context scores;
     private Category? active_category = null;
     private int rows_to_display = 10;
 
-    private ComboBoxText? combo = null;
-    private Label? category_label = null;
-    private HeaderBar? header = null;
+    private Gtk.ComboBoxText? combo = null;
+    private Gtk.Label? category_label = null;
+    private Gtk.HeaderBar? headerbar = null;
     private Gtk.Grid grid;
 
     private Style scores_style;
     private Score? scores_latest_score;
     private Category? scores_active_category;
 
-    public Dialog (Context scores, string dialog_label, Style style, Score? latest_score, Category? current_cat, Window window)
+    public Dialog (Context scores, string dialog_label, Style style, Score? latest_score, Category? current_cat, Gtk.Window window)
     {
         Object (use_header_bar : 1);
 
@@ -48,59 +46,55 @@ private class Dialog : Gtk.Dialog
         scores_style = style;
         scores_active_category = current_cat;
 
-        header = (HeaderBar) this.get_header_bar ();
+        headerbar = (Gtk.HeaderBar) this.get_header_bar ();
 
         if (scores.high_score_added)
-            header.show_close_button = false;
+            headerbar.show_close_button = false;
         else
-            header.show_close_button = true;
-
-        string header_title = "";
+            headerbar.show_close_button = true;
 
         if (scores.high_score_added)
-            header_title = "Congratulations!";
+        /* Appears at the top of the dialog, as the heading of the dialog */
+            headerbar.title = _("Congratulations!");
         else if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
-            header_title = "High Scores";
+            headerbar.title = _("High Scores");
         else
-            header_title = "Best Times";
-
-        header.title = _(header_title);
-        header.subtitle = "";
+            headerbar.title = _("Best Times");
 
         var vbox = this.get_content_area ();
         vbox.spacing = 20;
         border_width = 10;
 
-        var catbar = new Box (Orientation.HORIZONTAL, 12);
+        var catbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
         catbar.margin_top = 10;
-        catbar.halign = Align.CENTER;
+        catbar.halign = Gtk.Align.CENTER;
         vbox.pack_start (catbar, true, false, 0);
 
-        var hdiv = new Separator (Orientation.HORIZONTAL);
+        var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         vbox.pack_start (hdiv, false, false, 0);
 
-        var label = new Label (dialog_label);
+        var label = new Gtk.Label (dialog_label);
         label.use_markup = true;
-        label.halign = Align.CENTER;
+        label.halign = Gtk.Align.CENTER;
         catbar.pack_start (label, false, false, 0);
 
         if (scores.high_score_added)
         {
-            category_label = new Label (scores_active_category.name);
+            category_label = new Gtk.Label (scores_active_category.name);
             category_label.use_markup = true;
-            category_label.halign = Align.CENTER;
-            category_label.valign = Align.CENTER;
+            category_label.halign = Gtk.Align.CENTER;
+            category_label.valign = Gtk.Align.CENTER;
             catbar.pack_start (category_label, false, false, 0);
         }
         else
         {
-            combo = new ComboBoxText ();
+            combo = new Gtk.ComboBoxText ();
             combo.focus_on_click = false;
             catbar.pack_start (combo, true, true, 0);
             combo.changed.connect (load_scores);
         }
 
-        grid = new Grid ();
+        grid = new Gtk.Grid ();
         vbox.pack_start (grid, false, false, 0);
 
         grid.column_homogeneous = true;
@@ -110,23 +104,27 @@ private class Dialog : Gtk.Dialog
         grid.margin_start = 20;
         grid.margin_end = 20;
 
+        /* A column heading in the scores dialog */
         string string_rank = _("Rank");
-        var label_column_1 = new Label ("<span weight='bold'>" + string_rank + "</span>");
+        var label_column_1 = new Gtk.Label ("<span weight='bold'>" + string_rank + "</span>");
         label_column_1.use_markup = true;
         grid.attach (label_column_1, 0, 0, 1, 1);
 
         string score_or_time = "";
+
         if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
+            /* A column heading in the scores dialog */
             score_or_time = _("Score");
         else
             score_or_time = _("Time");
 
-        var label_column_2 = new Label ("<span weight='bold'>" + score_or_time + "</span>");
+        var label_column_2 = new Gtk.Label ("<span weight='bold'>" + score_or_time + "</span>");
         label_column_2.use_markup = true;
         grid.attach (label_column_2, 1, 0, 1, 1);
 
+        /* A column heading in the scores dialog */
         string string_player = _("Player");
-        var label_column_3 = new Label ("<span weight='bold'>" + string_player + "</span>");
+        var label_column_3 = new Gtk.Label ("<span weight='bold'>" + string_player + "</span>");
         label_column_3.use_markup = true;
         grid.attach (label_column_3, 2, 0, 3, 1);
 
@@ -134,7 +132,8 @@ private class Dialog : Gtk.Dialog
         fill_grid_with_labels ();
 
         if (scores.high_score_added)
-            add_button ("Done", ResponseType.OK).get_style_context ().add_class ("suggested-action");
+            /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
+            add_button (_("Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
         load_categories ();
 
@@ -147,18 +146,18 @@ private class Dialog : Gtk.Dialog
         {
             for (int column = 0; column <= 2; column++)
             {
-                var stack = new Stack ();
+                var stack = new Gtk.Stack ();
                 stack.visible = true;
                 stack.homogeneous = true;
-                stack.transition_type = StackTransitionType.NONE;
+                stack.transition_type = Gtk.StackTransitionType.NONE;
 
-                var label = new Label ("");
+                var label = new Gtk.Label ("");
                 label.visible = true;
-                label.halign = Align.CENTER;
-                label.valign = Align.CENTER;
+                label.halign = Gtk.Align.CENTER;
+                label.valign = Gtk.Align.CENTER;
                 stack.add_named (label, "label");
 
-                var entry = new Entry ();
+                var entry = new Gtk.Entry ();
                 entry.visible = true;
                 entry.set_size_request (20,20);
                 entry.expand = false;
@@ -223,8 +222,7 @@ private class Dialog : Gtk.Dialog
 
         int row_count = 1;
 
-        best_n_scores.foreach ((x) =>
-        {
+        best_n_scores.foreach ((x) => {
             display_single_score (x, row_count, no_scores);
             row_count++;
         });
@@ -237,14 +235,14 @@ private class Dialog : Gtk.Dialog
        In which case, Label needs to be replaced by Entry allowing for player to enter name. */
     private void display_single_score (Score x, int row_count, uint no_scores)
     {
-        var rank_stack = (Stack) grid.get_child_at (0, row_count);
-        var rank = (Label) rank_stack.get_visible_child ();
+        var rank_stack = (Gtk.Stack) grid.get_child_at (0, row_count);
+        var rank = (Gtk.Label) rank_stack.get_visible_child ();
 
         rank.use_markup = true;
         rank.set_text (row_count.to_string ());
 
-        var score_stack = (Stack) grid.get_child_at (1, row_count);
-        var score = (Label) score_stack.get_visible_child ();
+        var score_stack = (Gtk.Stack) grid.get_child_at (1, row_count);
+        var score = (Gtk.Label) score_stack.get_visible_child ();
         score.use_markup = true;
         score.set_text (x.score.to_string ());
 
@@ -252,31 +250,29 @@ private class Dialog : Gtk.Dialog
             && scores_latest_score != null
             && Score.equals (x, scores_latest_score))
         {
-            string subtitle = "";
-
             if (no_scores > 1 && row_count == 1)
-                subtitle = "Your score is the best!";
+            /* Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog. */
+                headerbar.subtitle = _("Your score is the best!");
             else
-                subtitle = "Your score has made the top ten.";
+                headerbar.subtitle = _("Your score has made the top ten.");
 
-            header.subtitle = _(subtitle);
-
-            var temp_stack = (Stack) grid.get_child_at (2, row_count);
+            var temp_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
             temp_stack.visible_child_name = "entry";
 
-            var visible = (Entry) temp_stack.get_visible_child ();
+            var visible = (Gtk.Entry) temp_stack.get_visible_child ();
             visible.text = x.user;
             visible.activate.connect (() => {
-                                                scores.update_score_name (x, visible.get_text (), active_category);
-                                                x.user = visible.get_text ();
-                                            });
+                scores.update_score_name (x, visible.get_text (), active_category);
+                x.user = visible.get_text ();
+            });
 
             scores.high_score_added = false;
         }
 
-        var name_stack = (Stack) grid.get_child_at (2, row_count);
+        var name_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
         var widget = name_stack.get_visible_child ();
-        Label? label = widget as Label;
+        Gtk.Label? label = widget as Gtk.Label;
+
         if (label != null)
         {
             label.use_markup = true;
@@ -284,7 +280,7 @@ private class Dialog : Gtk.Dialog
         }
         else
         {
-            var entry = (Entry) widget;
+            var entry = (Gtk.Entry) widget;
             entry.text = x.user;
         }
     }
@@ -296,8 +292,8 @@ private class Dialog : Gtk.Dialog
         {
             for (int j = 0; j <= 2; j++)
             {
-                var stack = (Stack) grid.get_child_at (j,i);
-                var label = (Label) stack.get_visible_child ();
+                var stack = (Gtk.Stack) grid.get_child_at (j,i);
+                var label = (Gtk.Label) stack.get_visible_child ();
                 label.set_text ("");
             }
         }
