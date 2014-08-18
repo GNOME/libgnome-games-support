@@ -92,7 +92,7 @@ public class Context : Object
         return categories;
     }
 
-    public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style = Style.PLAIN_DESCENDING)
+    public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style)
     {
         this.game_window = game_window;
         this.style = style;
@@ -116,7 +116,6 @@ public class Context : Object
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
     }
 
-    /* this assumes that we intend to store ALL scores per category and not just the top 10. */
     public bool add_score (long score_value, Category category)
     {
         if (!scores_loaded_from_file)
@@ -131,23 +130,26 @@ public class Context : Object
                 warning ("%s", e.message);
             }
         }
+
+       /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
+	If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
+	we wish to save scores to file right now itself rather than waiting for a call to update_score.*/
         if (is_high_score (score_value, category) && game_window != null)
             high_score_added = true;
 
-        var user = Environment.get_real_name ();
         var current_time = new DateTime.now_local ().to_unix ();
-        var time = current_time;
-        Score score = new Score (score_value, time, user);
+        var score = new Score (score_value, current_time, Environment.get_real_name ());
 
         /* check if category exists in the HashTable. Insert one if not */
-        if (scores_per_category.has_key (category) ==  false)
+        if (!scores_per_category.has_key (category))
             scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
 
         try
         {
-            /*Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog.*/
+            /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
             if (!high_score_added)
                 save_score_to_file (score, category);
+
             if (scores_per_category[category].add (score))
             {
                 last_score = score;
@@ -155,7 +157,6 @@ public class Context : Object
             }
 
             return true;
-
         }
         catch (Error e)
         {
@@ -164,7 +165,7 @@ public class Context : Object
         }
     }
 
-    /*Primarily used to change name of player and save the changed score to file*/
+    /* Primarily used to change name of player and save the changed score to file */
     public void update_score_name (Score old_score, string new_name, Category category)
     {
         var n_scores = new List<Score> ();
@@ -184,10 +185,8 @@ public class Context : Object
                 n_scores.append (score);
         }
 
-        /* insert the scores back into the priority queue*/
         n_scores.foreach ((x) => scores_of_this_category.add (x));
 
-        /* Save the updated score to file */
         try
         {
             if (score != null)
@@ -197,13 +196,11 @@ public class Context : Object
         {
             warning ("%s", e.message);
         }
-
     }
 
     private void save_score_to_file (Score score, Category category) throws Error
     {
-        /*create the directory if it doesn' exist*/
-        if (!FileUtils.test (user_score_dir,FileTest.EXISTS))
+        if (!FileUtils.test (user_score_dir, FileTest.EXISTS))
         {
             if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
             {
@@ -211,16 +208,12 @@ public class Context : Object
             }
         }
 
-        var filename = Path.build_filename (user_score_dir, category.key);
-
-        var file = File.new_for_path (filename);
+        var file = File.new_for_path (Path.build_filename (user_score_dir, category.key));
 
         var dos = new DataOutputStream (file.append_to (FileCreateFlags.NONE));
 
-        var time_string = score.time.to_string ();
-
         dos.put_string (score.score.to_string () + " " +
-                        time_string + " " +
+                        score.time.to_string () + " " +
                         score.user + "\n");
     }
 

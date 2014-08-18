@@ -22,11 +22,10 @@ namespace Games
 {
 namespace Scores
 {
-//using Gtk;
+
 private void create_scores ()
 {
-//    Window window = new Window ();
-    Context s = new Context ("libgames-scores-test", "Games Type", null);
+    Context s = new Context ("libgames-scores-test", "Games Type", null, Style.PLAIN_DESCENDING);
     Category cat = new Category ("cat1", "cat1");
     s.add_score (101, cat);
     s.add_score (102, cat);
