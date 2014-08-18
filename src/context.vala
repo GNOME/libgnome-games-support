@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Games
-{
-namespace Scores
-{
+namespace Games {
+namespace Scores {
+
 public enum Style
 {
     PLAIN_DESCENDING,
@@ -34,46 +33,32 @@ public class Context : Object
     private Score? last_score = null;
     private Category? current_category = null;
     private Style style;
-    /* A priority queue should enable us to easily fetch the top 10 scores */
-    private Gee.HashMap <Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap <Category?, Gee.PriorityQueue<Score>> ((owned) category_hash, (owned) category_equal);
-    private string base_name;
+    /* A priority queue enables us to easily fetch the top 10 scores */
+    private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
     private string user_score_dir;
     private string dialog_label;
-    private string user_name = Environment.get_real_name ();
-    private Gtk.Window? window;
+    private Gtk.Window? game_window;
     private bool scores_loaded_from_file = false;
-    /*This variable would be used to identify if the dialog has opened due to adding of a score*/
+    /* This variable is used to identify if the dialog has opened due to adding of a score */
     public bool high_score_added = false;
-    /*A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names.*/
+    /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
     public signal Category? request_category (string category_key);
 
     private CompareDataFunc<Score?> scorecmp;
-    private static Gee.HashDataFunc<Category?> category_hash = (a) =>
-    {
-        return str_hash (a.name);
-    };
-    private static Gee.EqualDataFunc<Category?> category_equal = (a,b) =>
-    {
-        return str_equal (a.name, b.name);
-    };
+
+    private static Gee.HashDataFunc<Category?> category_hash = (a) => {
+                                                                          return str_hash (a.name);
+                                                                      };
+
+    private static Gee.EqualDataFunc<Category?> category_equal = (a,b) => {
+                                                                              return str_equal (a.name, b.name);
+                                                                          };
 
     public Category? active_category
     {
         get
         {
             return current_category;
-        }
-    }
-
-    public string player_name
-    {
-        get
-        {
-            return user_name;
-        }
-        set
-        {
-            user_name = value;
         }
     }
 
@@ -94,37 +79,38 @@ public class Context : Object
         }
     }
 
-    public List <Category?> get_categories ()
+    public List<Category?> get_categories ()
     {
-        var categories = new List <Category?> ();
+        var categories = new List<Category?> ();
         var iterator = scores_per_category.map_iterator ();
+
         while (iterator.next ())
         {
             categories.append (iterator.get_key ());
         }
+
         return categories;
     }
 
-    public Context (string app_name, string dialog_label, Gtk.Window? window, Style style = Style.PLAIN_DESCENDING)
+    public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style = Style.PLAIN_DESCENDING)
     {
-        this.window = window;
+        this.game_window = game_window;
         this.style = style;
+
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
         {
-            scorecmp = (a,b) =>
-            {
-                return (int) (b.score > a.score) - (int) (a.score > b.score);
-            };
+            scorecmp = (a,b) => {
+                                    return (int) (b.score > a.score) - (int) (a.score > b.score);
+                                };
         }
         else
         {
-            scorecmp = (a,b) =>
-            {
-                return (int) (b.score < a.score) - (int) (a.score < b.score);
-            };
+            scorecmp = (a,b) => {
+                                    return (int) (b.score < a.score) - (int) (a.score < b.score);
+                                };
         }
 
-        base_name = app_name;
+        var base_name = app_name;
         this.dialog_label = dialog_label;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
@@ -145,10 +131,10 @@ public class Context : Object
                 warning ("%s", e.message);
             }
         }
-        if (is_high_score (score_value, category) && window != null)
+        if (is_high_score (score_value, category) && game_window != null)
             high_score_added = true;
 
-        var user = user_name;
+        var user = Environment.get_real_name ();
         var current_time = new DateTime.now_local ().to_unix ();
         var time = current_time;
         Score score = new Score (score_value, time, user);
@@ -350,9 +336,9 @@ public class Context : Object
                 warning ("%s", e.message);
             }
         }
-        if (window != null)
+        if (game_window != null)
         {
-            var dialog = new Dialog (this, dialog_label, window);
+            var dialog = new Dialog (this, dialog_label, game_window);
             dialog.run ();
             dialog.visible = false;
         }

@@ -18,10 +18,8 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games
-{
-namespace Scores
-{
+namespace Games {
+namespace Scores {
 
 public class Score: Object
 {

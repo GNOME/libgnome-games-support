@@ -18,15 +18,13 @@
  * along with libgames-scores.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Games
-{
-namespace Scores
-{
+namespace Games {
+namespace Scores {
 
 public class Category: Object
 {
-    public string key {get; set;}
-    public string name {get; set;}
+    public string key { get; set; }
+    public string name { get; set; }
 
     public Category (string key, string name)
     {
