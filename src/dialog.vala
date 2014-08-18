@@ -219,67 +219,74 @@ private class Dialog : Gtk.Dialog
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
 
         var best_n_scores = scores.get_best_n_scores (active_category, rows_to_display);
+        uint no_scores = best_n_scores.length ();
 
         int row_count = 1;
 
-        /* Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
-        In which case, Label needs to be replaced by Entry allowing for player to enter name. */
         best_n_scores.foreach ((x) =>
         {
-            var rank_stack = (Stack) grid.get_child_at (0, row_count);
-            var rank = (Label) rank_stack.get_visible_child ();
-
-            rank.use_markup = true;
-            rank.set_text (row_count.to_string ());
-
-            var score_stack = (Stack) grid.get_child_at (1, row_count);
-            var score = (Label) score_stack.get_visible_child ();
-            score.use_markup = true;
-            score.set_text (x.score.to_string ());
-
-            if (scores.high_score_added
-                && scores_latest_score != null
-                && Score.equals (x, scores_latest_score))
-            {
-                string subtitle = "";
-                if (best_n_scores.length () > 1 && row_count == 1)
-                    subtitle = "Your score is the best!";
-                else
-                    subtitle = "Your score has made the top ten.";
-                header.subtitle = _(subtitle);
-
-                var temp_stack = (Stack) grid.get_child_at (2, row_count);
-                temp_stack.visible_child_name = "entry";
-
-                var visible = (Entry) temp_stack.get_visible_child ();
-                visible.text = x.user;
-                visible.activate.connect (() => {
-                    scores.update_score_name (x, visible.get_text (), active_category);
-                    x.user = visible.get_text ();
-                });
-
-                scores.high_score_added = false;
-            }
-
-            var name_stack = (Stack) grid.get_child_at (2, row_count);
-            var widget = name_stack.get_visible_child ();
-            Label? label = widget as Label;
-            if (label != null)
-            {
-                label.use_markup = true;
-                label.set_text (x.user);
-            }
-            else
-            {
-                var entry = (Entry) widget;
-                entry.text = x.user;
-            }
-
+            display_single_score (x, row_count, no_scores);
             row_count++;
         });
 
         if (row_count < rows_to_display + 1)
             make_remaining_labels_empty (row_count);
+    }
+
+    /* Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
+       In which case, Label needs to be replaced by Entry allowing for player to enter name. */
+    private void display_single_score (Score x, int row_count, uint no_scores)
+    {
+        var rank_stack = (Stack) grid.get_child_at (0, row_count);
+        var rank = (Label) rank_stack.get_visible_child ();
+
+        rank.use_markup = true;
+        rank.set_text (row_count.to_string ());
+
+        var score_stack = (Stack) grid.get_child_at (1, row_count);
+        var score = (Label) score_stack.get_visible_child ();
+        score.use_markup = true;
+        score.set_text (x.score.to_string ());
+
+        if (scores.high_score_added
+            && scores_latest_score != null
+            && Score.equals (x, scores_latest_score))
+        {
+            string subtitle = "";
+
+            if (no_scores > 1 && row_count == 1)
+                subtitle = "Your score is the best!";
+            else
+                subtitle = "Your score has made the top ten.";
+
+            header.subtitle = _(subtitle);
+
+            var temp_stack = (Stack) grid.get_child_at (2, row_count);
+            temp_stack.visible_child_name = "entry";
+
+            var visible = (Entry) temp_stack.get_visible_child ();
+            visible.text = x.user;
+            visible.activate.connect (() => {
+                                                scores.update_score_name (x, visible.get_text (), active_category);
+                                                x.user = visible.get_text ();
+                                            });
+
+            scores.high_score_added = false;
+        }
+
+        var name_stack = (Stack) grid.get_child_at (2, row_count);
+        var widget = name_stack.get_visible_child ();
+        Label? label = widget as Label;
+        if (label != null)
+        {
+            label.use_markup = true;
+            label.set_text (x.user);
+        }
+        else
+        {
+            var entry = (Entry) widget;
+            entry.text = x.user;
+        }
     }
 
     /* Fill all labels from row row_count onwards with empty strings. */

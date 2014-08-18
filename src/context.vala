@@ -73,8 +73,8 @@ public class Context : Object
     {
         var list_scores = new List<Score> ();
         var scores_of_this_category = scores_per_category[category];
-
         Score? score = null;
+
         while (scores_of_this_category.size > 0)
         {
             score = scores_of_this_category.poll ();
