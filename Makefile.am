@@ -9,6 +9,7 @@ pkgconfig_DATA = libgames-scores.pc
 EXTRA_DIST = \
 	autogen.sh \
 	COPYING \
+	COPYING.LESSER \
 	INSTALL \
 	NEWS \
 	README
