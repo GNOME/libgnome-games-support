@@ -10,7 +10,7 @@
   <homepage rdf:resource="https://wiki.gnome.org/Apps/Games" />
   <download-page rdf:resource="http://download.gnome.org/sources/libgames-scores/" />
 
-  <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#apps" />
 
   <maintainer>
     <foaf:Person>
