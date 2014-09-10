@@ -1,0 +1,66 @@
+# Czech translation for libgames-scores.
+# Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
+# This file is distributed under the same license as the libgames-scores package.
+# Marek Černocký <marek@manet.cz>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libgames-scores master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgames-scores&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-09 21:23+0000\n"
+"PO-Revision-Date: 2014-09-10 07:22+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#. Appears at the top of the dialog, as the heading of the dialog
+#: ../src/dialog.vala:58
+msgid "Congratulations!"
+msgstr "Gratulujeme!"
+
+#: ../src/dialog.vala:60
+msgid "High Scores"
+msgstr "Nejvyšší skóre"
+
+#: ../src/dialog.vala:62
+msgid "Best Times"
+msgstr "Nejlepší časy"
+
+#. A column heading in the scores dialog
+#: ../src/dialog.vala:108
+msgid "Rank"
+msgstr "Pořadí"
+
+#. A column heading in the scores dialog
+#: ../src/dialog.vala:117
+msgid "Score"
+msgstr "Skóre"
+
+#: ../src/dialog.vala:119
+msgid "Time"
+msgstr "Čas"
+
+#. A column heading in the scores dialog
+#: ../src/dialog.vala:126
+msgid "Player"
+msgstr "Hráč"
+
+#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
+#: ../src/dialog.vala:136
+msgid "Done"
+msgstr "Hotovo"
+
+#. Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog.
+#: ../src/dialog.vala:255
+msgid "Your score is the best!"
+msgstr "Vaše skóre je nejlepší!"
+
+#: ../src/dialog.vala:257
+msgid "Your score has made the top ten."
+msgstr "Vaše skóre se zařadilo do první desítky."
