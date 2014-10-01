@@ -23,15 +23,22 @@ namespace Scores {
 
 private void create_scores ()
 {
-    Context context = new Context ("libgames-scores-test", "Games Type", null, Style.PLAIN_DESCENDING);
-    Category cat = new Category ("cat1", "cat1");
-    context.add_score (101, cat);
-    context.add_score (102, cat);
+    try
+    {
+        Context context = new Context ("libgames-scores-test", "Games Type", null, Style.PLAIN_DESCENDING);
+        Category cat = new Category ("cat1", "cat1");
+        context.add_score (101, cat);
+        context.add_score (102, cat);
 
-    cat.key = "cat2";
-    cat.name = "cat2";
-    context.add_score (21, cat);
-    context.add_score (24, cat);
+        cat.key = "cat2";
+        cat.name = "cat2";
+        context.add_score (21, cat);
+        context.add_score (24, cat);
+    }
+    catch (Error e)
+    {
+        error (e.message);
+    }
 }
 
 private string get_filename (string category_name)
@@ -128,7 +135,7 @@ public int main (string args[])
 {
     Test.init (ref args);
     var test_suite = TestSuite.get_root ();
-    var test_case = new TestCase ("Scores Files Exist", null, test_scores_files_exist, delete_scores);
+    var test_case = new TestCase ("Scores Files Exist", () => {}, test_scores_files_exist, delete_scores);
     test_suite.add (test_case);
     test_case = new TestCase ("Save Score To File", () => {}, test_save_score_to_file, delete_scores);
     test_suite.add (test_case);
