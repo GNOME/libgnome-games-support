@@ -1,4 +1,4 @@
-* Fix width of scores dialog
+* Display times as hms
 * Do something sane with the dialog when no score categories exist
 * Import scores from Vala games
 * Import scores from /var/games (?)
