@@ -1,0 +1,66 @@
+# Turkish translation for libgames-scores.
+# Copyright (C) 2015 libgames-scores's COPYRIGHT HOLDER
+# This file is distributed under the same license as the libgames-scores package.
+#
+# Necdet Yücel <necdetyucel@gmail.com>, 2015.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: libgames-scores master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-12 14:11+0000\n"
+"PO-Revision-Date: 2015-02-14 23:48+0000\n"
+"Last-Translator: Necdet Yücel <necdetyucel@gmail.com>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1423957720.000000\n"
+
+#. Appears at the top of the dialog, as the heading of the dialog
+#: ../src/dialog.vala:60
+msgid "Congratulations!"
+msgstr "Tebrikler!"
+
+#: ../src/dialog.vala:62
+msgid "High Scores"
+msgstr "Yüksek Puanlar"
+
+#: ../src/dialog.vala:64
+msgid "Best Times"
+msgstr "En İyi Zamanlar"
+
+#. A column heading in the scores dialog
+#: ../src/dialog.vala:107
+msgid "Rank"
+msgstr "Sıralama"
+
+#. A column heading in the scores dialog
+#: ../src/dialog.vala:116
+msgid "Score"
+msgstr "Puan"
+
+#: ../src/dialog.vala:118
+msgid "Time"
+msgstr "Zaman"
+
+#. A column heading in the scores dialog
+#: ../src/dialog.vala:125
+msgid "Player"
+msgstr "Oyuncu"
+
+#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
+#: ../src/dialog.vala:135
+msgid "Done"
+msgstr "Tamamlandı"
+
+#: ../src/dialog.vala:251
+msgid "Your score is the best!"
+msgstr "En iyi puan sizinki!"
+
+#: ../src/dialog.vala:253
+msgid "Your score has made the top ten."
+msgstr "Puanınız en iyi on listesine girdi."
