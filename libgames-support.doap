@@ -4,11 +4,11 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
-  <name xml:lang="en">libgames-scores</name>
-  <shortdesc xml:lang="en">Track players' scores history.</shortdesc>
-  <description>A library that records players' scores and presents a scores dialog.</description>
+  <name xml:lang="en">libgames-support</name>
+  <shortdesc xml:lang="en">Code shared between GNOME games.</shortdesc>
+  <description>A dumping ground for code that's useful to share between different GNOME games.</description>
   <homepage rdf:resource="https://wiki.gnome.org/Apps/Games" />
-  <download-page rdf:resource="http://download.gnome.org/sources/libgames-scores/" />
+  <download-page rdf:resource="http://download.gnome.org/sources/libgames-support/" />
   <programming-language>Vala</programming-language>
 
   <maintainer>
