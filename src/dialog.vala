@@ -102,6 +102,7 @@ private class Dialog : Gtk.Dialog
         grid.row_homogeneous = true;
         grid.column_spacing = 30;
         grid.margin = 20;
+        grid.halign = Gtk.Align.CENTER;
 
         /* A column heading in the scores dialog */
         string string_rank = _("Rank");
