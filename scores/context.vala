@@ -88,16 +88,6 @@ public class Context : Object
         }
 
         list_scores.foreach ((x) => scores_of_this_category.add (x));
-
-        try
-        {
-            if (score != null)
-                save_score_to_file (score, category);
-        }
-        catch (Error e)
-        {
-            warning ("%s", e.message);
-        }
     }
 
     /* Get a maximum of best n scores from the given category */
@@ -290,7 +280,7 @@ public class Context : Object
         return score_value > lowest;
     }
 
-    internal void run_dialog_internal (Score? new_high_score)
+    internal void run_dialog_internal (Score? new_high_score) throws Error
         requires (game_window != null)
     {
         if (!scores_loaded_from_file)
@@ -309,9 +299,12 @@ public class Context : Object
         var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
         dialog.run ();
         dialog.destroy ();
+
+        if (new_high_score != null)
+            save_score_to_file (new_high_score, current_category);
     }
 
-    public void run_dialog ()
+    public void run_dialog () throws Error
     {
         run_dialog_internal (null);
     }
