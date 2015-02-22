@@ -33,7 +33,7 @@ private class Dialog : Gtk.Dialog
     private Gtk.Grid grid;
 
     private Style scores_style;
-    private Score? scores_latest_score;
+    private Score? latest_score;
     private Category? scores_active_category;
 
     public Dialog (Context context, string dialog_label, Style style, Score? latest_score, Category? current_cat, Gtk.Window window)
@@ -44,7 +44,7 @@ private class Dialog : Gtk.Dialog
 
         this.context = context;
         this.transient_for = window;
-        scores_latest_score = latest_score;
+        this.latest_score = latest_score;
         scores_style = style;
         scores_active_category = current_cat;
 
@@ -246,8 +246,8 @@ private class Dialog : Gtk.Dialog
         score.set_text (x.score.to_string ());
 
         if (context.high_score_added
-            && scores_latest_score != null
-            && Score.equals (x, scores_latest_score))
+            && latest_score != null
+            && Score.equals (x, latest_score))
         {
             if (no_scores > 1 && row_count == 1)
                 headerbar.subtitle = _("Your score is the best!");
