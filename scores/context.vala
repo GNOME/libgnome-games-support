@@ -320,6 +320,11 @@ public class Context : Object
         }
         score_added = false;
     }
+
+    public bool has_scores ()
+    {
+        return scores_per_category.is_empty;
+    }
 }
 
 } /* namespace Scores */
