@@ -1,3 +1,3 @@
-src/context.vala
-src/dialog.vala
-src/score.vala
+scores/context.vala
+scores/dialog.vala
+scores/score.vala

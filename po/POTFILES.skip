@@ -1,3 +1,3 @@
-src/context.c
-src/dialog.c
-src/score.c
+scores/context.c
+scores/dialog.c
+scores/score.c
