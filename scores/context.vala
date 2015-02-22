@@ -291,6 +291,7 @@ public class Context : Object
     }
 
     internal void run_dialog_internal (Score? new_high_score)
+        requires (game_window != null)
     {
         if (!scores_loaded_from_file)
         {
@@ -305,12 +306,9 @@ public class Context : Object
             }
         }
 
-        if (game_window != null)
-        {
-            var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
-            dialog.run ();
-            dialog.destroy ();
-        }
+        var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
+        dialog.run ();
+        dialog.destroy ();
     }
 
     public void run_dialog ()
