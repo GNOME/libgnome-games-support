@@ -192,6 +192,7 @@ public class Context : Object
 
         var file = File.new_for_path (Path.build_filename (user_score_dir, category.key));
 
+        // FIXME should not be doing sync I/O here
         var dos = new DataOutputStream (file.append_to (FileCreateFlags.NONE));
 
         dos.put_string (score.score.to_string () + " " +
