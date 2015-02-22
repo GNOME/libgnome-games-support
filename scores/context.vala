@@ -52,6 +52,42 @@ public class Context : Object
         return str_equal (a.name, b.name);
     };
 
+    /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
+    public signal Category? request_category (string category_key);
+
+    public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style)
+    {
+        this.game_window = game_window;
+        this.style = style;
+
+        if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
+        {
+            scorecmp = (a,b) => {
+                return (int) (b.score > a.score) - (int) (a.score > b.score);
+            };
+        }
+        else
+        {
+            scorecmp = (a,b) => {
+                return (int) (b.score < a.score) - (int) (a.score < b.score);
+            };
+        }
+
+        var base_name = app_name;
+        this.dialog_label = dialog_label;
+
+        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
+
+        try
+        {
+            load_scores_from_files ();
+        }
+        catch (Error e)
+        {
+            warning ("%s", e.message);
+        }
+    }
+
     internal List<Category?> get_categories ()
     {
         var categories = new List<Category?> ();
@@ -111,42 +147,6 @@ public class Context : Object
         return n_scores;
     }
 
-    /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
-    public signal Category? request_category (string category_key);
-
-    public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style)
-    {
-        this.game_window = game_window;
-        this.style = style;
-
-        if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
-        {
-            scorecmp = (a,b) => {
-                return (int) (b.score > a.score) - (int) (a.score > b.score);
-            };
-        }
-        else
-        {
-            scorecmp = (a,b) => {
-                return (int) (b.score < a.score) - (int) (a.score < b.score);
-            };
-        }
-
-        var base_name = app_name;
-        this.dialog_label = dialog_label;
-
-        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
-
-        try
-        {
-            load_scores_from_files ();
-        }
-        catch (Error e)
-        {
-            warning ("%s", e.message);
-        }
-    }
-
     /* Return true if a dialog was launched on attaining high score */
     public bool add_score (long score_value, Category category) throws Error
     {
@@ -201,6 +201,9 @@ public class Context : Object
 
     private void load_scores_from_files () throws Error
     {
+        /* All the I/O in this function is synchronous because it is called when
+           the Context object is created. That should be when the application is
+           loading its UI. */
         var directory = File.new_for_path (user_score_dir);
 
         if (!directory.query_exists ())
