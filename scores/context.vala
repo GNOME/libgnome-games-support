@@ -167,7 +167,6 @@ public class Context : Object
         if (scores_per_category[category].add (score))
             current_category = category;
 
-        /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
         if (!high_score_added)
         {
             save_score_to_file (score, category);
@@ -175,6 +174,7 @@ public class Context : Object
         }
         else
         {
+            /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
             run_dialog_internal (score);
             return true;
         }
