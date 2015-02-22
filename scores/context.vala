@@ -32,7 +32,6 @@ public enum Style
 public class Context : Object
 {
     /* All these variables are needed by dialog and as parameters to Dialog constructor. */
-    private Score? last_score = null;
     private Category? current_category = null;
     private Style style;
     private string dialog_label;
@@ -181,10 +180,7 @@ public class Context : Object
             scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
 
         if (scores_per_category[category].add (score))
-        {
-            last_score = score;
             current_category = category;
-        }
 
         /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
         if (!high_score_added)
@@ -194,7 +190,7 @@ public class Context : Object
         }
         else
         {
-            run_dialog_internal (DialogMode.HIGH_SCORE_ADDED);
+            run_dialog_internal (score);
             return true;
         }
     }
@@ -294,7 +290,7 @@ public class Context : Object
         return score_value > lowest;
     }
 
-    internal void run_dialog_internal (DialogMode mode)
+    internal void run_dialog_internal (Score? new_high_score)
     {
         if (!scores_loaded_from_file)
         {
@@ -311,7 +307,7 @@ public class Context : Object
 
         if (game_window != null)
         {
-            var dialog = new Dialog (this, dialog_label, style, last_score, current_category, game_window, mode);
+            var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
             dialog.run ();
             dialog.destroy ();
         }
@@ -319,7 +315,7 @@ public class Context : Object
 
     public void run_dialog ()
     {
-        run_dialog_internal (DialogMode.CATEGORY_BROWSER);
+        run_dialog_internal (null);
     }
 
     public bool has_scores ()

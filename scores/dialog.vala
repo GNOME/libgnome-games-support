@@ -21,12 +21,6 @@
 namespace Games {
 namespace Scores {
 
-internal enum DialogMode
-{
-    CATEGORY_BROWSER,
-    HIGH_SCORE_ADDED
-}
-
 private class Dialog : Gtk.Dialog
 {
     private Context context;
@@ -39,12 +33,10 @@ private class Dialog : Gtk.Dialog
     private Gtk.Grid grid;
 
     private Style scores_style;
-    private Score? latest_score;
+    private Score? new_high_score;
     private Category? scores_active_category;
 
-    private DialogMode mode;
-
-    public Dialog (Context context, string dialog_label, Style style, Score? latest_score, Category? current_cat, Gtk.Window window, DialogMode mode)
+    public Dialog (Context context, string dialog_label, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window)
     {
         Object (use_header_bar : 1);
 
@@ -52,17 +44,16 @@ private class Dialog : Gtk.Dialog
 
         this.context = context;
         this.transient_for = window;
-        this.latest_score = latest_score;
-        this.mode = mode;
+        this.new_high_score = new_high_score;
 
         scores_style = style;
         scores_active_category = current_cat;
 
         headerbar = (Gtk.HeaderBar) this.get_header_bar ();
 
-        headerbar.show_close_button = (mode == DialogMode.CATEGORY_BROWSER);
+        headerbar.show_close_button = (new_high_score == null);
 
-        if (mode == DialogMode.HIGH_SCORE_ADDED)
+        if (new_high_score != null)
         /* Appears at the top of the dialog, as the heading of the dialog */
             headerbar.title = _("Congratulations!");
         else if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
@@ -87,7 +78,7 @@ private class Dialog : Gtk.Dialog
         label.halign = Gtk.Align.CENTER;
         catbar.pack_start (label, false, false, 0);
 
-        if (mode == DialogMode.HIGH_SCORE_ADDED)
+        if (new_high_score != null)
         {
             category_label = new Gtk.Label (scores_active_category.name);
             category_label.use_markup = true;
@@ -138,7 +129,7 @@ private class Dialog : Gtk.Dialog
         grid.baseline_row = 0;
         fill_grid_with_labels ();
 
-        if (mode == DialogMode.HIGH_SCORE_ADDED)
+        if (new_high_score != null)
             /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
             add_button (_("Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
@@ -187,7 +178,7 @@ private class Dialog : Gtk.Dialog
     private void load_categories ()
     {
         /* If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category. */
-        if (mode == DialogMode.HIGH_SCORE_ADDED)
+        if (new_high_score != null)
         {
             load_scores ();
         }
@@ -224,7 +215,7 @@ private class Dialog : Gtk.Dialog
     /* loads the scores of current active_category */
     private void load_scores ()
     {
-        if (mode == DialogMode.HIGH_SCORE_ADDED)
+        if (new_high_score != null)
             active_category = new Category (scores_active_category.key, scores_active_category.name);
         else
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
@@ -253,9 +244,7 @@ private class Dialog : Gtk.Dialog
         var score = (Gtk.Label) grid.get_child_at (1, row_count);
         score.set_text (x.score.to_string ());
 
-        if (mode == DialogMode.HIGH_SCORE_ADDED
-            && latest_score != null
-            && Score.equals (x, latest_score))
+        if (new_high_score != null && Score.equals (x, new_high_score))
         {
             if (no_scores > 1 && row_count == 1)
                 headerbar.subtitle = _("Your score is the best!");
