@@ -199,7 +199,6 @@ private class Dialog : Gtk.Dialog
             return;
         }
 
-
         if (combo == null)
             return;
 
