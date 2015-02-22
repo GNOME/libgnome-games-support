@@ -23,7 +23,7 @@ namespace Scores {
 
 private class Dialog : Gtk.Dialog
 {
-    private Context scores;
+    private Context context;
     private Category? active_category = null;
     private int rows_to_display = 10;
 
@@ -36,13 +36,13 @@ private class Dialog : Gtk.Dialog
     private Score? scores_latest_score;
     private Category? scores_active_category;
 
-    public Dialog (Context scores, string dialog_label, Style style, Score? latest_score, Category? current_cat, Gtk.Window window)
+    public Dialog (Context context, string dialog_label, Style style, Score? latest_score, Category? current_cat, Gtk.Window window)
     {
         Object (use_header_bar : 1);
 
         resizable = false;
 
-        this.scores = scores;
+        this.context = context;
         this.transient_for = window;
         scores_latest_score = latest_score;
         scores_style = style;
@@ -50,12 +50,12 @@ private class Dialog : Gtk.Dialog
 
         headerbar = (Gtk.HeaderBar) this.get_header_bar ();
 
-        if (scores.high_score_added)
+        if (context.high_score_added)
             headerbar.show_close_button = false;
         else
             headerbar.show_close_button = true;
 
-        if (scores.high_score_added)
+        if (context.high_score_added)
         /* Appears at the top of the dialog, as the heading of the dialog */
             headerbar.title = _("Congratulations!");
         else if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
@@ -80,7 +80,7 @@ private class Dialog : Gtk.Dialog
         label.halign = Gtk.Align.CENTER;
         catbar.pack_start (label, false, false, 0);
 
-        if (scores.high_score_added)
+        if (context.high_score_added)
         {
             category_label = new Gtk.Label (scores_active_category.name);
             category_label.use_markup = true;
@@ -131,7 +131,7 @@ private class Dialog : Gtk.Dialog
         grid.baseline_row = 0;
         fill_grid_with_labels ();
 
-        if (scores.high_score_added)
+        if (context.high_score_added)
             /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
             add_button (_("Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
@@ -180,13 +180,13 @@ private class Dialog : Gtk.Dialog
     private void load_categories ()
     {
         /* If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category. */
-        if (scores.high_score_added)
+        if (context.high_score_added)
             load_scores ();
 
         if (combo == null)
             return;
 
-        if (scores.has_scores ())
+        if (context.has_scores ())
         {
             warning ("A GamesScoresDialog was created but no scores exist yet. " +
                      "Games should not allow this dialog to be created before scores have been added. " +
@@ -194,7 +194,7 @@ private class Dialog : Gtk.Dialog
             return;
         }
 
-        var categories = scores.get_categories ();
+        var categories = context.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
 
         if (scores_active_category == null)
@@ -216,12 +216,12 @@ private class Dialog : Gtk.Dialog
     /* loads the scores of current active_category */
     private void load_scores ()
     {
-        if (scores.high_score_added)
+        if (context.high_score_added)
             active_category = new Category (scores_active_category.key, scores_active_category.name);
         else
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
 
-        var best_n_scores = scores.get_best_n_scores (active_category, rows_to_display);
+        var best_n_scores = context.get_best_n_scores (active_category, rows_to_display);
         uint no_scores = best_n_scores.length ();
 
         int row_count = 1;
@@ -245,7 +245,7 @@ private class Dialog : Gtk.Dialog
         var score = (Gtk.Label) grid.get_child_at (1, row_count);
         score.set_text (x.score.to_string ());
 
-        if (scores.high_score_added
+        if (context.high_score_added
             && scores_latest_score != null
             && Score.equals (x, scores_latest_score))
         {
@@ -260,11 +260,11 @@ private class Dialog : Gtk.Dialog
             var visible = (Gtk.Entry) temp_stack.get_visible_child ();
             visible.text = x.user;
             visible.activate.connect (() => {
-                scores.update_score_name (x, visible.get_text (), active_category);
+                context.update_score_name (x, visible.get_text (), active_category);
                 x.user = visible.get_text ();
             });
 
-            scores.high_score_added = false;
+            context.high_score_added = false;
         }
 
         var name_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
