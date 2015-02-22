@@ -68,7 +68,7 @@ public class Context : Object
     }
 
     /* Primarily used to change name of player and save the changed score to file */
-    internal void update_score_name (Score old_score, string new_name, Category category)
+    internal void update_score_name (Score old_score, Category category, string new_name)
     {
         var list_scores = new List<Score> ();
         var scores_of_this_category = scores_per_category[category];

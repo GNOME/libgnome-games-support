@@ -268,7 +268,7 @@ private class Dialog : Gtk.Dialog
             var entry = (Gtk.Entry) temp_stack.get_visible_child ();
             entry.text = x.user;
             entry.notify["text"].connect (() => {
-                context.update_score_name (x, entry.get_text (), active_category);
+                context.update_score_name (x, active_category, entry.get_text ());
                 x.user = entry.get_text ();
             });
         }
