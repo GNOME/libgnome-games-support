@@ -201,9 +201,14 @@ public class Context : Object
 
     private void load_scores_from_files () throws Error
     {
-        /* All the I/O in this function is synchronous because it is called when
-           the Context object is created. That should be when the application is
-           loading its UI. */
+        if (game_window != null && game_window.visible)
+        {
+            warning ("The application window associated with the GamesScoresContext " +
+                     "was set visible before the Context was constructed. The Context " +
+                     "performs synchronous I/O to load scores when it is constructed, " +
+                     "so you should create the Context before showing your main window.");
+        }
+
         var directory = File.new_for_path (user_score_dir);
 
         if (!directory.query_exists ())
