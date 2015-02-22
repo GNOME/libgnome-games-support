@@ -265,11 +265,11 @@ private class Dialog : Gtk.Dialog
             var temp_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
             temp_stack.visible_child_name = "entry";
 
-            var visible = (Gtk.Entry) temp_stack.get_visible_child ();
-            visible.text = x.user;
-            visible.activate.connect (() => {
-                context.update_score_name (x, visible.get_text (), active_category);
-                x.user = visible.get_text ();
+            var entry = (Gtk.Entry) temp_stack.get_visible_child ();
+            entry.text = x.user;
+            entry.activate.connect (() => {
+                context.update_score_name (x, entry.get_text (), active_category);
+                x.user = entry.get_text ();
             });
         }
 
