@@ -41,7 +41,6 @@ public class Context : Object
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
 
     private string user_score_dir;
-    private bool scores_loaded_from_file = false;
 
     /*Comparison and hash functions for Map and Priority Queue.*/
     private CompareDataFunc<Score?> scorecmp;
@@ -137,24 +136,20 @@ public class Context : Object
         this.dialog_label = dialog_label;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
+
+        try
+        {
+            load_scores_from_files ();
+        }
+        catch (Error e)
+        {
+            warning ("%s", e.message);
+        }
     }
 
     /* Return true if a dialog was launched on attaining high score */
     public bool add_score (long score_value, Category category) throws Error
     {
-        if (!scores_loaded_from_file)
-        {
-            try
-            {
-                load_scores_from_files ();
-                scores_loaded_from_file = true;
-            }
-            catch (Error e)
-            {
-                warning ("%s", e.message);
-            }
-        }
-
         var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
           If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
@@ -283,19 +278,6 @@ public class Context : Object
     internal void run_dialog_internal (Score? new_high_score) throws Error
         requires (game_window != null)
     {
-        if (!scores_loaded_from_file)
-        {
-            try
-            {
-                load_scores_from_files ();
-                scores_loaded_from_file = true;
-            }
-            catch (Error e)
-            {
-                warning ("%s", e.message);
-            }
-        }
-
         var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
         dialog.run ();
         dialog.destroy ();
