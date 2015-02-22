@@ -186,29 +186,30 @@ private class Dialog : Gtk.Dialog
         if (combo == null)
             return;
 
+        if (scores.has_scores ())
+        {
+            warning ("A GamesScoresDialog was created but no scores exist yet. " +
+                     "Games should not allow this dialog to be created before scores have been added. " +
+                     "Use games_scores_context_has_scores() to determine if this dialog should be available.");
+            return;
+        }
+
         var categories = scores.get_categories ();
         categories.foreach ((x) => combo.append (x.key, x.name));
 
-        if (categories.length() > 0)
-        {
-            if (scores_active_category == null)
-                combo.active_id = categories.nth_data (0).key;
-            else
-                combo.active_id = scores_active_category.key;
+        if (scores_active_category == null)
+            combo.active_id = categories.nth_data (0).key;
+        else
+            combo.active_id = scores_active_category.key;
 
-            if (active_category == null)
-            {
-                active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
-            }
-            else
-            {
-                active_category.key = categories.nth_data (0).key;
-                active_category.name = categories.nth_data (0).name;
-            }
+        if (active_category == null)
+        {
+            active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
         }
         else
         {
-            active_category = null;
+            active_category.key = categories.nth_data (0).key;
+            active_category.name = categories.nth_data (0).name;
         }
     }
 
