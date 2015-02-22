@@ -41,8 +41,6 @@ public class Context : Object
     /* A priority queue enables us to easily fetch the top 10 scores */
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
 
-    /* This variable is used to identify if the dialog has opened due to adding of a score */
-    internal bool high_score_added { get; set; default = false; }
     private bool score_added = false;
     private string user_score_dir;
     private bool scores_loaded_from_file = false;
@@ -169,6 +167,7 @@ public class Context : Object
             }
         }
 
+        var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
           If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
           we wish to save scores to file right now itself rather than waiting for a call to update_score. */
@@ -197,7 +196,7 @@ public class Context : Object
         }
         else
         {
-            run_dialog ();
+            run_dialog_internal (DialogMode.HIGH_SCORE_ADDED);
             return true;
         }
     }
@@ -297,7 +296,7 @@ public class Context : Object
         return score_value > lowest;
     }
 
-    public void run_dialog ()
+    internal void run_dialog_internal (DialogMode mode)
     {
         if (!scores_loaded_from_file)
         {
@@ -314,16 +313,26 @@ public class Context : Object
 
         if (game_window != null)
         {
-            var dialog = new Dialog (this, dialog_label, style, last_score, current_category, game_window);
+            var dialog = new Dialog (this, dialog_label, style, last_score, current_category, game_window, mode);
             dialog.run ();
             dialog.destroy ();
         }
         score_added = false;
     }
 
+    public void run_dialog ()
+    {
+        run_dialog_internal (DialogMode.CATEGORY_BROWSER);
+    }
+
     public bool has_scores ()
     {
-        return scores_per_category.is_empty;
+        foreach (var scores in scores_per_category.values)
+        {
+            if (scores.size > 0)
+                return true;
+        }
+        return false;
     }
 }
 
