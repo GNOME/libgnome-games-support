@@ -41,7 +41,6 @@ public class Context : Object
     /* A priority queue enables us to easily fetch the top 10 scores */
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
 
-    private bool score_added = false;
     private string user_score_dir;
     private bool scores_loaded_from_file = false;
 
@@ -185,7 +184,6 @@ public class Context : Object
         {
             last_score = score;
             current_category = category;
-            score_added = true;
         }
 
         /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
@@ -317,7 +315,6 @@ public class Context : Object
             dialog.run ();
             dialog.destroy ();
         }
-        score_added = false;
     }
 
     public void run_dialog ()
