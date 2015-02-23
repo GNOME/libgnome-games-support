@@ -230,7 +230,14 @@ public class Context : Object
             var category = request_category (category_key);
 
             if (category == null)
+            {
+                warning ("GamesScoresContext requested a GamesScoresCategory for the " +
+                         "category %s, but the application did not supply any " +
+                         "GamesScoresCategory. Scores will not be loaded. You should " +
+                         "connect to GamesScoresContext::request-category to supply " +
+                         "a GamesScoresCategory.", category_key);
                 continue;
+            }
 
             var filename = Path.build_filename (user_score_dir, category_key);
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
