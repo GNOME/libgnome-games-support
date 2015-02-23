@@ -54,7 +54,7 @@ public class Context : Object
     };
 
     /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
-    public signal Category? request_category (string category_key);
+    public signal Category? category_request (string category_key);
 
     public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style)
     {
@@ -227,14 +227,14 @@ public class Context : Object
         while ((file_info = enumerator.next_file ()) != null)
         {
             var category_key = file_info.get_name ();
-            var category = request_category (category_key);
+            var category = category_request (category_key);
 
             if (category == null)
             {
                 warning ("GamesScoresContext requested a GamesScoresCategory for the " +
                          "category %s, but the application did not supply any " +
                          "GamesScoresCategory. Scores will not be loaded. You should " +
-                         "connect to GamesScoresContext::request-category to supply " +
+                         "connect to GamesScoresContext::category-request to supply " +
                          "a GamesScoresCategory.", category_key);
                 continue;
             }
