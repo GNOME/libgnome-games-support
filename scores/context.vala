@@ -207,7 +207,6 @@ public class Context : Object
 
     private void load_scores_from_files () throws Error
     {
-        // FIXME this function does not seem to work at all
         if (game_window != null && game_window.visible)
         {
             warning ("The application window associated with the GamesScoresContext " +
