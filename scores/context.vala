@@ -142,18 +142,7 @@ public class Context : Object
     /* Return true if a dialog was launched on attaining high score */
     public bool add_score (long score_value, Category category) throws Error
     {
-        if (!scores_loaded_from_file)
-        {
-            try
-            {
-                load_scores_from_files ();
-                scores_loaded_from_file = true;
-            }
-            catch (Error e)
-            {
-                warning ("%s", e.message);
-            }
-        }
+        load_scores_if_needed ();
 
         var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
@@ -277,6 +266,22 @@ public class Context : Object
         }
     }
 
+    private void load_scores_if_needed ()
+    {
+        if (!scores_loaded_from_file)
+        {
+            try
+            {
+                load_scores_from_files ();
+                scores_loaded_from_file = true;
+            }
+            catch (Error e)
+            {
+                warning ("%s", e.message);
+            }
+        }
+    }
+
     private bool is_high_score (long score_value, Category category)
     {
         var best_scores = get_best_n_scores (category, 10);
@@ -299,18 +304,7 @@ public class Context : Object
     internal void run_dialog_internal (Score? new_high_score) throws Error
         requires (game_window != null)
     {
-        if (!scores_loaded_from_file)
-        {
-            try
-            {
-                load_scores_from_files ();
-                scores_loaded_from_file = true;
-            }
-            catch (Error e)
-            {
-                warning ("%s", e.message);
-            }
-        }
+        load_scores_if_needed ();
 
         var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
         dialog.run ();
@@ -327,18 +321,7 @@ public class Context : Object
 
     public bool has_scores ()
     {
-        if (!scores_loaded_from_file)
-        {
-            try
-            {
-                load_scores_from_files ();
-                scores_loaded_from_file = true;
-            }
-            catch (Error e)
-            {
-                warning ("%s", e.message);
-            }
-        }
+        load_scores_if_needed ();
 
         foreach (var scores in scores_per_category.values)
         {
