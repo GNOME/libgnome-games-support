@@ -327,6 +327,19 @@ public class Context : Object
 
     public bool has_scores ()
     {
+        if (!scores_loaded_from_file)
+        {
+            try
+            {
+                load_scores_from_files ();
+                scores_loaded_from_file = true;
+            }
+            catch (Error e)
+            {
+                warning ("%s", e.message);
+            }
+        }
+
         foreach (var scores in scores_per_category.values)
         {
             if (scores.size > 0)
