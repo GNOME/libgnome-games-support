@@ -1,0 +1,64 @@
+# Chinese (Taiwan) translation for libgames-support.
+# Copyright (C) 2015 libgames-support's COPYRIGHT HOLDER
+# This file is distributed under the same license as the libgames-support package.
+# Cheng-Chia Tseng <>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libgames-support master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
+"scores&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-03-19 10:39+0000\n"
+"PO-Revision-Date: 2015-03-19 22:16+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Taiwan) <chinese-l10n@googlegroups.com>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+
+#. Appears at the top of the dialog, as the heading of the dialog
+#: ../scores/dialog.vala:58
+msgid "Congratulations!"
+msgstr "恭喜！"
+
+#: ../scores/dialog.vala:60
+msgid "High Scores"
+msgstr "最高分數"
+
+#: ../scores/dialog.vala:62
+msgid "Best Times"
+msgstr "最強時間"
+
+#. A column heading in the scores dialog
+#: ../scores/dialog.vala:106
+msgid "Rank"
+msgstr "名次"
+
+#. A column heading in the scores dialog
+#: ../scores/dialog.vala:115
+msgid "Score"
+msgstr "分數"
+
+#: ../scores/dialog.vala:117
+msgid "Time"
+msgstr "時間"
+
+#. A column heading in the scores dialog
+#: ../scores/dialog.vala:124
+msgid "Player"
+msgstr "玩家"
+
+#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
+#: ../scores/dialog.vala:134
+msgid "Done"
+msgstr "完成"
+
+#: ../scores/dialog.vala:250
+msgid "Your score is the best!"
+msgstr "您的分數是最高分！"
+
+#: ../scores/dialog.vala:252
+msgid "Your score has made the top ten."
+msgstr "您的分數已進入前十名。"
