@@ -77,7 +77,7 @@ public class Context : Object
         var base_name = app_name;
         this.dialog_label = dialog_label;
 
-        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
+        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
     }
 
     internal List<Category?> get_categories ()
