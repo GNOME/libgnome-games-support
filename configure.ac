@@ -16,7 +16,6 @@ AC_SUBST([LIBGAMES_SUPPORT_LT_VERSION])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_SRCDIR([scores/context.vala])
 
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign subdir-objects])
 AM_SILENT_RULES([yes])
