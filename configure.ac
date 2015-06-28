@@ -22,8 +22,6 @@ AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign subdir-objects])
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
-GNOME_MAINTAINER_MODE_DEFINES
-
 AM_PROG_VALAC([0.24])
 
 LT_PREREQ([2.2])
