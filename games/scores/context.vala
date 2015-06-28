@@ -198,7 +198,7 @@ public class Context : Object
     {
         if (game_window != null && game_window.visible)
         {
-            error ("The application window associated with the GamesScoresContext was" +
+            error ("The application window associated with the GamesScoresContext " +
                    "was set visible before the Context was constructed. The Context " +
                    "performs synchronous I/O in the default main context to load " +
                    "scores when it is constructed, so you should create the Context " +
