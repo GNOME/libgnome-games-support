@@ -37,11 +37,11 @@ AC_SUBST([GETTEXT_PACKAGE], [AC_PACKAGE_NAME])
 IT_PROG_INTLTOOL([0.50.2])
 
 AC_CONFIG_FILES([
-	Makefile
-	libgames-support-1.0.pc
-	po/Makefile.in
-	games/Makefile
-	tests/Makefile
+  Makefile
+  libgames-support-1.0.pc
+  po/Makefile.in
+  games/Makefile
+  tests/Makefile
 ])
 
 AC_OUTPUT
