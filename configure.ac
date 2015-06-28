@@ -40,6 +40,7 @@ AC_CONFIG_FILES([
 	Makefile
 	libgames-support-1.0.pc
 	po/Makefile.in
+	games/Makefile
 ])
 
 AC_OUTPUT
