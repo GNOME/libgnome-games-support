@@ -198,10 +198,11 @@ public class Context : Object
     {
         if (game_window != null && game_window.visible)
         {
-            warning ("The application window associated with the GamesScoresContext " +
-                     "was set visible before the Context was constructed. The Context " +
-                     "performs synchronous I/O to load scores when it is constructed, " +
-                     "so you should create the Context before showing your main window.");
+            error ("The application window associated with the GamesScoresContext was" +
+                   "was set visible before the Context was constructed. The Context " +
+                   "performs synchronous I/O in the default main context to load " +
+                   "scores when it is constructed, so you should create the Context " +
+                   "before showing your main window.");
         }
 
         var directory = File.new_for_path (user_score_dir);
@@ -219,12 +220,11 @@ public class Context : Object
 
             if (category == null)
             {
-                warning ("GamesScoresContext requested a GamesScoresCategory for the " +
-                         "category %s, but the application did not supply any " +
-                         "GamesScoresCategory. Scores will not be loaded. You should " +
-                         "connect to GamesScoresContext::category-request to supply " +
-                         "a GamesScoresCategory.", category_key);
-                continue;
+                error ("GamesScoresContext requested a GamesScoresCategory for the " +
+                       "category %s, but the application did not supply any " +
+                       "GamesScoresCategory. Scores will not be loaded. You should " +
+                       "connect to GamesScoresContext::category-request to supply " +
+                       "a GamesScoresCategory.", category_key);
             }
 
             var filename = Path.build_filename (user_score_dir, category_key);

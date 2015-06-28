@@ -184,10 +184,9 @@ private class Dialog : Gtk.Dialog
         }
         else if (!context.has_scores ())
         {
-            warning ("A GamesScoresDialog was created but no scores exist yet. " +
-                     "Games should not allow this dialog to be created before scores have been added. " +
-                     "Use games_scores_context_has_scores() to determine if this dialog should be available.");
-            return;
+            error ("A GamesScoresDialog was created but no scores exist yet. " +
+                   "Games should not allow this dialog to be created before scores have been added. " +
+                   "Use games_scores_context_has_scores() to determine if this dialog should be available.");
         }
 
         if (combo == null)
