@@ -1,4 +1,4 @@
-SUBDIRS = games po
+SUBDIRS = games po tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 

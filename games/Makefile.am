@@ -37,30 +37,6 @@ dist_games_include_HEADERS = games-support.h
 vapidir = $(datadir)/vala/vapi
 dist_vapi_DATA = games-support.vapi
 
-noinst_PROGRAMS = test-scores
-
-TESTS = test-scores
-
-test_scores_SOURCES = \
-	games-support.vapi \
-	scores/test-scores.vala
-
-test_scores_CFLAGS = \
-	-w
-
-test_scores_CPPFLAGS = \
-	$(LIBGAMES_SUPPORT_CFLAGS)
-
-test_scores_LDADD = \
-	libgames-support.la \
-	$(LIBGAMES_SUPPORT_LIBS)
-
-test_scores_VALAFLAGS = \
-	--pkg gee-0.8 \
-	--pkg glib-2.0 \
-	--pkg gio-2.0 \
-	--pkg gtk+-3.0
-
 MAINTAINERCLEANFILES = \
 	games-support.h		\
 	games-support.vapi
