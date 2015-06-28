@@ -2,7 +2,7 @@ SUBDIRS = po
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libgames-support.pc
+pkgconfig_DATA = libgames-support-1.0.pc
 
 lib_LTLIBRARIES = libgames-support.la
 

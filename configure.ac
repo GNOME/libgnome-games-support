@@ -38,7 +38,7 @@ IT_PROG_INTLTOOL([0.50.2])
 
 AC_CONFIG_FILES([
 	Makefile
-	libgames-support.pc
+	libgames-support-1.0.pc
 	po/Makefile.in
 ])
 
