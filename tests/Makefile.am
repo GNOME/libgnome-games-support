@@ -3,7 +3,7 @@ noinst_PROGRAMS = test-scores
 TESTS = test-scores
 
 test_scores_SOURCES = \
-	$(top_builddir)/games/games-support.vapi	\
+	$(top_builddir)/games/games-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi	\
 	test-scores.vala
 
 test_scores_CFLAGS = \
