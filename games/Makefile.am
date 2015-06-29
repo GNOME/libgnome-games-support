@@ -2,6 +2,7 @@ lib_LTLIBRARIES = libgames-support.la
 
 libgames_support_la_SOURCES = \
 	config.vapi		\
+	gridframe.vala		\
 	scores/category.vala	\
 	scores/context.vala	\
 	scores/dialog.vala	\
