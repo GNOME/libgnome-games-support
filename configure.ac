@@ -1,6 +1,10 @@
 AC_PREREQ([2.69])
 AC_INIT([libgames-support], [0.1], [https://bugzilla.gnome.org])
 
+dnl http://people.gnome.org/~walters/docs/build-api.txt
+dnl https://bugzilla.gnome.org/show_bug.cgi?id=751624
+echo \#buildapi-variable-no-builddir >/dev/null
+
 dnl * If the library source code has changed at all since the last update, then
 dnl   increment revision (‘c:r:a’ becomes ‘c:r+1:a’).
 dnl * If any interfaces have been added, removed, or changed since the last
