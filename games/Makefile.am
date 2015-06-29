@@ -26,19 +26,19 @@ libgames_support_la_VALAFLAGS = \
 	--pkg gtk+-3.0			\
 	--pkg gio-2.0			\
 	--pkg gee-0.8			\
-	--header=games-support.h	\
-	--vapi=games-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi
+	--header=libgames-support.h	\
+	--vapi=libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi
 
-games-support.h games-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi : libgames_support_la_vala.stamp
+libgames-support.h libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi: libgames_support_la_vala.stamp
 
 games_includedir = $(includedir)/gnome-games
-dist_games_include_HEADERS = games-support.h
+dist_games_include_HEADERS = libgames-support.h
 
 vapidir = $(datadir)/vala/vapi
-dist_vapi_DATA = games-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi
+dist_vapi_DATA = libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi
 
 MAINTAINERCLEANFILES = \
-	games-support.h	\
-	games-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi
+	libgames-support.h	\
+	libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).vapi
 
 -include $(top_srcdir)/git.mk
