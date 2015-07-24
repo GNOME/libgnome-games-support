@@ -36,6 +36,7 @@ public class Context : Object
     private Style style;
     private string dialog_label;
     private Gtk.Window? game_window;
+    private string app_name;
 
     /* A priority queue enables us to easily fetch the top 10 scores */
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
@@ -76,6 +77,7 @@ public class Context : Object
 
         var base_name = app_name;
         this.dialog_label = dialog_label;
+        this.app_name = app_name;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
     }
@@ -306,7 +308,7 @@ public class Context : Object
     {
         load_scores_if_needed ();
 
-        var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window);
+        var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window, app_name);
         dialog.run ();
         dialog.destroy ();
 

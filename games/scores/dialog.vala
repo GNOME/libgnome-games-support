@@ -36,7 +36,7 @@ private class Dialog : Gtk.Dialog
     private Score? new_high_score;
     private Category? scores_active_category;
 
-    public Dialog (Context context, string dialog_label, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window)
+    public Dialog (Context context, string dialog_label, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string app_name)
     {
         Object (use_header_bar : 1);
 
@@ -60,6 +60,36 @@ private class Dialog : Gtk.Dialog
             headerbar.title = _("High Scores");
         else
             headerbar.title = _("Best Times");
+
+        if (!context.has_scores () && new_high_score == null)
+        {
+            var vbox = this.get_content_area ();
+            vbox.spacing = 12;
+            vbox.border_width = 10;
+            vbox.width_request = 450;
+            vbox.height_request = 500;
+            vbox.get_style_context ().add_class ("dim-label");
+
+            var image = new Gtk.Image ();
+            image.icon_name = app_name + "-symbolic";
+            image.pixel_size = 64;
+            image.opacity = 0.2;
+            image.valign = Gtk.Align.CENTER;
+            vbox.add (image);
+
+            var title_label = new Gtk.Label ("<b><span size=\"large\">" + _("No scores yet") + "</span></b>");
+            title_label.use_markup = true;
+            title_label.valign = Gtk.Align.CENTER;
+            vbox.add (title_label);
+
+            var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
+            description_label.valign = Gtk.Align.CENTER;
+            vbox.add (description_label);
+
+            vbox.show_all ();
+
+            return;
+        }
 
         var vbox = this.get_content_area ();
         vbox.spacing = 20;
@@ -181,12 +211,6 @@ private class Dialog : Gtk.Dialog
         if (new_high_score != null)
         {
             load_scores ();
-        }
-        else if (!context.has_scores ())
-        {
-            error ("A GamesScoresDialog was created but no scores exist yet. " +
-                   "Games should not allow this dialog to be created before scores have been added. " +
-                   "Use games_scores_context_has_scores() to determine if this dialog should be available.");
         }
 
         if (combo == null)
