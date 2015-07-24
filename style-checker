@@ -33,7 +33,7 @@ def find( s, ch ):
 def main():
     print("Validating the diff ...")
 
-    p = os.popen( 'git diff --unified=0', "r" )
+    p = os.popen( 'git diff --cached --unified=0', "r" )
 
     # Read the diff
     lines = []
