@@ -64,29 +64,28 @@ private class Dialog : Gtk.Dialog
         if (!context.has_scores () && new_high_score == null)
         {
             var vbox = this.get_content_area ();
-            vbox.spacing = 12;
+            vbox.spacing = 4;
             vbox.border_width = 10;
-            vbox.width_request = 450;
-            vbox.height_request = 500;
+            vbox.valign = Gtk.Align.CENTER;
             vbox.get_style_context ().add_class ("dim-label");
 
             var image = new Gtk.Image ();
             image.icon_name = app_name + "-symbolic";
             image.pixel_size = 64;
             image.opacity = 0.2;
-            image.valign = Gtk.Align.CENTER;
-            vbox.add (image);
+            vbox.pack_start (image, false, false);
 
             var title_label = new Gtk.Label ("<b><span size=\"large\">" + _("No scores yet") + "</span></b>");
             title_label.use_markup = true;
-            title_label.valign = Gtk.Align.CENTER;
-            vbox.add (title_label);
+            vbox.pack_start (title_label, false, false);
 
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
-            description_label.valign = Gtk.Align.CENTER;
-            vbox.add (description_label);
+            vbox.pack_start (description_label, false, false);
 
             vbox.show_all ();
+
+            width_request = 450;
+            height_request = 500;
 
             return;
         }
