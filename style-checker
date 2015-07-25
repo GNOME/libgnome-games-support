@@ -116,7 +116,7 @@ def main():
         for index in indexes:
             if index > 1:
                 if getLineData( currLine, index - 1 ) != ' ' \
-                        and getLineData( currLine, index - 1 ) not in [ '_', '(', '&', '*', '-', '(', '!','\t' ]:
+                        and getLineData( currLine, index - 1 ) not in [ '_', '(', '&', '*', '-', '(', '!', '\t', '"' ]:
                     printIssue( currLine, "missing whitespace before (" )
                     nIssues += 1
                 elif getLineData( currLine, index - 2 ) == ' ' \
