@@ -21,7 +21,7 @@
 namespace Games {
 namespace Scores {
 
-public class Category: Object
+public class Category : Object
 {
     public string key { get; set; }
     public string name { get; set; }
