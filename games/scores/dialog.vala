@@ -127,6 +127,7 @@ private class Dialog : Gtk.Dialog
         vbox.pack_start (grid, false, false, 0);
 
         grid.row_homogeneous = true;
+        grid.column_homogeneous = true;
         grid.column_spacing = 30;
         grid.margin = 20;
         grid.halign = Gtk.Align.CENTER;
@@ -183,7 +184,8 @@ private class Dialog : Gtk.Dialog
 
             var stack = new Gtk.Stack ();
             stack.visible = true;
-            stack.homogeneous = true;
+            stack.homogeneous = false;
+            stack.vhomogeneous = true;
             stack.transition_type = Gtk.StackTransitionType.NONE;
 
             var label = new Gtk.Label ("");
