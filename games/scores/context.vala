@@ -120,7 +120,7 @@ public class Context : Object
     }
 
     /* Get a maximum of best n scores from the given category */
-    internal List<Score>? get_best_n_scores (Category category, int n)
+    public List<Score>? get_best_n_scores (Category category, int n)
     {
         if (!scores_per_category.has_key (category))
         {
