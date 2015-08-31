@@ -1,17 +1,17 @@
 # Hungarian translation for libgames-scores.
-# Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
+# Copyright (C) 2014, 2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libgames-scores package.
 #
-# Balázs Úr <urbalazs at gmail dot com>, 2014.
+# Balázs Úr <urbalazs@gmail.com>, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-20 21:25+0000\n"
-"PO-Revision-Date: 2014-09-21 00:20+0200\n"
+"POT-Creation-Date: 2015-07-24 17:01+0000\n"
+"PO-Revision-Date: 2015-08-31 19:14+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
-"Language-Team: Hungarian <gnome-hu-list@gnome.org>\n"
+"Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,48 +20,56 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../src/dialog.vala:58
+#: ../games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Gratulálok!"
 
-#: ../src/dialog.vala:60
+#: ../games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Legmagasabb pontok"
 
-#: ../src/dialog.vala:62
+#: ../games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Legjobb idők"
 
+#: ../games/scores/dialog.vala:80
+#| msgid "Your score is the best!"
+msgid "No scores yet"
+msgstr "Még nincsenek pontok"
+
+#: ../games/scores/dialog.vala:85
+msgid "Play some games and your scores will show up here."
+msgstr "Játsszon pár játékot, és a pontjai itt fognak megjelenni."
+
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:108
+#: ../games/scores/dialog.vala:136
 msgid "Rank"
 msgstr "Rang"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:117
+#: ../games/scores/dialog.vala:145
 msgid "Score"
 msgstr "Pont"
 
-#: ../src/dialog.vala:119
+#: ../games/scores/dialog.vala:147
 msgid "Time"
 msgstr "Idő"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:126
+#: ../games/scores/dialog.vala:154
 msgid "Player"
 msgstr "Játékos"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../src/dialog.vala:136
+#: ../games/scores/dialog.vala:164
 msgid "Done"
 msgstr "Kész"
 
-#. Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog.
-#: ../src/dialog.vala:255
+#: ../games/scores/dialog.vala:273
 msgid "Your score is the best!"
 msgstr "Pontszáma a legjobb!"
 
-#: ../src/dialog.vala:257
+#: ../games/scores/dialog.vala:275
 msgid "Your score has made the top ten."
 msgstr "Pontszáma benne van az első tízben."
 
