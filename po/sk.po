@@ -8,58 +8,66 @@ msgstr ""
 "Project-Id-Version: libgames-support master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
 "scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-12 10:40+0000\n"
-"PO-Revision-Date: 2015-03-12 13:39+0100\n"
+"POT-Creation-Date: 2015-07-24 17:01+0000\n"
+"PO-Revision-Date: 2015-09-06 19:11+0200\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../scores/dialog.vala:58
+#: ../games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Blahoželáme!"
 
-#: ../scores/dialog.vala:60
+#: ../games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Najvyššie skóre"
 
-#: ../scores/dialog.vala:62
+#: ../games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Najlepšie časy"
 
+#: ../games/scores/dialog.vala:80
+msgid "No scores yet"
+msgstr "Zatiaľ žiadne skóre"
+
+#: ../games/scores/dialog.vala:85
+msgid "Play some games and your scores will show up here."
+msgstr "Tu sa zobrazí skóre hier, ktoré odohráte."
+
 #. A column heading in the scores dialog
-#: ../scores/dialog.vala:106
+#: ../games/scores/dialog.vala:136
 msgid "Rank"
 msgstr "Hodnotenie"
 
 #. A column heading in the scores dialog
-#: ../scores/dialog.vala:115
+#: ../games/scores/dialog.vala:145
 msgid "Score"
 msgstr "Skóre"
 
-#: ../scores/dialog.vala:117
+#: ../games/scores/dialog.vala:147
 msgid "Time"
 msgstr "Čas"
 
 #. A column heading in the scores dialog
-#: ../scores/dialog.vala:124
+#: ../games/scores/dialog.vala:154
 msgid "Player"
 msgstr "Hráč"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../scores/dialog.vala:134
+#: ../games/scores/dialog.vala:164
 msgid "Done"
 msgstr "Hotovo"
 
-#: ../scores/dialog.vala:250
+#: ../games/scores/dialog.vala:273
 msgid "Your score is the best!"
 msgstr "Vaše skóre je najlepšie!"
 
-#: ../scores/dialog.vala:252
+#: ../games/scores/dialog.vala:275
 msgid "Your score has made the top ten."
 msgstr "Vaše skóre sa nachádza v prvej desiatke."
