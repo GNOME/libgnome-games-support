@@ -61,7 +61,7 @@ public class Context : Object
     public Context (string app_name, string dialog_label, Gtk.Window? game_window, CategoryRequestFunc category_request, Style style)
     {
         this.game_window = game_window;
-        this.category_request = category_request;
+        this.category_request = (key) => { return category_request (key); };
         this.style = style;
 
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
