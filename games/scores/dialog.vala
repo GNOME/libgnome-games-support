@@ -36,7 +36,7 @@ private class Dialog : Gtk.Dialog
     private Score? new_high_score;
     private Category? scores_active_category;
 
-    public Dialog (Context context, string dialog_label, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string app_name)
+    public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string app_name)
     {
         Object (use_header_bar : 1);
 
@@ -102,7 +102,7 @@ private class Dialog : Gtk.Dialog
         var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         vbox.pack_start (hdiv, false, false, 0);
 
-        var label = new Gtk.Label (dialog_label);
+        var label = new Gtk.Label (category_type);
         label.use_markup = true;
         label.halign = Gtk.Align.CENTER;
         catbar.pack_start (label, false, false, 0);

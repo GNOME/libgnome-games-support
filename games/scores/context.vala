@@ -34,7 +34,7 @@ public class Context : Object
     /* All these variables are needed by dialog and as parameters to Dialog constructor. */
     private Category? current_category = null;
     private Style style;
-    private string dialog_label;
+    private string category_type;
     private Gtk.Window? game_window;
     private string app_name;
 
@@ -57,7 +57,7 @@ public class Context : Object
     public delegate Category CategoryRequestFunc (string category_key);
     private CategoryRequestFunc category_request;
 
-    public Context (string app_name, string dialog_label, Gtk.Window? game_window, CategoryRequestFunc category_request, Style style)
+    public Context (string app_name, string category_type, Gtk.Window? game_window, CategoryRequestFunc category_request, Style style)
     {
         this.game_window = game_window;
         this.category_request = (key) => { return category_request (key); };
@@ -77,7 +77,7 @@ public class Context : Object
         }
 
         var base_name = app_name;
-        this.dialog_label = dialog_label;
+        this.category_type = category_type;
         this.app_name = app_name;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
@@ -288,7 +288,7 @@ public class Context : Object
     internal void run_dialog_internal (Score? new_high_score) throws Error
         requires (game_window != null)
     {
-        var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window, app_name);
+        var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, app_name);
         dialog.run ();
         dialog.destroy ();
 
