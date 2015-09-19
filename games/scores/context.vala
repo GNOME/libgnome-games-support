@@ -42,7 +42,6 @@ public class Context : Object
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
 
     private string user_score_dir;
-    private bool scores_loaded_from_file = false;
 
     /*Comparison and hash functions for Map and Priority Queue.*/
     private CompareDataFunc<Score?> scorecmp;
@@ -82,6 +81,15 @@ public class Context : Object
         this.app_name = app_name;
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
+
+        try
+        {
+            load_scores_from_files ();
+        }
+        catch (Error e)
+        {
+            warning ("%s", e.message);
+        }
     }
 
     internal List<Category?> get_categories ()
@@ -124,8 +132,6 @@ public class Context : Object
     /* Get a maximum of best n scores from the given category */
     public List<Score>? get_best_n_scores (Category category, int n)
     {
-        load_scores_if_needed ();
-
         if (!scores_per_category.has_key (category))
         {
             return null;
@@ -148,8 +154,6 @@ public class Context : Object
     /* Return true if a dialog was launched on attaining high score */
     public bool add_score (long score_value, Category category) throws Error
     {
-        load_scores_if_needed ();
-
         var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
           If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
@@ -262,22 +266,6 @@ public class Context : Object
         }
     }
 
-    private void load_scores_if_needed ()
-    {
-        if (!scores_loaded_from_file)
-        {
-            try
-            {
-                load_scores_from_files ();
-                scores_loaded_from_file = true;
-            }
-            catch (Error e)
-            {
-                warning ("%s", e.message);
-            }
-        }
-    }
-
     private bool is_high_score (long score_value, Category category)
     {
         var best_scores = get_best_n_scores (category, 10);
@@ -300,8 +288,6 @@ public class Context : Object
     internal void run_dialog_internal (Score? new_high_score) throws Error
         requires (game_window != null)
     {
-        load_scores_if_needed ();
-
         var dialog = new Dialog (this, dialog_label, style, new_high_score, current_category, game_window, app_name);
         dialog.run ();
         dialog.destroy ();
@@ -317,8 +303,6 @@ public class Context : Object
 
     public bool has_scores ()
     {
-        load_scores_if_needed ();
-
         foreach (var scores in scores_per_category.values)
         {
             if (scores.size > 0)
