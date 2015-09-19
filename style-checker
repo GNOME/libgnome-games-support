@@ -26,14 +26,15 @@ import sys
 import re
 import os
 
-def find( s, ch ):
-    return [ i for i, ltr in enumerate( s ) if ltr == ch ]
+
+def find(s, ch):
+    return [i for i, ltr in enumerate(s) if ltr == ch]
 
 
 def main():
     print("Validating the diff ...")
 
-    p = os.popen( 'git diff --cached --unified=0', "r" )
+    p = os.popen('git diff --cached --unified=0', "r")
 
     # Read the diff
     lines = []
@@ -43,104 +44,107 @@ def main():
 
     while True:
         line = p.readline()
-
-        if not line: break
-        if line.startswith( '@@' ):
-            lineNumSearch = re.search( r'.* .* \+(\d+).*', line )
-            lineNum = int( lineNumSearch.groups()[ 0 ] )
-        elif line.startswith( '+' ):
-            if line.startswith( '+++' ):
-                pos = line.rfind( '/' )
-                fileName = line[ pos + 1 : -1 ]
-            elif fileName.endswith( 'vala' ):
-                lines += [ ( fileName, lineNum, line[ 1 : ] ) ]
+        if not line:
+            break
+        if line.startswith('@@'):
+            lineNumSearch = re.search(r'.* .* \+(\d+).*', line)
+            lineNum = int(lineNumSearch.groups()[0])
+        elif line.startswith('+'):
+            if line.startswith('+++'):
+                pos = line.rfind('/')
+                fileName = line[pos + 1: -1]
+            elif fileName.endswith('vala'):
+                lines += [(fileName, lineNum, line[1:])]
                 lineNum += 1
 
-    def getLineFileName( line ):
-        return line[ 0 ]
+    def getLineFileName(line):
+        return line[0]
 
-    def getLineNum( line ):
-        return line[ 1 ]
+    def getLineNum(line):
+        return line[1]
 
-    def getLineData( line, pos = -1 ):
+    def getLineData(line, pos=-1):
         if pos == -1:
-            return line[ 2 ]
+            return line[2]
         else:
-            return line[ 2 ][ pos ]
+            return line[2][pos]
 
-    def getLineWidth( line ):
-        return len( getLineData( line ) )
+    def getLineWidth(line):
+        return len(getLineData(line))
 
-    def printIssue( line, msg ):
-        print(getLineFileName( line ) + "  => Line  " + str(getLineNum( line )) + " " + msg)
+    def printIssue(line, msg):
+        print("%s => Line %d %s"
+              % (getLineFileName(line), getLineNum(line), msg))
 
-    for lineNum in range( 0, len( lines ) ):
-
-        currLine = lines[ lineNum ]
+    for lineNum in range(0, len(lines)):
+        currLine = lines[lineNum]
 
         # Line Width
-        if getLineWidth( currLine ) > 120:
-            printIssue( currLine, "is greater than 120 charecters" )
+        if getLineWidth(currLine) > 120:
+            printIssue(currLine, "is greater than 120 charecters")
             nIssues += 1
 
         # Lines with trailing white-space or tabspace
-        if getLineData( currLine ).endswith( ' \n' ):
-            printIssue( currLine, "has trailing whitespace" )
+        if getLineData(currLine).endswith(' \n'):
+            printIssue(currLine, "has trailing whitespace")
             nIssues += 1
 
-        if getLineData( currLine ).endswith( '\t\n' ):
-            printIssue( currLine, "has trailing tabspace" )
+        if getLineData(currLine).endswith('\t\n'):
+            printIssue(currLine, "has trailing tabspace")
             nIssues += 1
 
         # Lines with tabspace
-        if '\t' in getLineData( currLine ):
-            printIssue( currLine, "has tabspace" )
+        if '\t' in getLineData(currLine):
+            printIssue(currLine, "has tabspace")
             nIssues += 1
 
         # Single whitespace before "{"
-        indexes = find( getLineData( currLine ), '{' )
+        indexes = find(getLineData(currLine), '{')
         for index in indexes:
             if index > 1:
-                if getLineData( currLine, index - 1 ) not in [ ' ', '_' ]:
-                    printIssue( currLine, "missing whitespace before {" )
+                if getLineData(currLine, index - 1) not in [' ', '_']:
+                    printIssue(currLine, "missing whitespace before {")
                     nIssues += 1
-                elif getLineData( currLine, index - 2 ) == ' ' \
-                        and getLineData( currLine, index - 1 ) != '_' \
-                        and not ( re.findall( "\s*{", getLineData( currLine ) ) != [] \
-                                      and getLineData( currLine, 0 ) in [ '\t', ' ' ] ):
-                    printIssue( currLine, "multiple whitespace before {" )
+                elif getLineData(currLine, index - 2) == ' ' \
+                    and getLineData(currLine, index - 1) != '_' \
+                    and not (re.findall("\s*{", getLineData(currLine)) != []
+                             and getLineData(currLine, 0) in ['\t', ' ']):
+                    printIssue(currLine, "multiple whitespace before {")
                     nIssues += 1
 
         # Single whitespace before "("
-        indexes = find( getLineData( currLine ), '(' )
+        indexes = find(getLineData(currLine), '(')
         for index in indexes:
             if index > 1:
-                if getLineData( currLine, index - 1 ) != ' ' \
-                        and getLineData( currLine, index - 1 ) not in [ '_', '(', '&', '*', '-', '(', '!', '\t', '"' ]:
-                    printIssue( currLine, "missing whitespace before (" )
+                if getLineData(currLine, index - 1) != ' ' \
+                    and getLineData(currLine, index - 1) \
+                        not in ['_', '(', '&', '*', '-', '(', '!', '\t', '"']:
+                    printIssue(currLine, "missing whitespace before (")
                     nIssues += 1
-                elif getLineData( currLine, index - 2 ) == ' ' \
-                        and getLineData( currLine, index - 1 ) not in [ '_', '(' ] \
-                        and not ( getLineData( currLine ).startswith( " *" ) \
-                                      or getLineData( currLine ).startswith("#") \
-                                      or ( re.findall( "\s*\(", getLineData( currLine ) != [] \
-                                                           and getLineData( currLine, 0 ) in [ '\t', ' ' ] ) ) ):
-                    printIssue( currLine, "multiple whitespace before (" )
+                elif getLineData(currLine, index - 2) == ' ' \
+                    and getLineData(currLine, index - 1) not in ['_', '('] \
+                    and not (getLineData(currLine).startswith(" *")
+                             or getLineData(currLine).startswith("#")
+                             or (re.findall("\s*\(",
+                                 getLineData(currLine) != []
+                                 and getLineData(currLine, 0)
+                                 in ['\t', ' ']))):
+                    printIssue(currLine, "multiple whitespace before (")
                     nIssues += 1
 
         # No whitespce between round brackets "(xyz)"
-        indexes = find( getLineData( currLine ), '(' )
+        indexes = find(getLineData(currLine), '(')
         for index in indexes:
             if index > 1:
-                if getLineData( currLine, index + 1 ) == ' ':
-                    printIssue( currLine, "has whitespace after (" )
+                if getLineData(currLine, index + 1) == ' ':
+                    printIssue(currLine, "has whitespace after (")
                     nIssues += 1
 
-        indexes = find( getLineData( currLine ), ')' )
+        indexes = find(getLineData(currLine), ')')
         for index in indexes:
             if index > 1:
-                if getLineData( currLine, index - 1 ) == ' ':
-                    printIssue( currLine, "has whitespace before )" )
+                if getLineData(currLine, index - 1) == ' ':
+                    printIssue(currLine, "has whitespace before )")
                     nIssues += 1
 
     if nIssues != 0:
@@ -149,10 +153,11 @@ def main():
         else:
             print("Guideline checker found " + str(nIssues) + "issues...")
 
-        print("We strongly recommend you to fix these, to ignore use `git commit --no-verify`")
+        print("We strongly recommend you to fix these.")
+        print("To ignore use `git commit --no-verify`")
         return -1
 
     return 0
 
 if __name__ == "__main__":
-    sys.exit( main() )
+    sys.exit(main())
