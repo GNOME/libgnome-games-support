@@ -122,6 +122,8 @@ public class Context : Object
     /* Get a maximum of best n scores from the given category */
     public List<Score>? get_best_n_scores (Category category, int n)
     {
+        load_scores_if_needed ();
+
         if (!scores_per_category.has_key (category))
         {
             return null;
