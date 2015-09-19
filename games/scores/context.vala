@@ -54,12 +54,14 @@ public class Context : Object
         return str_equal (a.name, b.name);
     };
 
-    /* A signal that asks the game to provide the Category given the category key. This is mainly used to fetch category names. */
-    public signal Category? category_request (string category_key);
+    /* A function provided by the game that converts the category key to a category. */
+    public delegate Category CategoryRequestFunc (string category_key);
+    private CategoryRequestFunc category_request;
 
-    public Context (string app_name, string dialog_label, Gtk.Window? game_window, Style style)
+    public Context (string app_name, string dialog_label, Gtk.Window? game_window, CategoryRequestFunc category_request, Style style)
     {
         this.game_window = game_window;
+        this.category_request = category_request;
         this.style = style;
 
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
@@ -221,16 +223,6 @@ public class Context : Object
         {
             var category_key = file_info.get_name ();
             var category = category_request (category_key);
-
-            if (category == null)
-            {
-                error ("GamesScoresContext requested a GamesScoresCategory for the " +
-                       "category %s, but the application did not supply any " +
-                       "GamesScoresCategory. Scores will not be loaded. You should " +
-                       "connect to GamesScoresContext::category-request to supply " +
-                       "a GamesScoresCategory.", category_key);
-            }
-
             var filename = Path.build_filename (user_score_dir, category_key);
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
             var file = File.new_for_path (filename);

@@ -21,11 +21,17 @@
 namespace Games {
 namespace Scores {
 
+private Category category_request (string category_key)
+{
+    // TODO: This isn't tested....
+    return new Category("test", "test");
+}
+
 private void create_scores ()
 {
     try
     {
-        Context context = new Context ("libgames-scores-test", "Games Type", null, Style.PLAIN_DESCENDING);
+        Context context = new Context ("libgames-scores-test", "Games Type", null, category_request, Style.PLAIN_DESCENDING);
         Category cat = new Category ("cat1", "cat1");
         context.add_score (101, cat);
         context.add_score (102, cat);
