@@ -72,7 +72,7 @@ def main():
         return len( getLineData( line ) )
 
     def printIssue( line, msg ):
-        print(getLineFileName( line ) + "  => Line  " + getLineNum( line ) + " " + msg)
+        print(getLineFileName( line ) + "  => Line  " + str(getLineNum( line )) + " " + msg)
 
     for lineNum in range( 0, len( lines ) ):
 
@@ -145,9 +145,9 @@ def main():
 
     if nIssues != 0:
         if nIssues == 1:
-            print("Guideline checker found " + nIssues + " issue...")
+            print("Guideline checker found " + str(nIssues) + " issue...")
         else:
-            print("Guideline checker found " + nIssues + "issues...")
+            print("Guideline checker found " + str(nIssues) + "issues...")
 
         print("We strongly recommend you to fix these, to ignore use `git commit --no-verify`")
         return -1
