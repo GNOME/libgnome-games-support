@@ -230,15 +230,10 @@ public class Context : Object
             var category = category_request (category_key);
             var filename = Path.build_filename (user_score_dir, category_key);
             var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
-            var file = File.new_for_path (filename);
-
-            /* Open file for reading and wrap returned FileInputStream into a
-             DataInputStream, so we can read line by line */
-            var dis = new DataInputStream (file.read ());
+            var stream = FileStream.open (filename, "r");
             string line;
 
-            /* Read lines until end of file (null) is reached */
-            while ((line = dis.read_line (null)) != null)
+            while ((line = stream.read_line ()) != null)
             {
                 var tokens = line.split (" ", 3);
                 string? user = null;
