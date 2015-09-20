@@ -152,7 +152,7 @@ public class Context : Object
     }
 
     /* Return true if a dialog was launched on attaining high score */
-    public bool add_score (long score_value, Category category) throws Error
+    public async bool add_score (long score_value, Category category) throws Error
     {
         var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
@@ -173,18 +173,18 @@ public class Context : Object
 
         if (!high_score_added)
         {
-            save_score_to_file (score, category);
+            yield save_score_to_file (score, category);
             return false;
         }
         else
         {
             /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
-            run_dialog_internal (score);
+            yield run_dialog_internal (score);
             return true;
         }
     }
 
-    private void save_score_to_file (Score score, Category category) throws Error
+    private async void save_score_to_file (Score score, Category category) throws Error
     {
         if (!FileUtils.test (user_score_dir, FileTest.EXISTS))
         {
@@ -285,7 +285,7 @@ public class Context : Object
         return score_value > lowest;
     }
 
-    internal void run_dialog_internal (Score? new_high_score) throws Error
+    internal async void run_dialog_internal (Score? new_high_score) throws Error
         requires (game_window != null)
     {
         var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, app_name);
@@ -293,12 +293,17 @@ public class Context : Object
         dialog.destroy ();
 
         if (new_high_score != null)
-            save_score_to_file (new_high_score, current_category);
+            yield save_score_to_file (new_high_score, current_category);
     }
 
     public void run_dialog () throws Error
     {
-        run_dialog_internal (null);
+        // Simply wait for run_dialog_internal to complete. It is safe to do
+        // this synchronously because we are not adding a high score, so it will
+        // not attempt to do any I/O and the UI thread will not be blocked.
+        var main_loop = new MainLoop (MainContext.@default (), false);
+        run_dialog_internal.begin (null, () => main_loop.quit ());
+        main_loop.run ();
     }
 
     public bool has_scores ()
