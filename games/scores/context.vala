@@ -178,8 +178,9 @@ public class Context : Object
         }
         else
         {
-            /* Don't save the score to file yet if it's a high score. Since the Player name be changed on running dialog. */
-            yield run_dialog_internal (score);
+            /* The score's player name can change while the dialog is running. */
+            run_dialog_internal (score);
+            yield save_score_to_file (score, current_category);
             return true;
         }
     }
@@ -285,25 +286,17 @@ public class Context : Object
         return score_value > lowest;
     }
 
-    internal async void run_dialog_internal (Score? new_high_score) throws Error
+    internal void run_dialog_internal (Score? new_high_score)
         requires (game_window != null)
     {
         var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, app_name);
         dialog.run ();
         dialog.destroy ();
-
-        if (new_high_score != null)
-            yield save_score_to_file (new_high_score, current_category);
     }
 
-    public void run_dialog () throws Error
+    public void run_dialog ()
     {
-        // Simply wait for run_dialog_internal to complete. It is safe to do
-        // this synchronously because we are not adding a high score, so it will
-        // not attempt to do any I/O and the UI thread will not be blocked.
-        var main_loop = new MainLoop (MainContext.@default (), false);
-        run_dialog_internal.begin (null, () => main_loop.quit ());
-        main_loop.run ();
+        run_dialog_internal (null);
     }
 
     public bool has_scores ()
