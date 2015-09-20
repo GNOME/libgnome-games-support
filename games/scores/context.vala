@@ -152,7 +152,7 @@ public class Context : Object
     }
 
     /* Return true if a dialog was launched on attaining high score */
-    public async bool add_score (long score_value, Category category) throws Error
+    public async bool add_score (long score_value, Category category, Cancellable? cancellable = null) throws Error
     {
         var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
@@ -175,11 +175,11 @@ public class Context : Object
         if (high_score_added)
             run_dialog_internal (score);
 
-        yield save_score_to_file (score, current_category);
+        yield save_score_to_file (score, current_category, cancellable);
         return high_score_added;
     }
 
-    private async void save_score_to_file (Score score, Category category) throws Error
+    private async void save_score_to_file (Score score, Category category, Cancellable? cancellable) throws Error
     {
         if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
         {
@@ -190,8 +190,7 @@ public class Context : Object
         var stream = file.append_to (FileCreateFlags.NONE);
         var line = @"$(score.score) $(score.time) $(score.user)\n";
 
-        // FIXME add cancellable parameter
-        yield stream.write_all_async (line.data, Priority.DEFAULT, null, null);
+        yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
 
     private void load_scores_from_files () throws Error

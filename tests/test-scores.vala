@@ -29,7 +29,7 @@ private Category category_request (string category_key)
 
 private void add_score_sync (Context context, int score, Category category) {
     var main_loop = new MainLoop (MainContext.@default (), false);
-    context.add_score.begin (score, category, (object, result) => {
+    context.add_score.begin (score, category, null, (object, result) => {
         try
         {
             (void) context.add_score.end (result);
