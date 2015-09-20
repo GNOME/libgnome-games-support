@@ -126,9 +126,9 @@ def main():
                     and not (getLineData(currLine).startswith(" *")
                              or getLineData(currLine).startswith("#")
                              or (re.findall("\s*\(",
-                                 getLineData(currLine) != []
+                                 getLineData(currLine)) != []
                                  and getLineData(currLine, 0)
-                                 in ['\t', ' ']))):
+                                 in ['\t', ' '])):
                     printIssue(currLine, "multiple whitespace before (")
                     nIssues += 1
 
