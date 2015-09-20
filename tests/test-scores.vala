@@ -27,24 +27,33 @@ private Category category_request (string category_key)
     return new Category("test", "test");
 }
 
+private void add_score_sync (Context context, int score, Category category) {
+    var main_loop = new MainLoop (MainContext.@default (), false);
+    context.add_score.begin (score, category, (object, result) => {
+        try
+        {
+            (void) context.add_score.end (result);
+        }
+        catch (Error e)
+        {
+            assert_not_reached ();
+        }
+        main_loop.quit ();
+    });
+    main_loop.run ();
+}
+
 private void create_scores ()
 {
-    try
-    {
-        Context context = new Context ("libgames-scores-test", "Games Type", null, category_request, Style.PLAIN_DESCENDING);
-        Category cat = new Category ("cat1", "cat1");
-        context.add_score (101, cat);
-        context.add_score (102, cat);
+    Context context = new Context ("libgames-scores-test", "Games Type", null, category_request, Style.PLAIN_DESCENDING);
+    Category cat = new Category ("cat1", "cat1");
+    add_score_sync (context, 101, cat);
+    add_score_sync (context, 102, cat);
 
-        cat.key = "cat2";
-        cat.name = "cat2";
-        context.add_score (21, cat);
-        context.add_score (24, cat);
-    }
-    catch (Error e)
-    {
-        error (e.message);
-    }
+    cat.key = "cat2";
+    cat.name = "cat2";
+    add_score_sync (context, 21, cat);
+    add_score_sync (context, 24, cat);
 }
 
 private string get_filename (string category_name)
