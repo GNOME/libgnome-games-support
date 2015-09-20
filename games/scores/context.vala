@@ -171,18 +171,12 @@ public class Context : Object
         if (scores_per_category[category].add (score))
             current_category = category;
 
-        if (!high_score_added)
-        {
-            yield save_score_to_file (score, category);
-            return false;
-        }
-        else
-        {
-            /* The score's player name can change while the dialog is running. */
+        /* Note that the score's player name can change while the dialog is running. */
+        if (high_score_added)
             run_dialog_internal (score);
-            yield save_score_to_file (score, current_category);
-            return true;
-        }
+
+        yield save_score_to_file (score, current_category);
+        return high_score_added;
     }
 
     private async void save_score_to_file (Score score, Category category) throws Error
