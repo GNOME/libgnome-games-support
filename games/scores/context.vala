@@ -181,12 +181,9 @@ public class Context : Object
 
     private async void save_score_to_file (Score score, Category category) throws Error
     {
-        if (!FileUtils.test (user_score_dir, FileTest.EXISTS))
+        if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
         {
-            if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
-            {
-                throw new FileError.FAILED ("Error: Could not create directory.");
-            }
+            throw new FileError.FAILED ("Failed to create %s: %s", user_score_dir, strerror (errno));
         }
 
         var file = File.new_for_path (Path.build_filename (user_score_dir, category.key));
