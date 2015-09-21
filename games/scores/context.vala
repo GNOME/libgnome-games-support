@@ -1,6 +1,7 @@
 /* -*- Mode: vala; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright © 2014 Nikhar Agrawal
+ * Copyright © 2015 Michael Catanzaro <mcatanzaro@gnome.org>
  *
  * This file is part of libgames-scores.
  *
