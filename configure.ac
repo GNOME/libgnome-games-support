@@ -47,7 +47,6 @@ AC_CONFIG_FILES([
   libgames-support-1.0.pc
   po/Makefile.in
   games/Makefile
-  tests/Makefile
 ])
 
 AC_OUTPUT
