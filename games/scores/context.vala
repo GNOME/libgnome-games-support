@@ -131,25 +131,20 @@ public class Context : Object
     }
 
     /* Get a maximum of best n scores from the given category */
-    public List<Score>? get_best_n_scores (Category category, int n)
+    public Gee.List<Score> get_high_scores (Category category, int n = 10)
     {
+        var result = new Gee.ArrayList<Score> ();
         if (!scores_per_category.has_key (category))
-        {
-            return null;
-        }
+            return result;
 
-        var n_scores = new List<Score> ();
-        var scores_of_this_category = scores_per_category[category];
+        /* Remove the first n elements and then add them back. Seems insane, but
+         * it's necessary because the PriorityQueue iterators are unordered. */
+        for (int i = 0; i < n && scores_per_category[category].size > 0; i++)
+            result.add (scores_per_category[category].poll ());
+        foreach (var score in result)
+            scores_per_category[category].add (score);
 
-        for (int i = 0; i < n; i++)
-        {
-            if (scores_of_this_category.size == 0)
-                break;
-            n_scores.append (scores_of_this_category.poll ());
-        }
-
-        n_scores.foreach ((x) => scores_of_this_category.add (x));
-        return n_scores;
+        return result;
     }
 
     /* Return true if a dialog was launched on attaining high score */
@@ -258,16 +253,16 @@ public class Context : Object
 
     private bool is_high_score (long score_value, Category category)
     {
-        var best_scores = get_best_n_scores (category, 10);
+        var best_scores = get_high_scores (category);
 
         /* The given category doesn't yet exist and thus this score would be the first score and hence a high score. */
         if (best_scores == null)
             return true;
 
-        if (best_scores.length () < 10)
+        if (best_scores.size < 10)
             return true;
 
-        var lowest = best_scores.nth_data (9).score;
+        var lowest = best_scores.@get (9).score;
 
         if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
             return score_value < lowest;

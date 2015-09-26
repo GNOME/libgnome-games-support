@@ -244,15 +244,15 @@ private class Dialog : Gtk.Dialog
         else
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
 
-        var best_n_scores = context.get_best_n_scores (active_category, rows_to_display);
-        uint no_scores = best_n_scores.length ();
+        var best_n_scores = context.get_high_scores (active_category, rows_to_display);
 
         int row_count = 1;
 
-        best_n_scores.foreach ((x) => {
-            display_single_score (x, row_count, no_scores);
+        foreach (var score in best_n_scores)
+        {
+            display_single_score (score, row_count, best_n_scores.size);
             row_count++;
-        });
+        }
 
         if (row_count < rows_to_display + 1)
             make_remaining_labels_empty (row_count);
