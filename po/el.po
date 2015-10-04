@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-13 09:24+0000\n"
-"PO-Revision-Date: 2014-09-13 23:23+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
+"scores&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-07-24 17:01+0000\n"
+"PO-Revision-Date: 2015-08-30 14:05+0300\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: Greek <team@lists.gnome.gr>\n"
 "Language: el\n"
@@ -17,50 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../src/dialog.vala:58
+#: ../games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Συγχαρητήρια!"
 
-#: ../src/dialog.vala:60
+#: ../games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Υψηλές βαθμολογίες"
 
-#: ../src/dialog.vala:62
+#: ../games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Καλύτεροι χρόνοι"
 
+#: ../games/scores/dialog.vala:80
+msgid "No scores yet"
+msgstr "Καμία βαθμολογία ακόμα"
+
+#: ../games/scores/dialog.vala:85
+msgid "Play some games and your scores will show up here."
+msgstr "Παίξτε μερικά παιχνίδια και οι βαθμολογίες σας θα εμφανιστούν εδώ."
+
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:108
+#: ../games/scores/dialog.vala:136
 msgid "Rank"
 msgstr "Κατάταξη"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:117
+#: ../games/scores/dialog.vala:145
 msgid "Score"
 msgstr "Βαθμολογία"
 
-#: ../src/dialog.vala:119
+#: ../games/scores/dialog.vala:147
 msgid "Time"
 msgstr "Χρόνος"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:126
+#: ../games/scores/dialog.vala:154
 msgid "Player"
 msgstr "Παίχτης"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../src/dialog.vala:136
+#: ../games/scores/dialog.vala:164
 msgid "Done"
 msgstr "Έτοιμο"
 
-#. Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog.
-#: ../src/dialog.vala:255
+#: ../games/scores/dialog.vala:273
 msgid "Your score is the best!"
 msgstr "Η βαθμολογία σας είναι η καλύτερη!"
 
-#: ../src/dialog.vala:257
+#: ../games/scores/dialog.vala:275
 msgid "Your score has made the top ten."
 msgstr "Η βαθμολογία σας είναι στην κορυφαία δεκάδα."
