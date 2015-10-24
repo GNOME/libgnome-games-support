@@ -149,13 +149,15 @@ def main():
 
     if nIssues != 0:
         if nIssues == 1:
-            print("Guideline checker found " + str(nIssues) + " issue...")
+            print("Guideline checker found one issue.")
         else:
-            print("Guideline checker found " + str(nIssues) + " issues...")
+            print("Guideline checker found " + str(nIssues) + " issues.")
 
         print("We strongly recommend you to fix these.")
         print("To ignore use `git commit --no-verify`")
         return -1
+    else:
+        print("Guideline checker found no issues.")
 
     return 0
 
