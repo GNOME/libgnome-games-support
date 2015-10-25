@@ -1,3 +1,15 @@
+0.2 - October 25, 2015
+======================
+
+- API break: replace Context.get_best_n_scores with Context.get_high_scores. The
+  new function returns a non-nullable Gee.List (with possibly zero elements)
+  rather than a nullable GLib.List (which was never empty if non-null). The
+  soname has been bumped, but the pkg-config version remains the same. We
+  currently plan to adopt a stable API in February 2016, which will not break
+  unless the pkg-config version is changed.
+- Style checker should indicate no issues found if patch is clean (Sahil Sareen)
+- Updated translations
+
 0.1 - September 21, 2015
 ========================
 
