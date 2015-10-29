@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jordi Mas i Hernàndez, <jmas@softcatala.org>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libgames-support.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-29 07:00+0100\n"
+"PO-Revision-Date: 2015-10-29 07:00+0100\n"
+"Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
+"Language-Team: ca_ES <tradgnome@softcatala.net>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Appears at the top of the dialog, as the heading of the dialog
+#: ../games/scores/dialog.vala:58
+msgid "Congratulations!"
+msgstr "Enhorabona!"
+
+#: ../games/scores/dialog.vala:60
+msgid "High Scores"
+msgstr "Puntuacions màximes"
+
+#: ../games/scores/dialog.vala:62
+msgid "Best Times"
+msgstr "Millors temps"
+
+#: ../games/scores/dialog.vala:78
+msgid "No scores yet"
+msgstr "Encara no hi ha puntuacions"
+
+#: ../games/scores/dialog.vala:82
+msgid "Play some games and your scores will show up here."
+msgstr "Jugueu algunes partides i les puntuacions es mostraran aquí."
+
+#. A column heading in the scores dialog
+#: ../games/scores/dialog.vala:136
+msgid "Rank"
+msgstr "Posició"
+
+#. A column heading in the scores dialog
+#: ../games/scores/dialog.vala:145
+msgid "Score"
+msgstr "Puntuació"
+
+#: ../games/scores/dialog.vala:147
+msgid "Time"
+msgstr "Temps"
+
+#. A column heading in the scores dialog
+#: ../games/scores/dialog.vala:154
+msgid "Player"
+msgstr "Jugador"
+
+#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
+#: ../games/scores/dialog.vala:164
+msgid "Done"
+msgstr "Fet"
+
+#: ../games/scores/dialog.vala:274
+msgid "Your score is the best!"
+msgstr "La teva puntuació és la millor!"
+
+#: ../games/scores/dialog.vala:276
+msgid "Your score has made the top ten."
+msgstr "La teva puntuació està entre els deu millors."
