@@ -29,9 +29,16 @@
 # To use it as a pre-commit hook, Update autogen.sh to symlink to this file
 #
 # if [ -d $srcdir/.git ] && [ ! -L $srcdir/.git/hooks/pre-commit ]; then
-#     ln -s $srcdir/../libgames-support/style-checker $srcdir/.git/hooks/pre-commit
+#     ln -s ../../../libgames-support/style-checker $srcdir/.git/hooks/pre-commit
 # fi
 #
+# Note: This can be used as the following hooks:
+# Client side
+#  - pre-commit
+#  - pre-applypatch
+#  - pre-push
+# Server side
+#  - pre-receive
 
 import sys
 import re
