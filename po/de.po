@@ -2,64 +2,73 @@
 # Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-scores package.
 # Daniel Raab <3dani33@gmail.com>, 2014.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-20 22:23+0000\n"
-"PO-Revision-Date: 2014-09-20 22:23+0000\n"
-"Last-Translator: Daniel Raab <3dani33@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
+"scores&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-07-24 17:01+0000\n"
+"PO-Revision-Date: 2015-12-30 10:26+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.5\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../src/dialog.vala:58
+#: ../games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Herzlichen Glückwunsch!"
 
-#: ../src/dialog.vala:60
+#: ../games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Bestenliste"
 
-#: ../src/dialog.vala:62
+#: ../games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Beste Zeiten"
 
+#: ../games/scores/dialog.vala:80
+msgid "No scores yet"
+msgstr "Noch keine Punktzahlen"
+
+#: ../games/scores/dialog.vala:85
+msgid "Play some games and your scores will show up here."
+msgstr "Die in Ihren Spielen erreichten Punktzahlen werden hier angezeigt."
+
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:108
+#: ../games/scores/dialog.vala:136
 msgid "Rank"
 msgstr "Platzierung"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:117
+#: ../games/scores/dialog.vala:145
 msgid "Score"
 msgstr "Punktzahl"
 
-#: ../src/dialog.vala:119
+#: ../games/scores/dialog.vala:147
 msgid "Time"
 msgstr "Zeit"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:126
+#: ../games/scores/dialog.vala:154
 msgid "Player"
 msgstr "Spieler"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../src/dialog.vala:136
+#: ../games/scores/dialog.vala:164
 msgid "Done"
 msgstr "Fertig"
 
-#. Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog.
-#: ../src/dialog.vala:255
+#: ../games/scores/dialog.vala:273
 msgid "Your score is the best!"
 msgstr "Sie haben die höchste Punktzahl!"
 
-#: ../src/dialog.vala:257
+#: ../games/scores/dialog.vala:275
 msgid "Your score has made the top ten."
-msgstr "Sie sind unter den zehn Besten"
+msgstr "Sie sind unter den zehn Besten."
