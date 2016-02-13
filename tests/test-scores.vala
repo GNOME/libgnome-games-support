@@ -56,18 +56,21 @@ private void create_scores ()
     add_score_sync (context, 24, cat);
 }
 
+private string get_score_directory_name ()
+{
+    return Path.build_filename (Environment.get_user_data_dir (), "libgames-scores-test", "scores", null);
+}
+
 private string get_score_filename_for_category (string category_name)
 {
-    var base_name = "libgames-scores-test";
-    var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
-    return Path.build_filename (user_score_dir, category_name);
+    return Path.build_filename (get_score_directory_name (), category_name);
 }
 
 private void delete_scores ()
 {
     try
     {
-        var directory_name = get_score_filename_for_category ("");
+        var directory_name = get_score_directory_name ();
         var directory = File.new_for_path (directory_name);
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
 
