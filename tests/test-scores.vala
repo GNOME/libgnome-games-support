@@ -153,10 +153,8 @@ public int main (string args[])
 {
     Test.init (ref args);
     var test_suite = TestSuite.get_root ();
-    var test_case = new TestCase ("Scores Files Exist", () => {}, test_scores_files_exist, delete_scores);
-    test_suite.add (test_case);
-    test_case = new TestCase ("Save Score To File", () => {}, test_save_score_to_file, delete_scores);
-    test_suite.add (test_case);
+    test_suite.add (new TestCase ("Scores Files Exist", () => {}, test_scores_files_exist, delete_scores));
+    test_suite.add (new TestCase ("Save Score To File", () => {}, test_save_score_to_file, delete_scores));
     return Test.run ();
 }
 
