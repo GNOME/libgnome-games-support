@@ -54,7 +54,12 @@ public class Context : Object
         return str_equal (a.name, b.name);
     };
 
-    /* A function provided by the game that converts the category key to a category. */
+    /* A function provided by the game that converts the category key to a
+     * category. Why do we have this, instead of expecting games to pass in a
+     * list of categories? Because some games need to create categories on the
+     * fly, like Mines, which allows for custom board sizes. These games do not
+     * know in advance which categories may be in use.
+     */
     public delegate Category? CategoryRequestFunc (string category_key);
     private CategoryRequestFunc category_request;
 
