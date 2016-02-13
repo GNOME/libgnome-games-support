@@ -1,12 +1,13 @@
 lib_LTLIBRARIES = libgames-support.la
 
 libgames_support_la_SOURCES = \
-	config.vapi		\
-	gridframe.vala		\
-	scores/category.vala	\
-	scores/context.vala	\
-	scores/dialog.vala	\
-	scores/importer.vala	\
+	config.vapi			\
+	gridframe.vala			\
+	scores/category.vala		\
+	scores/context.vala		\
+	scores/dialog.vala		\
+	scores/directory-importer.vala	\
+	scores/importer.vala		\
 	scores/score.vala
 
 libgames_support_la_CFLAGS = \
