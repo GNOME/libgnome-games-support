@@ -85,6 +85,15 @@ public class Context : Object
 
         try
         {
+            Importer.run (user_score_dir);
+        }
+        catch (Error e)
+        {
+            warning ("Score importer failed: %s", e.message);
+        }
+
+        try
+        {
             load_scores_from_files ();
         }
         catch (Error e)

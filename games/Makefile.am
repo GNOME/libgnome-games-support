@@ -6,6 +6,7 @@ libgames_support_la_SOURCES = \
 	scores/category.vala	\
 	scores/context.vala	\
 	scores/dialog.vala	\
+	scores/importer.vala	\
 	scores/score.vala
 
 libgames_support_la_CFLAGS = \
