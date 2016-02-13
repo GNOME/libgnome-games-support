@@ -62,9 +62,33 @@ namespace Scores {
  * always loaded before showing the main window.
  */
 
-/* TODO: Support importing scores from Vala games, bug #745489. */
-namespace Importer
+public class Importer
 {
+    public enum OldFormat
+    {
+        C_GAMES_MULTI_FILE_FORMAT,
+        VALA_GAMES_SINGLE_FILE_FORMAT,
+    }
+
+    /* A function provided by the game that converts the old category key to a
+     * new key. If the keys have not been changed, this function should return
+     * the same string. If the key is invalid, it should return null, as this
+     * function will be called once for each file in the game's local data
+     * directory, and some of those files might not be valid categories.
+     *
+     * FIXME: Is this only useful for C_GAMES_MULTI_FILE_FORMAT?
+     */
+    public delegate string? CategoryConvertFunc (string old_key);
+    private CategoryConvertFunc category_convert;
+
+    private OldFormat format;
+
+    public Importer (OldFormat format, CategoryConvertFunc category_convert)
+    {
+        this.format = format;
+        this.category_convert = category_convert;
+    }
+
     /* This scores format is mostly-compatible with the current format, the only
      * differences are (a) the scores file nowadays has a column for the player
      * name, (b) scores nowadays are kept under ~/.local/share/APPNAME/scores
@@ -76,52 +100,46 @@ namespace Importer
      * Notice that we are importing only home directory scores, not any scores
      * from /var/games, since it's been several years since scores were removed
      * from there and most players will have lost them by now anyway.
-     *
-     * TODO: Use this for Five or More, Four-in-a-row, Klotski, Robots, and Tali.
      */
-    private static void importOldScoresFromCGame (File new_scores_dir,
-                                                  Gee.Map<string, string> category_map) throws GLib.Error
+    private void importCMultiFileScores (File new_scores_dir) throws GLib.Error
     {
         var original_scores_dir = new_scores_dir.get_parent ();
-        if (original_scores_dir == null)
-            return;
+        assert (original_scores_dir != null);
 
-        foreach (var entry in category_map.entries)
+        var enumerator = original_scores_dir.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+        FileInfo file_info;
+
+        while ((file_info = enumerator.next_file ()) != null)
         {
-            var original_file = original_scores_dir.get_child (entry.key);
-            if (original_file.query_exists ())
-            {
-                var new_file = new_scores_dir.get_child (entry.value);
-                original_file.copy (new_file, FileCopyFlags.NONE);
-                original_file.@delete ();
-                debug ("Moved scores from %s to %s", original_file.get_path (), new_file.get_path ());
-            }
+            var new_key = category_convert (file_info.get_name ());
+            if (new_key == null)
+                continue;
+
+            var new_file = new_scores_dir.get_child (new_key);
+            var original_file = original_scores_dir.resolve_relative_path (file_info.get_name ());
+            debug ("Moving scores from %s to %s", original_file.get_path (), new_file.get_path ());
+            original_file.copy (new_file, FileCopyFlags.NONE);
+            original_file.@delete ();
         }
     }
 
-    private static void run (string new_scores_dir) throws GLib.Error
+    private void importOldScores (File new_scores_dir) throws GLib.Error
+        /* TODO: Support importing scores from Vala games, bug #745489. */
+        requires (format == OldFormat.C_GAMES_MULTI_FILE_FORMAT)
+    {
+        importCMultiFileScores (new_scores_dir);
+    }
+
+    internal void run (string new_scores_dir) throws GLib.Error
     {
         var new_dir = File.new_for_path (new_scores_dir);
         if (new_dir.query_exists ())
             return;
         new_dir.make_directory ();
 
-        /* TODO: Add API so that the mapping can be done by the games themselves. */
-        if (Environment.get_prgname () == "org.gnome.Nibbles")
-        {
-            var category_map = new Gee.HashMap<string, string> ();
-            category_map.@set ("1.0", "beginner");
-            category_map.@set ("2.0", "slow");
-            category_map.@set ("3.0", "medium");
-            category_map.@set ("4.0", "fast");
-            category_map.@set ("1.1", "beginner-fakes");
-            category_map.@set ("2.1", "slow-fakes");
-            category_map.@set ("3.1", "medium-fakes");
-            category_map.@set ("4.1", "fast-fakes");
-            importOldScoresFromCGame (new_dir, category_map);
-        }
+        importOldScores (new_dir);
     }
-} /* namespace Importer */
+}
 
 } /* namespace Scores */
 } /* namespace Games */

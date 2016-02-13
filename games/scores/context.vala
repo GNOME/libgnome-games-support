@@ -63,11 +63,30 @@ public class Context : Object
     public delegate Category? CategoryRequestFunc (string category_key);
     private CategoryRequestFunc category_request;
 
-    public Context (string app_name, string category_type, Gtk.Window? game_window, CategoryRequestFunc category_request, Style style)
+    private Importer? importer;
+
+    public Context (string app_name,
+                    string category_type,
+                    Gtk.Window? game_window,
+                    CategoryRequestFunc category_request,
+                    Style style)
     {
+        this.with_importer (app_name, category_type, game_window, category_request, style, null);
+    }
+
+    public Context.with_importer (string app_name,
+                                  string category_type,
+                                  Gtk.Window? game_window,
+                                  CategoryRequestFunc category_request,
+                                  Style style,
+                                  Importer? importer)
+    {
+        this.app_name = app_name;
+        this.category_type = category_type;
         this.game_window = game_window;
         this.category_request = (key) => { return category_request (key); };
         this.style = style;
+        this.importer = importer;
 
         if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
         {
@@ -82,15 +101,12 @@ public class Context : Object
             };
         }
 
-        var base_name = app_name;
-        this.category_type = category_type;
-        this.app_name = app_name;
-
-        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
+        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), app_name, "scores", null);
 
         try
         {
-            Importer.run (user_score_dir);
+            if (importer != null)
+                importer.run (user_score_dir);
         }
         catch (Error e)
         {
