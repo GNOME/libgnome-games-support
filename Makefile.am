@@ -1,7 +1,4 @@
-SUBDIRS = games po
-
-# FIXME make the tests work
-#SUBDIRS = games po tests
+SUBDIRS = games po tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 
