@@ -56,7 +56,7 @@ private void create_scores ()
     add_score_sync (context, 24, cat);
 }
 
-private string get_filename (string category_name)
+private string get_score_filename_for_category (string category_name)
 {
     var base_name = "libgames-scores-test";
     var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
@@ -67,7 +67,7 @@ private void delete_scores ()
 {
     try
     {
-        var directory_name = get_filename ("");
+        var directory_name = get_score_filename_for_category ("");
         var directory = File.new_for_path (directory_name);
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
 
@@ -94,11 +94,11 @@ private void test_scores_files_exist ()
 {
     create_scores ();
 
-    var filename = get_filename ("cat1");
+    var filename = get_score_filename_for_category ("cat1");
     var file = File.new_for_path (filename);
     assert (file.query_exists ());
 
-    filename = get_filename ("cat2");
+    filename = get_score_filename_for_category ("cat2");
     file = File.new_for_path (filename);
     assert (file.query_exists ());
 }
@@ -108,7 +108,7 @@ private void test_save_score_to_file ()
     try
     {
         create_scores ();
-        var filename = get_filename ("cat1");
+        var filename = get_score_filename_for_category ("cat1");
         var file = File.new_for_path (filename);
         var dis = new DataInputStream (file.read ());
 
@@ -125,7 +125,7 @@ private void test_save_score_to_file ()
         assert (tokens[0] == "102");
         assert ((line = dis.read_line (null)) == null);
 
-        filename = get_filename ("cat2");
+        filename = get_score_filename_for_category ("cat2");
         file = File.new_for_path (filename);
         dis = new DataInputStream (file.read ());
         assert ((line = dis.read_line (null)) != null);
