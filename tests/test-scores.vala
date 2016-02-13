@@ -56,9 +56,14 @@ private void create_scores ()
     add_score_sync (context, 24, cat);
 }
 
+private string get_test_directory_name ()
+{
+    return Path.build_filename (Environment.get_user_data_dir (), "libgames-support-test", null);
+}
+
 private string get_score_directory_name ()
 {
-    return Path.build_filename (Environment.get_user_data_dir (), "libgames-scores-test", "scores", null);
+    return Path.build_filename (get_test_directory_name (), "scores", null);
 }
 
 private string get_score_filename_for_category (string category_name)
@@ -70,10 +75,8 @@ private void delete_scores ()
 {
     try
     {
-        var directory_name = get_score_directory_name ();
-        var directory = File.new_for_path (directory_name);
+        var directory = File.new_for_path (get_score_directory_name ());
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-
         FileInfo file_info;
         while ((file_info = enumerator.next_file ()) != null)
         {
@@ -81,10 +84,9 @@ private void delete_scores ()
             var file = directory.get_child (file_name);
             file.@delete ();
         }
-
         directory.@delete ();
-        var parent_name = Path.build_filename (Environment.get_user_data_dir (), "libgames-scores-test", null);
-        var parent_directory = File.new_for_path (parent_name);
+
+        var parent_directory = File.new_for_path (get_test_directory_name ());
         parent_directory.@delete ();
     }
     catch (Error e)
