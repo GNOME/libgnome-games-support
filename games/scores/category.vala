@@ -23,7 +23,24 @@ namespace Scores {
 
 public class Category : Object
 {
-    public string key { get; set; }
+    private string _key;
+    public string key
+    {
+        get { return _key; }
+        set
+        {
+            for (int i = 0; value[i] != '\0'; i++)
+            {
+                if (!value[i].isalnum () && value[i] != '-')
+                {
+                    error ("Category keys may contain only hyphens and alphanumeric characters.");
+                }
+            }
+            _key = value;
+        }
+    }
+
+    /* This is a user-friendly name. It should be marked for translation. */
     public string name { get; set; }
 
     public Category (string key, string name)
