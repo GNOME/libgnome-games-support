@@ -227,8 +227,8 @@ public class Context : Object
 
             if (tokens.length < 3)
             {
-                debug ("Importing old score from %s.", filename);
                 user = Environment.get_real_name ();
+                debug ("Treating user as %s for old score in %s.", user, filename);
             }
 
             var score_value = long.parse (tokens[0]);
