@@ -59,7 +59,7 @@ private void create_scores ()
 private string get_filename (string category_name)
 {
     var base_name = "libgames-scores-test";
-    var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, null);
+    var user_score_dir = Path.build_filename (Environment.get_user_data_dir (), base_name, "scores", null);
     return Path.build_filename (user_score_dir, category_name);
 }
 
