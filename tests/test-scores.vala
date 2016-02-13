@@ -79,13 +79,13 @@ private void delete_scores ()
         {
             var file_name = file_info.get_name ();
             var file = directory.get_child (file_name);
-            file.delete ();
+            file.@delete ();
         }
 
-        directory.delete ();
+        directory.@delete ();
         var parent_name = Path.build_filename (Environment.get_user_data_dir (), "libgames-scores-test", null);
         var parent_directory = File.new_for_path (parent_name);
-        parent_directory.delete ();
+        parent_directory.@delete ();
     }
     catch (Error e)
     {
