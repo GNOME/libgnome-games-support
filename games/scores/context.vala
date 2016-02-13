@@ -55,7 +55,7 @@ public class Context : Object
     };
 
     /* A function provided by the game that converts the category key to a category. */
-    public delegate Category CategoryRequestFunc (string category_key);
+    public delegate Category? CategoryRequestFunc (string category_key);
     private CategoryRequestFunc category_request;
 
     public Context (string app_name, string category_type, Gtk.Window? game_window, CategoryRequestFunc category_request, Style style)
@@ -202,6 +202,9 @@ public class Context : Object
     {
         var category_key = file_info.get_name ();
         var category = category_request (category_key);
+        if (category == null)
+            return;
+
         var filename = Path.build_filename (user_score_dir, category_key);
         var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
         var stream = FileStream.open (filename, "r");
