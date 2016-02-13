@@ -1,5 +1,8 @@
 SUBDIRS = games po
 
+# FIXME make the tests work
+#SUBDIRS = games po tests
+
 pkgconfigdir = $(libdir)/pkgconfig
 
 pkgconfig_DATA = libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).pc
