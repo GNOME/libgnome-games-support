@@ -47,10 +47,10 @@ public class HistoryFileImporter : Importer
      *
      * FIXME: GPLv2+, can't release with this.
      */
-    public static DateTime? parse_date (string date)
+    public static int64 parse_date (string date)
     {
         if (date.length < 19 || date[4] != '-' || date[7] != '-' || date[10] != 'T' || date[13] != ':' || date[16] != ':')
-            return null;
+            return 0;
 
         var year = int.parse (date.substring (0, 4));
         var month = int.parse (date.substring (5, 2));
@@ -60,7 +60,7 @@ public class HistoryFileImporter : Importer
         var seconds = int.parse (date.substring (17, 2));
         var timezone = date.substring (19);
 
-        return new DateTime (new TimeZone (timezone), year, month, day, hour, minute, seconds);
+        return new DateTime (new TimeZone (timezone), year, month, day, hour, minute, seconds).to_unix ();
     }
 
     /* Each game uses a somewhat different format for its scores; one game might
