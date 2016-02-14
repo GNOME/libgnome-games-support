@@ -119,7 +119,7 @@ public class Context : Object
         }
         catch (Error e)
         {
-            warning ("%s", e.message);
+            warning ("Failed to load scores: %s", e.message);
         }
     }
 
