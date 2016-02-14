@@ -279,17 +279,13 @@ public class Context : Object
                 throw new FileError.FAILED ("Failed to parse %s for scores.", filename);
             }
 
-            if (tokens.length < 3)
-            {
-                user = Environment.get_real_name ();
-                debug ("Treating user as %s for old score in %s.", user, filename);
-            }
-
             var score_value = long.parse (tokens[0]);
             var time = int64.parse (tokens[1]);
 
-            if (user == null)
+            if (tokens.length == 3)
                 user = tokens[2];
+            else
+                debug ("Assuming current username for old score in %s.", filename);
 
             scores_of_single_category.add (new Score (score_value, time, user));
         }
