@@ -228,12 +228,10 @@ public class Context : Object
     }
 
     /* Return true if a dialog was launched on attaining high score */
-    public async bool add_score (long score_value, Category category, Cancellable? cancellable) throws Error
+    public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
     {
-        var score = new Score (score_value);
-
         /* Don't allow the dialog if it wouldn't have a parent, or in tests. */
-        return yield add_score_internal (score, category, game_window != null, cancellable);
+        return yield add_score_internal (new Score (score), category, game_window != null, cancellable);
     }
 
     internal bool add_score_sync (Score score, Category category) throws Error
