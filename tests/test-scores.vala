@@ -201,6 +201,9 @@ private void test_import_from_score_directory ()
 
 public int main (string args[])
 {
+    /* Start fresh.... */
+    delete_scores ();
+
     Test.init (ref args);
     var test_suite = TestSuite.get_root ();
     test_suite.add (new TestCase ("Scores Files Created", () => {}, test_scores_files_exist, delete_scores));
