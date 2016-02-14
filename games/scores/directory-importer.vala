@@ -64,6 +64,10 @@ public class DirectoryImporter : Importer
         FileInfo file_info;
         while ((file_info = enumerator.next_file ()) != null)
         {
+            /* We just created this.... */
+            if (file_info.get_name () == "scores")
+                continue;
+
             var new_key = category_convert (file_info.get_name ());
             if (new_key == null)
                 continue;
