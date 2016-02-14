@@ -31,9 +31,9 @@ public class Category : Object
         {
             for (int i = 0; value[i] != '\0'; i++)
             {
-                if (!value[i].isalnum () && value[i] != '-')
+                if (!value[i].isalnum () && value[i] != '-' && value[i] != '_')
                 {
-                    error ("Category keys may contain only hyphens and alphanumeric characters.");
+                    error ("Category keys may contain only hyphens, underscores, and alphanumeric characters.");
                 }
             }
             _key = value;
