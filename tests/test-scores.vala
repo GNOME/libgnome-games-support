@@ -46,7 +46,7 @@ private void add_score_sync (Context context, int score, Category category) {
 
 private void create_scores ()
 {
-    Context context = new Context ("libgames-support-test", "Games Type", null, category_request, Style.PLAIN_DESCENDING);
+    Context context = new Context ("libgames-support-test", "Games Type", null, category_request, Style.POINTS_GREATER_IS_BETTER);
     Category cat = new Category ("cat1", "cat1");
     add_score_sync (context, 101, cat);
     add_score_sync (context, 102, cat);
@@ -184,7 +184,7 @@ private void test_import_from_score_directory ()
                 assert (key == "new-cat");
                 return category;
             },
-            Games.Scores.Style.PLAIN_DESCENDING,
+            Games.Scores.Style.POINTS_GREATER_IS_BETTER,
             new Games.Scores.DirectoryImporter.with_convert_func ((old_key) => {
                 assert (old_key == "old-cat");
                 return "new-cat";
@@ -231,7 +231,7 @@ private void test_import_from_history_file ()
                 assert (key == "new-cat");
                 return category;
             },
-            Games.Scores.Style.PLAIN_DESCENDING,
+            Games.Scores.Style.POINTS_GREATER_IS_BETTER,
             new Games.Scores.HistoryFileImporter ((line, out score, out out_category) => {
                 assert (line == "2016-02-13T23:15:45-0600 old-cat 42");
                 score = new Score (42, HistoryFileImporter.parse_date ("2016-02-13T23:15:45-0600"));

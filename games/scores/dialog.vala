@@ -56,7 +56,7 @@ private class Dialog : Gtk.Dialog
         if (new_high_score != null)
         /* Appears at the top of the dialog, as the heading of the dialog */
             headerbar.title = _("Congratulations!");
-        else if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
+        else if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
             headerbar.title = _("High Scores");
         else
             headerbar.title = _("Best Times");
@@ -140,7 +140,7 @@ private class Dialog : Gtk.Dialog
 
         string score_or_time = "";
 
-        if (scores_style == Style.PLAIN_ASCENDING || scores_style == Style.PLAIN_DESCENDING)
+        if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
             /* A column heading in the scores dialog */
             score_or_time = _("Score");
         else

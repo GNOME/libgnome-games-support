@@ -24,10 +24,10 @@ namespace Scores {
 
 public enum Style
 {
-    PLAIN_DESCENDING,
-    PLAIN_ASCENDING,
-    TIME_DESCENDING,
-    TIME_ASCENDING
+    POINTS_GREATER_IS_BETTER,
+    POINTS_LESS_IS_BETTER,
+    TIME_GREATER_IS_BETTER,
+    TIME_LESS_IS_BETTER
 }
 
 public class Context : Object
@@ -88,7 +88,7 @@ public class Context : Object
         this.style = style;
         this.importer = importer;
 
-        if (style == Style.PLAIN_DESCENDING || style == Style.TIME_DESCENDING)
+        if (style == Style.POINTS_GREATER_IS_BETTER || style == Style.TIME_GREATER_IS_BETTER)
         {
             scorecmp = (a,b) => {
                 return (int) (b.score > a.score) - (int) (a.score > b.score);
@@ -183,7 +183,7 @@ public class Context : Object
 
         var lowest = best_scores.@get (9).score;
 
-        if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
+        if (style == Style.POINTS_LESS_IS_BETTER || style == Style.TIME_LESS_IS_BETTER)
             return score_value < lowest;
 
         return score_value > lowest;
