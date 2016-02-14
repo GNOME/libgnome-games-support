@@ -44,14 +44,14 @@ public class Context : Object
 
     private string user_score_dir;
 
-    /*Comparison and hash functions for Map and Priority Queue.*/
+    /* Comparison and hash functions for Map and Priority Queue.*/
     private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) => {
-        return str_hash (a.name);
+        return str_hash (a.key);
     };
 
     private static Gee.EqualDataFunc<Category?> category_equal = (a,b) => {
-        return str_equal (a.name, b.name);
+        return str_equal (a.key, b.key);
     };
 
     /* A function provided by the game that converts the category key to a
