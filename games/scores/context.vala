@@ -285,7 +285,7 @@ public class Context : Object
             if (tokens.length == 3)
                 user = tokens[2];
             else
-                debug ("Assuming current username for old score in %s.", filename);
+                debug ("Assuming current username for old score %s in %s.", line, filename);
 
             scores_of_single_category.add (new Score (score_value, time, user));
         }
