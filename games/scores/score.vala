@@ -25,12 +25,16 @@ public class Score : Object
 {
     public long score { get; set; }
     public string user { get; set; }
+
+    /* Although the scores dialog does not currently display the time a
+     * score was achieved, it did in the past and it might again in the future.
+     */
     public int64 time { get; set; }
 
-    public Score (long score, int64 time, string? user = null)
+    public Score (long score, int64 time = 0, string? user = null)
     {
         this.score = score;
-        this.time = time;
+        this.time = (time == 0 ? new DateTime.now_local ().to_unix () : time);
         this.user = (user == null ? Environment.get_real_name () : user);
     }
 
