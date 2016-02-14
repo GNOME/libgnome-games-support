@@ -42,8 +42,10 @@ public class HistoryFileImporter : Importer
         };
     }
 
-    /* Copied from Robert's Vala games. This is useful for games to use when
-     * implementing their HistoryConvertFuncs.
+    /* Copied from Robert's Vala games (GPLv2+). This is useful for games to use
+     * when implementing their HistoryConvertFuncs.
+     *
+     * FIXME: GPLv2+, can't release with this.
      */
     public static DateTime? parse_date (string date)
     {
