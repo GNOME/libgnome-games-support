@@ -65,9 +65,9 @@ namespace Scores {
 
 public abstract class Importer : Object
 {
-    protected abstract void importOldScores (File new_scores_dir) throws GLib.Error;
+    protected abstract void importOldScores (File new_scores_dir) throws Error;
 
-    internal void run (string new_scores_dir) throws GLib.Error
+    internal void run (string new_scores_dir) throws Error
     {
         var new_dir = File.new_for_path (new_scores_dir);
         if (new_dir.query_exists ())
