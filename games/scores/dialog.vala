@@ -266,7 +266,20 @@ private class Dialog : Gtk.Dialog
         rank.set_text (row_count.to_string ());
 
         var score = (Gtk.Label) grid.get_child_at (1, row_count);
-        score.set_text (x.score.to_string ());
+        if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
+        {
+            score.set_text (x.score.to_string ());
+        }
+        else
+        {
+            var minutes = x.score / 60;
+            var seconds = x.score % 60;
+            score.set_text ("%s %s".printf (
+                /* Time which may be displayed on a scores dialog. */
+                ngettext ("%d minute", "%d minutes", minutes).printf (minutes),
+                /* Time which may be displayed on a scores dialog. */
+                ngettext ("%d second", "%d seconds", seconds).printf (seconds)));
+        }
 
         if (new_high_score != null && Score.equals (x, new_high_score))
         {
