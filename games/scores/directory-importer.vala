@@ -46,7 +46,7 @@ public class DirectoryImporter : Importer
 
     public DirectoryImporter.with_convert_func (CategoryConvertFunc? category_convert)
     {
-        this.category_convert = category_convert;
+        this.category_convert = (old_key) => { return category_convert (old_key); };
     }
 
     /* This scores format is mostly-compatible with the current format, the only
