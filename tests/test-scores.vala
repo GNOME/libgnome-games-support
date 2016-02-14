@@ -21,10 +21,10 @@
 namespace Games {
 namespace Scores {
 
-private Category category_request (string category_key)
+private Category? category_request (string category_key)
 {
     // TODO: This isn't tested....
-    return new Category("test", "test");
+    return new Category (category_key, category_key);
 }
 
 private void add_score_sync (Context context, int score, Category category) {
