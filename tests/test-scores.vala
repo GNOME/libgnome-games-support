@@ -45,7 +45,7 @@ private void add_score_sync (Context context, int score, Category category) {
 
 private void create_scores ()
 {
-    Context context = new Context ("libgames-scores-test", "Games Type", null, category_request, Style.PLAIN_DESCENDING);
+    Context context = new Context ("libgames-support-test", "Games Type", null, category_request, Style.PLAIN_DESCENDING);
     Category cat = new Category ("cat1", "cat1");
     add_score_sync (context, 101, cat);
     add_score_sync (context, 102, cat);
