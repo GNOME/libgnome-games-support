@@ -177,6 +177,20 @@ public class Context : Object
         return result;
     }
 
+    private async void save_score_to_file (Score score, Category category, Cancellable? cancellable) throws Error
+    {
+        if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
+        {
+            throw new FileError.FAILED ("Failed to create %s: %s", user_score_dir, strerror (errno));
+        }
+
+        var file = File.new_for_path (Path.build_filename (user_score_dir, category.key));
+        var stream = file.append_to (FileCreateFlags.NONE);
+        var line = @"$(score.score) $(score.time) $(score.user)\n";
+
+        yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
+    }
+
     /* Return true if a dialog was launched on attaining high score */
     public async bool add_score (long score_value, Category category, Cancellable? cancellable = null) throws Error
     {
@@ -203,20 +217,6 @@ public class Context : Object
 
         yield save_score_to_file (score, current_category, cancellable);
         return high_score_added;
-    }
-
-    private async void save_score_to_file (Score score, Category category, Cancellable? cancellable) throws Error
-    {
-        if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
-        {
-            throw new FileError.FAILED ("Failed to create %s: %s", user_score_dir, strerror (errno));
-        }
-
-        var file = File.new_for_path (Path.build_filename (user_score_dir, category.key));
-        var stream = file.append_to (FileCreateFlags.NONE);
-        var line = @"$(score.score) $(score.time) $(score.user)\n";
-
-        yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
 
     private void load_scores_from_file (FileInfo file_info) throws Error
