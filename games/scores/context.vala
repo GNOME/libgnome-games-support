@@ -177,6 +177,25 @@ public class Context : Object
         return result;
     }
 
+    private bool is_high_score (long score_value, Category category)
+    {
+        var best_scores = get_high_scores (category);
+
+        /* The given category doesn't yet exist and thus this score would be the first score and hence a high score. */
+        if (best_scores == null)
+            return true;
+
+        if (best_scores.size < 10)
+            return true;
+
+        var lowest = best_scores.@get (9).score;
+
+        if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
+            return score_value < lowest;
+
+        return score_value > lowest;
+    }
+
     private async void save_score_to_file (Score score, Category category, Cancellable? cancellable) throws Error
     {
         if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)
@@ -312,25 +331,6 @@ public class Context : Object
         {
             load_scores_from_file (file_info);
         }
-    }
-
-    private bool is_high_score (long score_value, Category category)
-    {
-        var best_scores = get_high_scores (category);
-
-        /* The given category doesn't yet exist and thus this score would be the first score and hence a high score. */
-        if (best_scores == null)
-            return true;
-
-        if (best_scores.size < 10)
-            return true;
-
-        var lowest = best_scores.@get (9).score;
-
-        if (style == Style.PLAIN_ASCENDING || style == Style.TIME_ASCENDING)
-            return score_value < lowest;
-
-        return score_value > lowest;
     }
 
     internal void run_dialog_internal (Score? new_high_score)
