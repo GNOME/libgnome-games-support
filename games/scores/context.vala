@@ -191,32 +191,63 @@ public class Context : Object
         yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
 
-    /* Return true if a dialog was launched on attaining high score */
-    public async bool add_score (long score_value, Category category, Cancellable? cancellable) throws Error
+    internal async bool add_score_internal (Score score,
+                                            Category category,
+                                            bool allow_dialog,
+                                            Cancellable? cancellable) throws Error
     {
-        var high_score_added = false;
-       /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
-          If it's being called by test file, then the dialog wouldn't be run and hence player name wouldn't be updated. So, in that case,
-          we wish to save scores to file right now itself rather than waiting for a call to update_score. */
-        if (is_high_score (score_value, category) && game_window != null)
-            high_score_added = true;
+        var high_score_added = is_high_score (score.score, category);
 
-        var current_time = new DateTime.now_local ().to_unix ();
-        var score = new Score (score_value, current_time, Environment.get_real_name ());
-
-        /* check if category exists in the HashTable. Insert one if not */
+        /* Check if category exists in the HashTable. Insert one if not. */
         if (!scores_per_category.has_key (category))
             scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
 
         if (scores_per_category[category].add (score))
             current_category = category;
 
-        /* Note that the score's player name can change while the dialog is running. */
-        if (high_score_added)
+        /* Note that the score's player name can change while the dialog is
+         * running.
+         */
+        if (high_score_added && allow_dialog)
             run_dialog_internal (score);
 
         yield save_score_to_file (score, current_category, cancellable);
         return high_score_added;
+    }
+
+    /* Return true if a dialog was launched on attaining high score */
+    public async bool add_score (long score_value, Category category, Cancellable? cancellable) throws Error
+    {
+        var current_time = new DateTime.now_local ().to_unix ();
+        var score = new Score (score_value, current_time);
+
+        /* Don't allow the dialog if it wouldn't have a parent, or in tests. */
+        return yield add_score_internal (score, category, game_window != null, cancellable);
+    }
+
+    internal bool add_score_sync (Score score, Category category) throws Error
+    {
+        var main_loop = new MainLoop (MainContext.@default (), false);
+        var ret = false;
+        Error error = null;
+
+        add_score_internal.begin (score, category, false, null, (object, result) => {
+            try
+            {
+                ret = add_score_internal.end (result);
+            }
+            catch (Error e)
+            {
+                error = e;
+            }
+            main_loop.quit ();
+        });
+        main_loop.run ();
+
+        if (error != null)
+            throw error;
+
+        return ret;
     }
 
     private void load_scores_from_file (FileInfo file_info) throws Error
