@@ -192,7 +192,7 @@ public class Context : Object
     }
 
     /* Return true if a dialog was launched on attaining high score */
-    public async bool add_score (long score_value, Category category, Cancellable? cancellable = null) throws Error
+    public async bool add_score (long score_value, Category category, Cancellable? cancellable) throws Error
     {
         var high_score_added = false;
        /* We need to check for game_window to be not null because thats a way to identify if add_score is being called by the test file.
