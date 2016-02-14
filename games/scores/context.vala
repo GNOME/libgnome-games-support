@@ -282,6 +282,13 @@ public class Context : Object
             var score_value = long.parse (tokens[0]);
             var time = int64.parse (tokens[1]);
 
+            if (score_value == 0 && tokens[0] != "0" ||
+                time == 0 && tokens[1] != "0")
+            {
+                warning ("Failed to read malformed score %s in %s", line, filename);
+                continue;
+            }
+
             if (tokens.length == 3)
                 user = tokens[2];
             else
