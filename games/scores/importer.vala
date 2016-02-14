@@ -63,7 +63,7 @@ namespace Scores {
  * loaded before showing the main window.
  */
 
-public abstract class Importer
+public abstract class Importer : Object
 {
     protected abstract void importOldScores (File new_scores_dir) throws GLib.Error;
 
