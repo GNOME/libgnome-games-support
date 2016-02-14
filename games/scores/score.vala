@@ -24,14 +24,14 @@ namespace Scores {
 public class Score : Object
 {
     public long score { get; set; }
-    public string? user { get; set; }
+    public string user { get; set; }
     public int64 time { get; set; }
 
     public Score (long score, int64 time, string? user = null)
     {
         this.score = score;
         this.time = time;
-        this.user = user;
+        this.user = (user == null ? Environment.get_real_name () : user);
     }
 
     public static bool equals (Score a, Score b)
