@@ -276,7 +276,8 @@ public class Context : Object
 
             if (tokens.length < 2)
             {
-                throw new FileError.FAILED ("Failed to parse %s for scores.", filename);
+                warning ("Failed to read malformed score %s in %s.", line, filename);
+                continue;
             }
 
             var score_value = long.parse (tokens[0]);
@@ -285,7 +286,7 @@ public class Context : Object
             if (score_value == 0 && tokens[0] != "0" ||
                 time == 0 && tokens[1] != "0")
             {
-                warning ("Failed to read malformed score %s in %s", line, filename);
+                warning ("Failed to read malformed score %s in %s.", line, filename);
                 continue;
             }
 
