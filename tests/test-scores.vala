@@ -77,18 +77,22 @@ private void delete_scores ()
     try
     {
         var directory = File.new_for_path (get_score_directory_name ());
-        var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
-        FileInfo file_info;
-        while ((file_info = enumerator.next_file ()) != null)
+        if (directory.query_exists ())
         {
-            var file_name = file_info.get_name ();
-            var file = directory.get_child (file_name);
-            file.@delete ();
+            var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
+            FileInfo file_info;
+            while ((file_info = enumerator.next_file ()) != null)
+            {
+                var file_name = file_info.get_name ();
+                var file = directory.get_child (file_name);
+                file.@delete ();
+            }
+            directory.@delete ();
         }
-        directory.@delete ();
 
         var parent_directory = File.new_for_path (get_test_directory_name ());
-        parent_directory.@delete ();
+        if (parent_directory.query_exists ())
+            parent_directory.@delete ();
     }
     catch (Error e)
     {
