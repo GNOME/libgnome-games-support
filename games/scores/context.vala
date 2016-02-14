@@ -264,7 +264,6 @@ public class Context : Object
 
         if (error != null)
             throw error;
-
         return ret;
     }
 
@@ -279,7 +278,6 @@ public class Context : Object
         var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
         var stream = FileStream.open (filename, "r");
         string line;
-
         while ((line = stream.read_line ()) != null)
         {
             var tokens = line.split (" ", 3);
@@ -320,13 +318,11 @@ public class Context : Object
         }
 
         var directory = File.new_for_path (user_score_dir);
-
         if (!directory.query_exists ())
             return;
 
         var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
         FileInfo file_info;
-
         while ((file_info = enumerator.next_file ()) != null)
         {
             load_scores_from_file (file_info);
