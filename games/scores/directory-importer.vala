@@ -61,7 +61,7 @@ public class DirectoryImporter : Importer
      * from /var/games, since it's been several years since scores were removed
      * from there and most players will have lost them by now anyway.
      */
-    protected override void importOldScores (File new_scores_dir) throws Error
+    protected override void importOldScores (Context context, File new_scores_dir) throws Error
     {
         var original_scores_dir = new_scores_dir.get_parent ();
         assert (original_scores_dir != null);

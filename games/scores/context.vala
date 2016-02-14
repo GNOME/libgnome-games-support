@@ -103,15 +103,8 @@ public class Context : Object
 
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), app_name, "scores", null);
 
-        try
-        {
-            if (importer != null)
-                importer.run (user_score_dir);
-        }
-        catch (Error e)
-        {
-            warning ("Score importer failed: %s", e.message);
-        }
+        if (importer != null)
+            importer.run (this, user_score_dir);
 
         try
         {

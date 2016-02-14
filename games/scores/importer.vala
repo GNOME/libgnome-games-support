@@ -65,16 +65,23 @@ namespace Scores {
 
 public abstract class Importer : Object
 {
-    protected abstract void importOldScores (File new_scores_dir) throws Error;
+    protected abstract void importOldScores (Context context, File new_scores_dir) throws Error;
 
-    internal void run (string new_scores_dir) throws Error
+    internal void run (Context context, string new_scores_dir)
     {
         var new_dir = File.new_for_path (new_scores_dir);
         if (new_dir.query_exists ())
             return;
-        new_dir.make_directory ();
 
-        importOldScores (new_dir);
+        try
+        {
+            new_dir.make_directory ();
+            importOldScores (context, new_dir);
+        }
+        catch (Error e)
+        {
+            warning ("Failed to import scores: %s", e.message);
+        }
     }
 }
 
