@@ -185,7 +185,7 @@ private void test_import_from_score_directory ()
                 return category;
             },
             Games.Scores.Style.PLAIN_DESCENDING,
-            new Games.Scores.DirectoryImporter ((old_key) => {
+            new Games.Scores.DirectoryImporter.with_convert_func ((old_key) => {
                 assert (old_key == "old-cat");
                 return "new-cat";
             }));

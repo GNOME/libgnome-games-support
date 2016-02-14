@@ -36,9 +36,15 @@ public class DirectoryImporter : Importer
      * directory, and some of those files might not be valid categories.
      */
     public delegate string? CategoryConvertFunc (string old_key);
-    private CategoryConvertFunc category_convert;
+    private CategoryConvertFunc? category_convert;
 
-    public DirectoryImporter (CategoryConvertFunc category_convert)
+    public DirectoryImporter ()
+    {
+        /* Default converter for games that don't require category migration. */
+        this.category_convert = ((old_key) => { return old_key; });
+    }
+
+    public DirectoryImporter.with_convert_func (CategoryConvertFunc? category_convert)
     {
         this.category_convert = category_convert;
     }
