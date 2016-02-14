@@ -203,6 +203,55 @@ private void test_import_from_score_directory ()
     }
 }
 
+private void test_import_from_history_file ()
+{
+    try
+    {
+        var expected_score = new Score (42,
+                                        1455426945,
+                                        Environment.get_real_name ());
+        var category = new Category ("new-cat", "");
+
+        var test_directory = File.new_for_path (get_test_directory_name ());
+        test_directory.make_directory_with_parents ();
+
+        var old_scores_file = File.new_for_path (Path.build_filename (get_test_directory_name (),
+                                                                      "history",
+                                                                      null));
+        var stream = old_scores_file.append_to (FileCreateFlags.NONE);
+        stream.write_all ("2016-02-13T23:15:45-0600 old-cat 42\n".data, null);
+        stream.close ();
+        assert (old_scores_file.query_exists ());
+
+        var context = new Context.with_importer (
+            "libgames-support-test",
+            "",
+            null,
+            (key) => {
+                assert (key == "new-cat");
+                return category;
+            },
+            Games.Scores.Style.PLAIN_DESCENDING,
+            new Games.Scores.HistoryFileImporter ((line, out score, out out_category) => {
+                assert (line == "2016-02-13T23:15:45-0600 old-cat 42");
+                score = new Score (42, HistoryFileImporter.parse_date ("2016-02-13T23:15:45-0600"));
+                assert (score.time == 1455426945);
+                out_category = category;
+            }));
+        assert (!old_scores_file.query_exists ());
+
+        var imported_scores = context.get_high_scores (category);
+        assert (imported_scores.size == 1);
+
+        var imported_score = imported_scores.first ();
+        assert (Score.equals (expected_score, imported_score));
+    }
+    catch (Error e)
+    {
+        error (e.message);
+    }
+}
+
 public int main (string args[])
 {
     /* Start fresh.... */
@@ -213,6 +262,7 @@ public int main (string args[])
     test_suite.add (new TestCase ("Scores Files Created", () => {}, test_scores_files_exist, delete_scores));
     test_suite.add (new TestCase ("Save Score to File", () => {}, test_save_score_to_file, delete_scores));
     test_suite.add (new TestCase ("Import from Score Directory", () => {}, test_import_from_score_directory, delete_scores));
+    test_suite.add (new TestCase ("Import from History File", () => {}, test_import_from_history_file, delete_scores));
     return Test.run ();
 }
 
