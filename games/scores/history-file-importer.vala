@@ -42,25 +42,13 @@ public class HistoryFileImporter : Importer
         };
     }
 
-    /* Copied from Robert's Vala games (GPLv2+). This is useful for games to use
-     * when implementing their HistoryConvertFuncs.
-     *
-     * FIXME: GPLv2+, can't release with this.
-     */
     public static int64 parse_date (string date)
     {
-        if (date.length < 19 || date[4] != '-' || date[7] != '-' || date[10] != 'T' || date[13] != ':' || date[16] != ':')
-            return 0;
-
-        var year = int.parse (date.substring (0, 4));
-        var month = int.parse (date.substring (5, 2));
-        var day = int.parse (date.substring (8, 2));
-        var hour = int.parse (date.substring (11, 2));
-        var minute = int.parse (date.substring (14, 2));
-        var seconds = int.parse (date.substring (17, 2));
-        var timezone = date.substring (19);
-
-        return new DateTime (new TimeZone (timezone), year, month, day, hour, minute, seconds).to_unix ();
+        TimeVal timeval = {};
+        var ret = timeval.from_iso8601 (date);
+        if (!ret)
+            warning ("Failed to parse date: %s", date);
+        return timeval.tv_sec;
     }
 
     /* Each game uses a somewhat different format for its scores; one game might
