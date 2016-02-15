@@ -254,16 +254,6 @@ private void test_import_from_history_file ()
 
 private void test_import_from_nonexistent_history_file ()
 {
-    try
-    {
-        var test_directory = File.new_for_path (get_test_directory_name ());
-        test_directory.make_directory_with_parents ();
-    }
-    catch (Error e)
-    {
-        error (e.message);
-    }
-
     (void) new Context.with_importer (
         "libgames-support-test",
         "",

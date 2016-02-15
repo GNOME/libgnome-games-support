@@ -75,7 +75,7 @@ public abstract class Importer : Object
 
         try
         {
-            new_dir.make_directory ();
+            new_dir.make_directory_with_parents ();
             importOldScores (context, new_dir);
         }
         catch (Error e)
