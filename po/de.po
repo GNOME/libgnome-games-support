@@ -2,15 +2,15 @@
 # Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-scores package.
 # Daniel Raab <3dani33@gmail.com>, 2014.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2015.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2015-2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
-"scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-07-24 17:01+0000\n"
-"PO-Revision-Date: 2015-12-30 10:26+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgames-scores&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-02-14 23:41+0000\n"
+"PO-Revision-Date: 2016-02-15 20:16+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: ../games/scores/dialog.vala:58
@@ -33,11 +33,11 @@ msgstr "Bestenliste"
 msgid "Best Times"
 msgstr "Beste Zeiten"
 
-#: ../games/scores/dialog.vala:80
+#: ../games/scores/dialog.vala:78
 msgid "No scores yet"
 msgstr "Noch keine Punktzahlen"
 
-#: ../games/scores/dialog.vala:85
+#: ../games/scores/dialog.vala:82
 msgid "Play some games and your scores will show up here."
 msgstr "Die in Ihren Spielen erreichten Punktzahlen werden hier angezeigt."
 
@@ -65,10 +65,26 @@ msgstr "Spieler"
 msgid "Done"
 msgstr "Fertig"
 
-#: ../games/scores/dialog.vala:273
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:279
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d Minute"
+msgstr[1] "%d Minuten"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:281
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d Sekunde"
+msgstr[1] "%d Sekunden"
+
+#: ../games/scores/dialog.vala:287
 msgid "Your score is the best!"
 msgstr "Sie haben die höchste Punktzahl!"
 
-#: ../games/scores/dialog.vala:275
+#: ../games/scores/dialog.vala:289
 msgid "Your score has made the top ten."
 msgstr "Sie sind unter den zehn Besten."
