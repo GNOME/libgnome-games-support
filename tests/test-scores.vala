@@ -252,6 +252,34 @@ private void test_import_from_history_file ()
     }
 }
 
+private void test_import_from_nonexistent_history_file ()
+{
+    try
+    {
+        var test_directory = File.new_for_path (get_test_directory_name ());
+        test_directory.make_directory_with_parents ();
+    }
+    catch (Error e)
+    {
+        error (e.message);
+    }
+
+    (void) new Context.with_importer (
+        "libgames-support-test",
+        "",
+        null,
+        (key) => {
+            return null;
+        },
+        Games.Scores.Style.POINTS_GREATER_IS_BETTER,
+        new Games.Scores.HistoryFileImporter ((line, out score, out category) => {
+            score = null;
+            category = null;
+        }));
+
+    /* No error */
+}
+
 public int main (string args[])
 {
     /* Start fresh.... */
@@ -263,6 +291,7 @@ public int main (string args[])
     test_suite.add (new TestCase ("Save Score to File", () => {}, test_save_score_to_file, delete_scores));
     test_suite.add (new TestCase ("Import from Score Directory", () => {}, test_import_from_score_directory, delete_scores));
     test_suite.add (new TestCase ("Import from History File", () => {}, test_import_from_history_file, delete_scores));
+    test_suite.add (new TestCase ("Import from Nonexistent History File", () => {}, test_import_from_nonexistent_history_file, delete_scores));
     return Test.run ();
 }
 

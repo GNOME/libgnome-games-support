@@ -59,9 +59,12 @@ public class HistoryFileImporter : Importer
     protected override void importOldScores (Context context, File new_scores_dir) throws GLib.Error
     {
         var history_filename = Path.build_filename (new_scores_dir.get_path (), "..", "history", null);
+        var stream = FileStream.open (history_filename, "r");
+        if (stream == null)
+            return;
+
         debug ("Importing scores from %s", history_filename);
 
-        var stream = FileStream.open (history_filename, "r");
         string line;
         while ((line = stream.read_line ()) != null)
         {
