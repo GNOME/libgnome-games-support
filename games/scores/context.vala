@@ -65,6 +65,12 @@ public class Context : Object
 
     private Importer? importer;
 
+    class construct
+    {
+        Intl.bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+        Intl.bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+    }
+
     public Context (string app_name,
                     string category_type,
                     Gtk.Window? game_window,
