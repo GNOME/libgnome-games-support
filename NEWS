@@ -1,3 +1,15 @@
+0.90 - February 15, 2016
+========================
+
+With this release, libgames-support is now entering API freeze in preparation
+for its first stable release in March. The API will change before this release
+only if a major issue is discovered.
+
+- Add ability to import old scores.
+- Various fixes and improvements.
+- Various API changes.
+- Updated translations
+
 0.2 - October 25, 2015
 ======================
 
