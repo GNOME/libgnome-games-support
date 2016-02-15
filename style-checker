@@ -150,7 +150,7 @@ def main():
                     printIssue(currLine, "multiple whitespace before (")
                     nIssues += 1
 
-        # No whitespce between round brackets "(xyz)"
+        # No whitespace between round brackets "(xyz)"
         indexes = find(getLineData(currLine), '(')
         for index in indexes:
             if index > 1:
