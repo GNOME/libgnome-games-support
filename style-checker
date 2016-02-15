@@ -99,7 +99,7 @@ def main():
 
         # Line Width
         if getLineWidth(currLine) > 120:
-            printIssue(currLine, "is greater than 120 charecters")
+            printIssue(currLine, "is greater than 120 characters")
             nIssues += 1
 
         # Lines with trailing white-space or tabspace
