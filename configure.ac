@@ -17,7 +17,6 @@ dnl
 dnl http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 AC_SUBST([LIBGAMES_SUPPORT_LT_VERSION], [1:0:0])
 
-dnl This one is easier. Increment it whenever you increment age.
 AC_SUBST([LIBGAMES_SUPPORT_API_VERSION], [1.0])
 
 AC_CONFIG_AUX_DIR([build-aux])
