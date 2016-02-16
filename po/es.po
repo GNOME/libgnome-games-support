@@ -2,17 +2,18 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014, 2015., 2016.
 #
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-support.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-07-24 17:01+0000\n"
-"PO-Revision-Date: 2015-08-25 \n"
+"POT-Creation-Date: 2016-02-14 23:41+0000\n"
+"PO-Revision-Date: 2016-02-16 13:26+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Spanish <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,12 +34,11 @@ msgstr "Puntuaciones más altas"
 msgid "Best Times"
 msgstr "Mejores tiempos"
 
-#: ../games/scores/dialog.vala:80
-#| msgid "Your score is the best!"
+#: ../games/scores/dialog.vala:78
 msgid "No scores yet"
 msgstr "Todavía no hay puntuación"
 
-#: ../games/scores/dialog.vala:85
+#: ../games/scores/dialog.vala:82
 msgid "Play some games and your scores will show up here."
 msgstr "Juegue a algunos juegos y su puntuación se mostrará aquí."
 
@@ -66,10 +66,26 @@ msgstr "Jugador"
 msgid "Done"
 msgstr "Hecho"
 
-#: ../games/scores/dialog.vala:273
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:279
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minuto"
+msgstr[1] "%d minutos"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:281
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d segundo"
+msgstr[1] "%d segundos"
+
+#: ../games/scores/dialog.vala:287
 msgid "Your score is the best!"
 msgstr "Su puntuación es la mejor."
 
-#: ../games/scores/dialog.vala:275
+#: ../games/scores/dialog.vala:289
 msgid "Your score has made the top ten."
 msgstr "Su puntuación ha alcanzado los 10 mejores."
