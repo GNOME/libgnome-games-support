@@ -4,14 +4,14 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2014-2015.
-# Aviary.pl <gnomepl@aviary.pl>, 2014-2015.
+# Piotr Drąg <piotrdrag@gmail.com>, 2014-2016.
+# Aviary.pl <gnomepl@aviary.pl>, 2014-2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-scores\n"
+"Project-Id-Version: libgames-support\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-26 18:55+0200\n"
-"PO-Revision-Date: 2015-07-26 18:58+0200\n"
+"POT-Creation-Date: 2016-02-17 22:37+0100\n"
+"PO-Revision-Date: 2016-02-17 22:38+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -45,33 +45,51 @@ msgid "Play some games and your scores will show up here."
 msgstr "Wyniki pojawią się po rozegraniu paru gier."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:135
+#: ../games/scores/dialog.vala:136
 msgid "Rank"
 msgstr "Pozycja"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:144
+#: ../games/scores/dialog.vala:145
 msgid "Score"
 msgstr "Wynik"
 
-#: ../games/scores/dialog.vala:146
+#: ../games/scores/dialog.vala:147
 msgid "Time"
 msgstr "Czas"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:153
+#: ../games/scores/dialog.vala:154
 msgid "Player"
 msgstr "Gracz"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:163
+#: ../games/scores/dialog.vala:164
 msgid "Done"
 msgstr "Gotowe"
 
-#: ../games/scores/dialog.vala:272
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:279
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minuta"
+msgstr[1] "%d minuty"
+msgstr[2] "%d minut"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:281
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekunda"
+msgstr[1] "%d sekundy"
+msgstr[2] "%d sekund"
+
+#: ../games/scores/dialog.vala:287
 msgid "Your score is the best!"
 msgstr "Osiągnięto najlepszy wynik!"
 
-#: ../games/scores/dialog.vala:274
+#: ../games/scores/dialog.vala:289
 msgid "Your score has made the top ten."
 msgstr "Osiągnięty wynik mieści się w dziesięciu najlepszych."
