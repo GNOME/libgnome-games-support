@@ -1,14 +1,14 @@
 # Serbian translation for libgames-scores.
 # Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-scores package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2014.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2014—2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product"
 "=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-28 09:34+0000\n"
-"PO-Revision-Date: 2014-09-28 15:13+0200\n"
+"POT-Creation-Date: 2016-02-14 23:41+0000\n"
+"PO-Revision-Date: 2016-02-17 21:34+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -20,47 +20,75 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../src/dialog.vala:58
+#: ../games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Čestitamo!"
 
-#: ../src/dialog.vala:60
+#: ../games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Najbolji rezultati"
 
-#: ../src/dialog.vala:62
+#: ../games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Najbolja vremena"
 
+#: ../games/scores/dialog.vala:78
+#| msgid "Your score is the best!"
+msgid "No scores yet"
+msgstr "Za sada nema rezultata"
+
+#: ../games/scores/dialog.vala:82
+msgid "Play some games and your scores will show up here."
+msgstr "Odigrajte neku igru i vaši rezultati će se pojaviti ovde."
+
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:108
+#: ../games/scores/dialog.vala:136
 msgid "Rank"
 msgstr "Plasman"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:117
+#: ../games/scores/dialog.vala:145
 msgid "Score"
 msgstr "Razultat"
 
-#: ../src/dialog.vala:119
+#: ../games/scores/dialog.vala:147
 msgid "Time"
 msgstr "Vreme"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:126
+#: ../games/scores/dialog.vala:154
 msgid "Player"
 msgstr "Igrač"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../src/dialog.vala:136
+#: ../games/scores/dialog.vala:164
 msgid "Done"
 msgstr "Urađeno"
 
-#. Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog.
-#: ../src/dialog.vala:255
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:279
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minuta"
+msgstr[2] "%d minuta"
+msgstr[3] "%d minut"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:281
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekunda"
+msgstr[1] "%d sekunde"
+msgstr[2] "%d sekundi"
+msgstr[3] "%d sekunda"
+
+#: ../games/scores/dialog.vala:287
 msgid "Your score is the best!"
 msgstr "Vaš rezultat je najbolji!"
 
-#: ../src/dialog.vala:257
+#: ../games/scores/dialog.vala:289
 msgid "Your score has made the top ten."
 msgstr "Vaš rezultat je ušao u najboljih 10."
