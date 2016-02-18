@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
-"scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-07-24 17:01+0000\n"
-"PO-Revision-Date: 2015-08-30 14:05+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgames-scores&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-02-14 23:41+0000\n"
+"PO-Revision-Date: 2016-02-18 23:19+0200\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: Greek <team@lists.gnome.gr>\n"
 "Language: el\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: ../games/scores/dialog.vala:58
@@ -32,11 +32,11 @@ msgstr "Υψηλές βαθμολογίες"
 msgid "Best Times"
 msgstr "Καλύτεροι χρόνοι"
 
-#: ../games/scores/dialog.vala:80
+#: ../games/scores/dialog.vala:78
 msgid "No scores yet"
 msgstr "Καμία βαθμολογία ακόμα"
 
-#: ../games/scores/dialog.vala:85
+#: ../games/scores/dialog.vala:82
 msgid "Play some games and your scores will show up here."
 msgstr "Παίξτε μερικά παιχνίδια και οι βαθμολογίες σας θα εμφανιστούν εδώ."
 
@@ -64,10 +64,26 @@ msgstr "Παίχτης"
 msgid "Done"
 msgstr "Έτοιμο"
 
-#: ../games/scores/dialog.vala:273
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:279
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d λεπτό"
+msgstr[1] "%d λεπτά"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:281
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d δευτερόλεπτο"
+msgstr[1] "%d δευτερόλεπτα"
+
+#: ../games/scores/dialog.vala:287
 msgid "Your score is the best!"
 msgstr "Η βαθμολογία σας είναι η καλύτερη!"
 
-#: ../games/scores/dialog.vala:275
+#: ../games/scores/dialog.vala:289
 msgid "Your score has made the top ten."
 msgstr "Η βαθμολογία σας είναι στην κορυφαία δεκάδα."
