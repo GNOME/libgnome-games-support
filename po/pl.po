@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libgames-support\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 22:37+0100\n"
-"PO-Revision-Date: 2016-02-17 22:38+0100\n"
+"POT-Creation-Date: 2016-02-21 16:49+0100\n"
+"PO-Revision-Date: 2016-02-21 16:50+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -45,31 +45,31 @@ msgid "Play some games and your scores will show up here."
 msgstr "Wyniki pojawią się po rozegraniu paru gier."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:136
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Pozycja"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:145
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Wynik"
 
-#: ../games/scores/dialog.vala:147
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Czas"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:154
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Gracz"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:164
-msgid "Done"
-msgstr "Gotowe"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Gotowe"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:279
+#: ../games/scores/dialog.vala:278
 #, c-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -78,7 +78,7 @@ msgstr[1] "%d minuty"
 msgstr[2] "%d minut"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:281
+#: ../games/scores/dialog.vala:280
 #, c-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -86,10 +86,10 @@ msgstr[0] "%d sekunda"
 msgstr[1] "%d sekundy"
 msgstr[2] "%d sekund"
 
-#: ../games/scores/dialog.vala:287
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "Osiągnięto najlepszy wynik!"
 
-#: ../games/scores/dialog.vala:289
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "Osiągnięty wynik mieści się w dziesięciu najlepszych."
