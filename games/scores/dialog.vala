@@ -160,7 +160,7 @@ private class Dialog : Gtk.Dialog
 
         if (new_high_score != null)
             /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
-            add_button (_("Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
+            add_button (_("_Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
         load_categories ();
 
