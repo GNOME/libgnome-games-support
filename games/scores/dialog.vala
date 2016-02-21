@@ -127,8 +127,7 @@ private class Dialog : Gtk.Dialog
         vbox.pack_start (grid, false, false, 0);
 
         grid.row_homogeneous = true;
-        grid.column_homogeneous = true;
-        grid.column_spacing = 30;
+        grid.column_spacing = 40;
         grid.margin = 20;
         grid.halign = Gtk.Align.CENTER;
 
