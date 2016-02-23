@@ -1,14 +1,13 @@
 # Galician translation for libgames-support.
 # Copyright (C) 2015 libgames-support's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-support package.
-# Fran Dieguez <frandieguez@gnome.org>, 2015.
+# Fran Dieguez <frandieguez@gnome.org>, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-support master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product"
-"=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-17 00:42+0000\n"
-"PO-Revision-Date: 2015-11-17 08:17+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-23 19:49+0100\n"
+"PO-Revision-Date: 2016-02-23 19:54+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -41,33 +40,49 @@ msgid "Play some games and your scores will show up here."
 msgstr "Xoga algúns xogos e as túas puntuacións aparecerán aquí."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:136
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Posto"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:145
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Puntuación"
 
-#: ../games/scores/dialog.vala:147
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Tempo"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:154
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Xogador"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:164
-msgid "Done"
-msgstr "Feito"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Feito"
 
-#: ../games/scores/dialog.vala:274
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:278
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minuto"
+msgstr[1] "%d minutos"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:280
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d segundo"
+msgstr[1] "%d segundos"
+
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "A túa puntuación é a mellor!"
 
-#: ../games/scores/dialog.vala:276
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "A túa puntuación están entre as 10 primeiras."
