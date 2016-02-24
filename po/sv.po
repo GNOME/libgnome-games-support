@@ -1,23 +1,24 @@
 # Swedish translation for libgames-support.
-# Copyright © 2015 libgames-support's COPYRIGHT HOLDER
+# Copyright © 2015, 2016 libgames-support's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-support package.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-support master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-22 22:19+0000\n"
-"PO-Revision-Date: 2015-08-22 08:51+0100\n"
-"Last-Translator: Josef Andersson <josef.andersson@fripost.org>\n"
+"POT-Creation-Date: 2016-02-21 04:35+0000\n"
+"PO-Revision-Date: 2016-02-22 17:48+0100\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen."
+"se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: ../games/scores/dialog.vala:58
@@ -41,33 +42,49 @@ msgid "Play some games and your scores will show up here."
 msgstr "Spela några spel så kommer dina poäng att visas här."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:136
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Placering"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:145
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Poäng"
 
-#: ../games/scores/dialog.vala:147
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Tid"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:154
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Spelare"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:164
-msgid "Done"
-msgstr "Klar"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Klar"
 
-#: ../games/scores/dialog.vala:274
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:278
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minuter"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:280
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekund"
+msgstr[1] "%d sekunder"
+
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "Din poäng är den bästa!"
 
-#: ../games/scores/dialog.vala:276
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "Ditt resultat är bland de tio bästa."
