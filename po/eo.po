@@ -78,6 +78,7 @@ msgstr[1] "%d minutoj"
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d sekundo"
+msgstr[1] "%d sekundoj"
 
 #: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
