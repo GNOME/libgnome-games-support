@@ -2,15 +2,15 @@
 # Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-scores package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2014-2015.
+# Matej Urbančič <mateju@svn.gnome.org>, 2014-2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=libgames-"
 "scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-13 12:47+0000\n"
-"PO-Revision-Date: 2015-12-13 20:03+0100\n"
+"POT-Creation-Date: 2016-03-03 21:41+0100\n"
+"PO-Revision-Date: 2016-03-03 21:42+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: ../games/scores/dialog.vala:58
@@ -44,33 +44,56 @@ msgid "Play some games and your scores will show up here."
 msgstr "Po igranju iger bodo rezultati prikazani na tem mestu."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:136
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Ocena"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:145
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Rezultat"
 
-#: ../games/scores/dialog.vala:147
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Čas"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:154
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Igralec"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:164
-msgid "Done"
-msgstr "Končano"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Končano"
 
-#: ../games/scores/dialog.vala:274
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:278
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minuta"
+msgstr[2] "%d minuti"
+msgstr[3] "%d minute"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:280
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekund"
+msgstr[1] "%d sekunda"
+msgstr[2] "%d sekundi"
+msgstr[3] "%d sekunde"
+
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "Vaš rezultat je najboljši!"
 
-#: ../games/scores/dialog.vala:276
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "Vaš rezultat se uvršča med najboljših deset."
+
+#~ msgid "Done"
+#~ msgstr "Končano"
