@@ -34,7 +34,7 @@ LT_INIT([disable-static])
 PKG_CHECK_MODULES([LIBGAMES_SUPPORT], [
   glib-2.0 >= 2.40
   gio-2.0 >= 2.40
-  gtk+-3.0 >= 3.12
+  gtk+-3.0 >= 3.19.2
   gee-0.8
 ])
 
