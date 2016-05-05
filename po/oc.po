@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: libgames-scores master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product"
 "=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-01 09:00+0000\n"
-"PO-Revision-Date: 2016-03-02 20:29+0200\n"
+"POT-Creation-Date: 2016-03-02 19:30+0000\n"
+"PO-Revision-Date: 2016-05-05 21:46+0200\n"
 "Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -38,7 +38,7 @@ msgstr "Pas cap de marca pel moment"
 
 #: ../games/scores/dialog.vala:82
 msgid "Play some games and your scores will show up here."
-msgstr "Jogatz a certans jòcs e las marcas aparesisseràn aicí."
+msgstr "Jogatz a certans jòcs e las marcas apareisseràn aicí."
 
 #. A column heading in the scores dialog
 #: ../games/scores/dialog.vala:135
