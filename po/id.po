@@ -5,61 +5,84 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-scores master\n"
+"Project-Id-Version: libgames-scores libgames-support-1-0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-10-06 21:37+0000\n"
-"PO-Revision-Date: 2014-10-10 13:43+0700\n"
+"POT-Creation-Date: 2016-04-08 14:01+0000\n"
+"PO-Revision-Date: 2016-06-27 05:51+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.8.8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../src/dialog.vala:58
+#: ../games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Selamat!"
 
-#: ../src/dialog.vala:60
+#: ../games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Nilai Tertinggi"
 
-#: ../src/dialog.vala:62
+#: ../games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Waktu Terbaik"
 
+#: ../games/scores/dialog.vala:78
+msgid "No scores yet"
+msgstr "Belum ada skor"
+
+#: ../games/scores/dialog.vala:82
+msgid "Play some games and your scores will show up here."
+msgstr ""
+"Mainkan beberapa permainan dan skor Anda akan muncul di sini."
+
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:108
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Peringkat"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:117
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Skor"
 
-#: ../src/dialog.vala:119
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Waktu"
 
 #. A column heading in the scores dialog
-#: ../src/dialog.vala:126
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Pemain"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../src/dialog.vala:136
-msgid "Done"
-msgstr "Selesai"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Selesai"
 
-#. Appears just below the dialog title in slightly smaller font. A subheading of sorts for dialog.
-#: ../src/dialog.vala:255
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:278
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d menit"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:280
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d detik"
+
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "Skor Anda terbaik!"
 
-#: ../src/dialog.vala:257
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "Skor Anda masuk sepuluh terbaik."
