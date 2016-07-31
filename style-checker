@@ -131,8 +131,9 @@ def main():
                     nIssues += 1
                 elif getLineData(currLine, index - 2) == ' ' \
                     and getLineData(currLine, index - 1) != '_' \
-                    and not (re.findall("\s*{", getLineData(currLine)) != []
-                             and getLineData(currLine, 0) in ['\t', ' ']):
+                    and not (re.findall("\s*{",
+                             getLineData(currLine)) != [] and
+                             getLineData(currLine, 0) in ['\t', ' ']):
                     printIssue(currLine, "multiple whitespace before {")
                     nIssues += 1
 
@@ -147,12 +148,11 @@ def main():
                     nIssues += 1
                 elif getLineData(currLine, index - 2) == ' ' \
                     and getLineData(currLine, index - 1) not in ['_', '('] \
-                    and not (getLineData(currLine).startswith(" *")
-                             or getLineData(currLine).startswith("#")
-                             or (re.findall("\s*\(",
-                                 getLineData(currLine)) != []
-                                 and getLineData(currLine, 0)
-                                 in ['\t', ' '])):
+                    and not (getLineData(currLine).startswith(" *") or
+                             getLineData(currLine).startswith("#") or
+                             (re.findall("\s*\(",
+                              getLineData(currLine)) != [] and
+                                 getLineData(currLine, 0) in ['\t', ' '])):
                     printIssue(currLine, "multiple whitespace before (")
                     nIssues += 1
 
@@ -187,7 +187,8 @@ def main():
             print("Your push has been rejected.")
             return -1
         elif os.path.basename(__file__) == 'pre-applypatch':
-            print("We strongly recommend you to fix these. Continuing anyway....")
+            print("We strongly recommend you to fix these.")
+            print("Continuing anyway....")
     else:
         print("Guideline checker found no issues.")
 
