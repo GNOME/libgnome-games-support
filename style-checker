@@ -171,9 +171,17 @@ def main():
         else:
             print("Guideline checker found " + str(nIssues) + " issues.")
 
-        print("We strongly recommend you to fix these.")
-        print("To ignore use `git commit --no-verify`")
-        return -1
+        if os.path.basename(__file__) == 'pre-commit':
+            print("To ignore use `git commit --no-verify`")
+            return -1
+        elif os.path.basename(__file__) == 'pre-push':
+            print("To ignore use `git push --no-verify`")
+            return -1
+        elif os.path.basename(__file__) == 'pre-receive':
+            print("Your push has been rejected.")
+            return -1
+        elif os.path.basename(__file__) == 'pre-applypatch':
+            print("We strongly recommend you to fix these. Continuing anyway....")
     else:
         print("Guideline checker found no issues.")
 
