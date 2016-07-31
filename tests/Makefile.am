@@ -14,7 +14,7 @@ test_scores_CPPFLAGS = \
 	$(LIBGAMES_SUPPORT_CFLAGS)
 
 test_scores_LDADD = \
-	$(top_builddir)/games/libgames-support.la	\
+	$(top_builddir)/games/libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).la	\
 	$(LIBGAMES_SUPPORT_LIBS)
 
 test_scores_VALAFLAGS = \
