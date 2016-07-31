@@ -1,4 +1,5 @@
-# git.mk
+# git.mk, a small Makefile to autogenerate .gitignore files
+# for autotools-based projects.
 #
 # Copyright 2009, Red Hat, Inc.
 # Copyright 2010,2011,2012,2013 Behdad Esfahbod
@@ -85,6 +86,7 @@ GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL = \
 		ar-lib \
 		compile \
 		config.guess \
+		config.rpath \
 		config.sub \
 		depcomp \
 		install-sh \
@@ -170,10 +172,24 @@ $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 				$(DOC_MODULE)-decl.txt \
 				tmpl/$(DOC_MODULE)-unused.sgml \
 				"tmpl/*.bak" \
+				$(REPORT_FILES) \
+				$(DOC_MODULE).pdf \
 				xml html \
 			; do echo "/$$x"; done; \
 			FLAVOR=$$(cd $(top_srcdir); $(AUTOCONF) --trace 'GTK_DOC_CHECK:$$2' ./configure.ac); \
 			case $$FLAVOR in *no-tmpl*) echo /tmpl;; esac; \
+			if echo "$(SCAN_OPTIONS)" | grep -q "\-\-rebuild-types"; then \
+				echo "/$(DOC_MODULE).types"; \
+			fi; \
+			if echo "$(SCAN_OPTIONS)" | grep -q "\-\-rebuild-sections"; then \
+				echo "/$(DOC_MODULE)-sections.txt"; \
+			fi; \
+			if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
+				for x in \
+					$(SETUP_FILES) \
+					$(DOC_MODULE).types \
+				; do echo "/$$x"; done; \
+			fi; \
 		fi; \
 		if test "x$(DOC_MODULE)$(DOC_ID)" = x -o "x$(DOC_LINGUAS)" = x; then :; else \
 			for lc in $(DOC_LINGUAS); do \
@@ -220,6 +236,7 @@ $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 		fi; \
 		if test -f $(srcdir)/po/Makefile.in.in; then \
 			for x in \
+				ABOUT-NLS \
 				po/Makefile.in.in \
 				po/Makefile.in.in~ \
 				po/Makefile.in \
@@ -228,6 +245,7 @@ $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 				po/POTFILES \
 				po/Rules-quot \
 				po/stamp-it \
+				po/stamp-po \
 				po/.intltool-merge-cache \
 				"po/*.gmo" \
 				"po/*.header" \
@@ -259,7 +277,7 @@ $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 		if test "x$(am__dirstamp)" = x; then :; else \
 			echo "$(am__dirstamp)"; \
 		fi; \
-		if test "x$(LTCOMPILE)" = x -a "x$(LTCXXCOMPILE)" = x -a "x$(GTKDOC_RUN)" = x; then :; else \
+		if test "x$(findstring libtool,$(LTCOMPILE))" = x -a "x$(findstring libtool,$(LTCXXCOMPILE))" = x -a "x$(GTKDOC_RUN)" = x; then :; else \
 			for x in \
 				"*.lo" \
 				".libs" "_libs" \
