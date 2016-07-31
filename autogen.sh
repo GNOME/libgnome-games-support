@@ -8,6 +8,16 @@ test -z "$srcdir" && srcdir=.
         exit 1
 }
 
+# Use the style-checker as pre-commit and pre-applypatch hooks
+if [ -d $srcdir/.git ]; then
+	for HOOK in pre-commit pre-applypatch
+        do
+                if [ ! -L $srcdir/.git/hooks/$HOOK ]; then
+                        ln -s ../../../libgames-support/style-checker $srcdir/.git/hooks/$HOOK && echo "Enabled $HOOK style checker."
+                fi
+        done
+fi
+
 PKG_NAME=`autoconf --trace 'AC_INIT:$1' "$srcdir/configure.ac"`
 
 if [ "$#" = 0 -a "x$NOCONFIGURE" = "x" ]; then
