@@ -2,7 +2,7 @@ SUBDIRS = games po tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libgames-support-$(LIBGAMES_SUPPORT_API_VERSION).pc
+pkgconfig_DATA = libgnome-games-support-$(LIBGNOME_GAMES_SUPPORT_API_VERSION).pc
 
 EXTRA_DIST = \
 	COPYING.LESSER

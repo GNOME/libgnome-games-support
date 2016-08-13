@@ -3,20 +3,20 @@
  * Copyright © 2014 Nikhar Agrawal
  * Copyright © 2015 Michael Catanzaro <mcatanzaro@gnome.org>
  *
- * This file is part of libgames-support.
+ * This file is part of libgnome-games-support.
  *
- * libgames-support is free software: you can redistribute it and/or modify
+ * libgnome-games-support is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * libgames-support is distributed in the hope that it will be useful,
+ * libgnome-games-support is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with libgames-support.  If not, see <http://www.gnu.org/licenses/>.
+ * along with libgnome-games-support.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Games {

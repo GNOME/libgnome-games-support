@@ -8,7 +8,7 @@
 # Aviary.pl <gnomepl@aviary.pl>, 2014-2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-support\n"
+"Project-Id-Version: libgnome-games-support\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-02-21 16:49+0100\n"
 "PO-Revision-Date: 2016-02-21 16:50+0100\n"

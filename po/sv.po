@@ -1,11 +1,11 @@
-# Swedish translation for libgames-support.
-# Copyright © 2015, 2016 libgames-support's COPYRIGHT HOLDER
-# This file is distributed under the same license as the libgames-support package.
+# Swedish translation for libgnome-games-support.
+# Copyright © 2015, 2016 libgnome-games-support's COPYRIGHT HOLDER
+# This file is distributed under the same license as the libgnome-games-support package.
 # Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-support master\n"
+"Project-Id-Version: libgnome-games-support master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-02-21 04:35+0000\n"

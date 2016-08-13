@@ -1,9 +1,9 @@
-# Bulgarian translation of libgames-support po-file.
+# Bulgarian translation of libgnome-games-support po-file.
 # Copyright (C) 2016 Free Software Foundation, Inc.
 # Alexander Shopov <ash@kambanaria.org>, 20016.
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-support master\n"
+"Project-Id-Version: libgnome-games-support master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-13 20:25+0200\n"
 "PO-Revision-Date: 2016-01-13 17:02+0200\n"

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-scores libgames-support-1-0\n"
+"Project-Id-Version: libgames-scores libgnome-games-support-1-0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-04-08 14:01+0000\n"

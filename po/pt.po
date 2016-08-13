@@ -1,13 +1,13 @@
-# Portuguese translation for libgames-support.
-# Copyright (C) 2015 libgames-support's COPYRIGHT HOLDER
-# This file is distributed under the same license as the libgames-support package.
+# Portuguese translation for libgnome-games-support.
+# Copyright (C) 2015 libgnome-games-support's COPYRIGHT HOLDER
+# This file is distributed under the same license as the libgnome-games-support package.
 # Tiago Santos <tiagofsantos81@sapo.pt>, 2015, 2016.
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2015.
 # Sérgio Cardeira <cardeira.sergio@gmail.com>, 2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libgames-support master\n"
+"Project-Id-Version: libgnome-games-support master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgames-scores&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-02-21 04:35+0000\n"

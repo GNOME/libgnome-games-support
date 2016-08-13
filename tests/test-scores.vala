@@ -3,20 +3,20 @@
  * Copyright © 2014 Nikhar Agrawal
  * Copyright © 2016 Michael Catanzaro <mcatanzaro@gnome.org>
  *
- * This file is part of libgames-support.
+ * This file is part of libgnome-games-support.
  *
- * libgames-support is free software: you can redistribute it and/or modify
+ * libgnome-games-support is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * libgames-support is distributed in the hope that it will be useful,
+ * libgnome-games-support is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with libgames-support.  If not, see <http://www.gnu.org/licenses/>.
+ * along with libgnome-games-support.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Games {
@@ -46,7 +46,7 @@ private void add_score_sync (Context context, int score, Category category) {
 
 private void create_scores ()
 {
-    Context context = new Context ("libgames-support-test", "Games Type", null, category_request, Style.POINTS_GREATER_IS_BETTER);
+    Context context = new Context ("libgnome-games-support-test", "Games Type", null, category_request, Style.POINTS_GREATER_IS_BETTER);
     Category cat = new Category ("cat1", "cat1");
     add_score_sync (context, 101, cat);
     add_score_sync (context, 102, cat);
@@ -59,7 +59,7 @@ private void create_scores ()
 
 private string get_test_directory_name ()
 {
-    return Path.build_filename (Environment.get_user_data_dir (), "libgames-support-test", null);
+    return Path.build_filename (Environment.get_user_data_dir (), "libgnome-games-support-test", null);
 }
 
 private string get_score_directory_name ()
@@ -177,7 +177,7 @@ private void test_import_from_score_directory ()
         assert (old_scores_file.query_exists ());
 
         var context = new Context.with_importer (
-            "libgames-support-test",
+            "libgnome-games-support-test",
             "",
             null,
             (key) => {
@@ -224,7 +224,7 @@ private void test_import_from_history_file ()
         assert (old_scores_file.query_exists ());
 
         var context = new Context.with_importer (
-            "libgames-support-test",
+            "libgnome-games-support-test",
             "",
             null,
             (key) => {
@@ -255,7 +255,7 @@ private void test_import_from_history_file ()
 private void test_import_from_nonexistent_history_file ()
 {
     (void) new Context.with_importer (
-        "libgames-support-test",
+        "libgnome-games-support-test",
         "",
         null,
         (key) => {
