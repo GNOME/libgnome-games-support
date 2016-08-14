@@ -4,11 +4,11 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
-  <name xml:lang="en">libgames-support</name>
+  <name xml:lang="en">libgnome-games-support</name>
   <shortdesc xml:lang="en">Code shared between GNOME games.</shortdesc>
   <description>A dumping ground for code that's useful to share between different GNOME games.</description>
   <homepage rdf:resource="https://wiki.gnome.org/Apps/Games" />
-  <download-page rdf:resource="http://download.gnome.org/sources/libgames-support/" />
+  <download-page rdf:resource="https://download.gnome.org/sources/libgnome-games-support/" />
   <programming-language>Vala</programming-language>
 
   <maintainer>
