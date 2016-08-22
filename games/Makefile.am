@@ -22,7 +22,9 @@ libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_CPPFLAGS = \
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LIBGNOME_GAMES_SUPPORT_LT_VERSION) \
-	-no-undefined \
+	-no-undefined
+
+libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LIBADD = \
 	$(LIBGNOME_GAMES_SUPPORT_LIBS)
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_VALAFLAGS = \
