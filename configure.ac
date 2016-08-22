@@ -32,12 +32,10 @@ LT_PREREQ([2.2])
 LT_INIT([disable-static])
 
 AX_REQUIRE_DEFINED([PKG_CHECK_MODULES])
-PKG_CHECK_MODULES([LIBGNOME_GAMES_SUPPORT], [
-  glib-2.0 >= 2.40
-  gio-2.0 >= 2.40
-  gtk+-3.0 >= 3.19.2
-  gee-0.8
-])
+PKG_CHECK_MODULES([GEE], [gee-0.8])
+PKG_CHECK_MODULES([GIO], [gio-2.0 >= 2.40])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.40])
+PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.19.2])
 
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.19.8])

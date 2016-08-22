@@ -10,12 +10,16 @@ test_scores_CFLAGS = \
 	-w
 
 test_scores_CPPFLAGS = \
-	-I$(top_srcdir)/games		\
-	$(LIBGNOME_GAMES_SUPPORT_CFLAGS)
+	-I$(top_srcdir)/games	\
+	$(GEE_CFLAGS)		\
+	$(GLIB_CFLAGS)		\
+	$(GTK_CFLAGS)
 
 test_scores_LDADD = \
 	$(top_builddir)/games/libgnome-games-support-$(LIBGNOME_GAMES_SUPPORT_API_VERSION).la	\
-	$(LIBGNOME_GAMES_SUPPORT_LIBS)
+	$(GEE_LIBS)	\
+	$(GLIB_LIBS)	\
+	$(GTK_LIBS)
 
 test_scores_VALAFLAGS = \
 	--pkg gee-0.8	\

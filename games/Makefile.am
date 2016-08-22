@@ -18,14 +18,20 @@ libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_CPPFLAGS = \
 	-I$(top_srcdir)/include				\
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"	\
 	-DLOCALEDIR=\"$(localedir)\"			\
-	$(LIBGNOME_GAMES_SUPPORT_CFLAGS)
+	$(GEE_CFLAGS)					\
+	$(GIO_CFLAGS)					\
+	$(GLIB_CFLAGS)					\
+	$(GTK_CFLAGS)
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LIBGNOME_GAMES_SUPPORT_LT_VERSION) \
 	-no-undefined
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LIBADD = \
-	$(LIBGNOME_GAMES_SUPPORT_LIBS)
+	$(GEE_LIBS)	\
+	$(GIO_LIBS)	\
+	$(GLIB_LIBS)	\
+	$(GTK_LIBS)
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_VALAFLAGS = \
 	--pkg glib-2.0				\
