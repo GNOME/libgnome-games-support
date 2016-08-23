@@ -17,7 +17,7 @@ dnl
 dnl http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 AC_SUBST([LIBGNOME_GAMES_SUPPORT_LT_VERSION], [2:1:0])
 
-AC_SUBST([LIBGNOME_GAMES_SUPPORT_API_VERSION], [1.0])
+AC_SUBST([LIBGNOME_GAMES_SUPPORT_API_VERSION], [1])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
@@ -43,7 +43,7 @@ AC_SUBST([GETTEXT_PACKAGE], [AC_PACKAGE_NAME])
 
 AC_CONFIG_FILES([
   Makefile
-  libgnome-games-support-1.0.pc
+  libgnome-games-support-1.pc
   po/Makefile.in
   games/Makefile
   tests/Makefile
