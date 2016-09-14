@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Arash Mousavi <mousavi.arash@gmail.com>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgnome-games-support&keywords=I18N"
+"+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-14 10:09+0430\n"
+"PO-Revision-Date: 2016-09-14 10:11+0430\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.8.9\n"
+"Last-Translator: Arash Mousavi <mousavi.arash@gmail.com>\n"
+"Language: fa_IR\n"
+
+#. Appears at the top of the dialog, as the heading of the dialog
+#: games/scores/dialog.vala:58
+msgid "Congratulations!"
+msgstr "تبریک!"
+
+#: games/scores/dialog.vala:60
+msgid "High Scores"
+msgstr "امتیازهای برتر"
+
+#: games/scores/dialog.vala:62
+msgid "Best Times"
+msgstr "زمان‌های برتر"
+
+#: games/scores/dialog.vala:78
+msgid "No scores yet"
+msgstr "هنوز هیچ امتیازی وجود ندارد"
+
+#: games/scores/dialog.vala:82
+msgid "Play some games and your scores will show up here."
+msgstr "بازی کنید و امتیازهای شما اینجا نمایش داده می‌شود."
+
+#. A column heading in the scores dialog
+#: games/scores/dialog.vala:135
+msgid "Rank"
+msgstr "رتبه"
+
+#. A column heading in the scores dialog
+#: games/scores/dialog.vala:144
+msgid "Score"
+msgstr "امتیاز"
+
+#: games/scores/dialog.vala:146
+msgid "Time"
+msgstr "زمان"
+
+#. A column heading in the scores dialog
+#: games/scores/dialog.vala:153
+msgid "Player"
+msgstr "بازیکن"
+
+#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
+#: games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_اعمال"
+
+#. Time which may be displayed on a scores dialog.
+#: games/scores/dialog.vala:278
+#, c-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%Id دقیقه"
+
+#. Time which may be displayed on a scores dialog.
+#: games/scores/dialog.vala:280
+#, c-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%Id ثانیه"
+
+#: games/scores/dialog.vala:286
+msgid "Your score is the best!"
+msgstr "امتیاز شما بهترین است!"
+
+#: games/scores/dialog.vala:288
+msgid "Your score has made the top ten."
+msgstr "امتیاز شما بین ۱۰ امتیاز برتر است."
