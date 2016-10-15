@@ -242,7 +242,7 @@ public class Context : Object
 
     internal bool add_score_sync (Score score, Category category) throws Error
     {
-        var main_loop = new MainLoop (MainContext.@default (), false);
+        var main_loop = new MainLoop ();
         var ret = false;
         Error error = null;
 
