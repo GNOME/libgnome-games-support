@@ -242,10 +242,12 @@ public class Context : Object
 
     internal bool add_score_sync (Score score, Category category) throws Error
     {
-        var main_loop = new MainLoop ();
+        var main_context = new MainContext ();
+        var main_loop = new MainLoop (main_context);
         var ret = false;
         Error error = null;
 
+        main_context.push_thread_default ();
         add_score_internal.begin (score, category, false, null, (object, result) => {
             try
             {
@@ -258,6 +260,7 @@ public class Context : Object
             main_loop.quit ();
         });
         main_loop.run ();
+        main_context.pop_thread_default ();
 
         if (error != null)
             throw error;
