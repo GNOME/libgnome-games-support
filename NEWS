@@ -1,3 +1,9 @@
+1.2.1 - October 24, 2016
+========================
+
+- Do not iterate global main context when running scores dialog
+- Updated translations
+
 1.2.0 - September 18, 2016
 ==========================
 
