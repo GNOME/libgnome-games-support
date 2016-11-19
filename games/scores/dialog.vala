@@ -275,9 +275,9 @@ private class Dialog : Gtk.Dialog
             var seconds = x.score % 60;
             score.set_text ("%s %s".printf (
                 /* Time which may be displayed on a scores dialog. */
-                ngettext ("%d minute", "%d minutes", minutes).printf (minutes),
+                ngettext ("%ld minute", "%ld minutes", minutes).printf (minutes),
                 /* Time which may be displayed on a scores dialog. */
-                ngettext ("%d second", "%d seconds", seconds).printf (seconds)));
+                ngettext ("%ld second", "%ld seconds", seconds).printf (seconds)));
         }
 
         if (new_high_score != null && Score.equals (x, new_high_score))
