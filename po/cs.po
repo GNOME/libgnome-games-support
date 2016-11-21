@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-21 04:35+0000\n"
-"PO-Revision-Date: 2016-02-27 18:08+0100\n"
+"product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-11-19 15:42+0000\n"
+"PO-Revision-Date: 2016-11-21 10:25+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -20,73 +20,73 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.7\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../games/scores/dialog.vala:58
+#: games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Gratulujeme!"
 
-#: ../games/scores/dialog.vala:60
+#: games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Nejvyšší skóre"
 
-#: ../games/scores/dialog.vala:62
+#: games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Nejlepší časy"
 
-#: ../games/scores/dialog.vala:78
+#: games/scores/dialog.vala:78
 msgid "No scores yet"
 msgstr "Zatím není žádné skóre"
 
-#: ../games/scores/dialog.vala:82
+#: games/scores/dialog.vala:82
 msgid "Play some games and your scores will show up here."
 msgstr "Zahrajte si pár her a vaše skóre se zde objeví."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:135
+#: games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Pořadí"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:144
+#: games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Skóre"
 
-#: ../games/scores/dialog.vala:146
+#: games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Čas"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:153
+#: games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Hráč"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:163
-#| msgid "Done"
+#: games/scores/dialog.vala:163
 msgid "_Done"
 msgstr "_Hotovo"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:278
+#: games/scores/dialog.vala:278
 #, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuta"
-msgstr[1] "%d minuty"
-msgstr[2] "%d minut"
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld minuta"
+msgstr[1] "%ld minuty"
+msgstr[2] "%ld minut"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:280
+#: games/scores/dialog.vala:280
 #, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d vteřina"
-msgstr[1] "%d vteřiny"
-msgstr[2] "%d vteřin"
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld vteřina"
+msgstr[1] "%ld vteřiny"
+msgstr[2] "%ld vteřin"
 
-#: ../games/scores/dialog.vala:286
+#: games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "Vaše skóre je nejlepší!"
 
-#: ../games/scores/dialog.vala:288
+#: games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "Vaše skóre se zařadilo do první desítky."
+
