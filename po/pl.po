@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libgnome-games-support\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-15 18:56+0000\n"
-"PO-Revision-Date: 2016-08-16 10:08+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-11-20 04:00+0000\n"
+"PO-Revision-Date: 2016-12-11 15:33+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -66,20 +67,20 @@ msgstr "_Gotowe"
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:278
 #, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuta"
-msgstr[1] "%d minuty"
-msgstr[2] "%d minut"
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld minuta"
+msgstr[1] "%ld minuty"
+msgstr[2] "%ld minut"
 
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:280
 #, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d sekunda"
-msgstr[1] "%d sekundy"
-msgstr[2] "%d sekund"
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld sekunda"
+msgstr[1] "%ld sekundy"
+msgstr[2] "%ld sekund"
 
 #: games/scores/dialog.vala:286
 msgid "Your score is the best!"
