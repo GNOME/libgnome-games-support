@@ -75,7 +75,7 @@ msgid_plural "%ld minutes"
 msgstr[0] "%ld minut"
 msgstr[1] "%ld minuta"
 msgstr[2] "%ld minuta"
-msgstr[3] "%d minut"
+msgstr[3] "%ld minut"
 
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:280
@@ -87,7 +87,7 @@ msgid_plural "%ld seconds"
 msgstr[0] "%ld sekunda"
 msgstr[1] "%ld sekunde"
 msgstr[2] "%ld sekundi"
-msgstr[3] "%d sekunda"
+msgstr[3] "%ld sekunda"
 
 #: games/scores/dialog.vala:286
 msgid "Your score is the best!"
