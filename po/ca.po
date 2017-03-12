@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libgnome-games-support.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-29 07:00+0100\n"
+"POT-Creation-Date: 2017-03-12 09:56+0100\n"
 "PO-Revision-Date: 2015-10-29 07:00+0100\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: ca_ES <tradgnome@softcatala.net>\n"
@@ -39,33 +39,49 @@ msgid "Play some games and your scores will show up here."
 msgstr "Jugueu algunes partides i les puntuacions es mostraran aquí."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:136
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Posició"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:145
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Puntuació"
 
-#: ../games/scores/dialog.vala:147
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Temps"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:154
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Jugador"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:164
-msgid "Done"
-msgstr "Fet"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Fet"
 
-#: ../games/scores/dialog.vala:274
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:278
+#, c-format
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld minut"
+msgstr[1] "%ld minuts"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:280
+#, c-format
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld segon"
+msgstr[1] "%ld segons"
+
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "La teva puntuació és la millor!"
 
-#: ../games/scores/dialog.vala:276
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "La teva puntuació està entre els deu millors."
