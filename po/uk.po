@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Daniel Korostil <ted.korostiled@gmail.com>, 2016.
+# Daniel Korostil <ted.korostiled@gmail.com>, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 20:50+0200\n"
-"PO-Revision-Date: 2016-03-06 20:54+0300\n"
+"POT-Creation-Date: 2017-03-20 14:04+0200\n"
+"PO-Revision-Date: 2017-03-20 14:05+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -66,20 +66,20 @@ msgstr "_Зроблено"
 #. Time which may be displayed on a scores dialog.
 #: ../games/scores/dialog.vala:278
 #, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d хвилина"
-msgstr[1] "%d хвилини"
-msgstr[2] "%d хвилин"
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld хвилина"
+msgstr[1] "%ld хвилини"
+msgstr[2] "%ld хвилин"
 
 #. Time which may be displayed on a scores dialog.
 #: ../games/scores/dialog.vala:280
 #, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d секунда"
-msgstr[1] "%d секунди"
-msgstr[2] "%d секунд"
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld секунда"
+msgstr[1] "%ld секунди"
+msgstr[2] "%ld секунд"
 
 #: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
