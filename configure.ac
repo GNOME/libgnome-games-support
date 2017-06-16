@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([libgnome-games-support], [1.2.1], [https://bugzilla.gnome.org])
+AC_INIT([libgnome-games-support], [1.2.2], [https://bugzilla.gnome.org])
 
 dnl http://people.gnome.org/~walters/docs/build-api.txt
 dnl https://bugzilla.gnome.org/show_bug.cgi?id=751624
