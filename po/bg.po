@@ -1,12 +1,13 @@
 # Bulgarian translation of libgnome-games-support po-file.
-# Copyright (C) 2016 Free Software Foundation, Inc.
-# Alexander Shopov <ash@kambanaria.org>, 20016.
+# Copyright (C) 2016, 2017 Free Software Foundation, Inc.
+# Alexander Shopov <ash@kambanaria.org>, 20016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: libgnome-games-support master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-13 20:25+0200\n"
-"PO-Revision-Date: 2016-01-13 17:02+0200\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-09-02 08:59+0300\n"
+"PO-Revision-Date: 2017-08-18 20:40+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -37,33 +38,49 @@ msgid "Play some games and your scores will show up here."
 msgstr "Изиграйте поне една игра, за да се появи резултат."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:136
+#: ../games/scores/dialog.vala:135
 msgid "Rank"
 msgstr "Място"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:145
+#: ../games/scores/dialog.vala:144
 msgid "Score"
 msgstr "Резултат"
 
-#: ../games/scores/dialog.vala:147
+#: ../games/scores/dialog.vala:146
 msgid "Time"
 msgstr "Време"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:154
+#: ../games/scores/dialog.vala:153
 msgid "Player"
 msgstr "Играч"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:164
-msgid "Done"
-msgstr "Готово"
+#: ../games/scores/dialog.vala:163
+msgid "_Done"
+msgstr "_Готово"
 
-#: ../games/scores/dialog.vala:274
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:278
+#, c-format
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld минута"
+msgstr[1] "%ld минути"
+
+#. Time which may be displayed on a scores dialog.
+#: ../games/scores/dialog.vala:280
+#, c-format
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld секунда"
+msgstr[1] "%ld секунди"
+
+#: ../games/scores/dialog.vala:286
 msgid "Your score is the best!"
 msgstr "Вашият резултат е най-добрият!"
 
-#: ../games/scores/dialog.vala:276
+#: ../games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
 msgstr "Вашият резултат е измежду десетте най-добри."
