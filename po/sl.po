@@ -2,24 +2,26 @@
 # Copyright (C) 2014 libgames-scores's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgames-scores package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2014–2017.
+# Matej Urbančič <mateju@svn.gnome.org>, + 2014–2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
+"product=libgnome-games-support&keywords=I18N"
+"+L10N&component=general\n"
 "POT-Creation-Date: 2016-11-19 15:42+0000\n"
-"PO-Revision-Date: 2017-02-14 09:02+0100\n"
+"PO-Revision-Date: 2017-10-15 20:46+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? "
+"2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: games/scores/dialog.vala:58
@@ -88,11 +90,11 @@ msgstr[3] "%ld sekunde"
 
 #: games/scores/dialog.vala:286
 msgid "Your score is the best!"
-msgstr "Vaš rezultat je najboljši!"
+msgstr "Dosežen rezultat je najboljši doslej!"
 
 #: games/scores/dialog.vala:288
 msgid "Your score has made the top ten."
-msgstr "Vaš rezultat se uvršča med najboljših deset."
+msgstr "Dosežen rezultat se uvršča med najboljših deset."
 
 #~ msgid "Done"
 #~ msgstr "Končano"
