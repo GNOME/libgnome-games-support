@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libgnome-games-support games-1-2\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-19 18:33+0000\n"
-"PO-Revision-Date: 2016-12-09 20:58+0800\n"
+"POT-Creation-Date: 2017-02-26 01:13+0000\n"
+"PO-Revision-Date: 2017-02-13 17:44+0800\n"
 "Last-Translator: Mandy Wang <wangmychn@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -67,16 +67,16 @@ msgstr "完成(_D)"
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:278
 #, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d 分钟"
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld 分钟"
 
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:280
 #, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d 秒"
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld 秒"
 
 #: games/scores/dialog.vala:286
 msgid "Your score is the best!"
