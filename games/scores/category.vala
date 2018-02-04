@@ -45,8 +45,7 @@ public class Category : Object
 
     public Category (string key, string name)
     {
-        this.key = key;
-        this.name = name;
+        Object (key: key, name: name);
     }
 }
 

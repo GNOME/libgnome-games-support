@@ -24,18 +24,27 @@ namespace Scores {
 public class Score : Object
 {
     public long score { get; set; }
-    public string user { get; set; }
 
     /* Although the scores dialog does not currently display the time a
      * score was achieved, it did in the past and it might again in the future.
      */
-    public int64 time { get; set; }
+    private int64 _time;
+    public int64 time
+    {
+        get { return _time; }
+        set { _time = (value == 0 ? new DateTime.now_local ().to_unix () : value); }
+    }
+
+    private string _user;
+    public string user
+    {
+        get { return _user; }
+        set { _user = (value == null ? Environment.get_real_name () : user); }
+    }
 
     public Score (long score, int64 time = 0, string? user = null)
     {
-        this.score = score;
-        this.time = (time == 0 ? new DateTime.now_local ().to_unix () : time);
-        this.user = (user == null ? Environment.get_real_name () : user);
+        Object (score: score, time: time, user: user);
     }
 
     public static bool equals (Score a, Score b)

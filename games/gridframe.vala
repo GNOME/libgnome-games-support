@@ -114,7 +114,7 @@ public class GridFrame : Gtk.Bin
 
     public GridFrame (int width, int height)
     {
-        @set (width, height);
+        Object (width: width, height: height);
     }
 
     public new void @set (int width, int height)
