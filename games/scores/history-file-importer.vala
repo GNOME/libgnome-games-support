@@ -37,6 +37,11 @@ public class HistoryFileImporter : Importer
 
     public HistoryFileImporter (HistoryConvertFunc history_convert)
     {
+        set_history_convert_func (history_convert);
+    }
+
+    public void set_history_convert_func (HistoryConvertFunc history_convert)
+    {
         this.history_convert = (line, out score, out category) => {
             history_convert (line, out score, out category);
         };

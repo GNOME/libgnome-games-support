@@ -41,10 +41,15 @@ public class DirectoryImporter : Importer
     public DirectoryImporter ()
     {
         /* Default converter for games that don't require category migration. */
-        this.category_convert = ((old_key) => { return old_key; });
+        set_category_convert_func ((old_key) => { return old_key; });
     }
 
-    public DirectoryImporter.with_convert_func (CategoryConvertFunc? category_convert)
+    public DirectoryImporter.with_convert_func (CategoryConvertFunc category_convert)
+    {
+        set_category_convert_func (category_convert);
+    }
+
+    public void set_category_convert_func (CategoryConvertFunc category_convert)
     {
         this.category_convert = (old_key) => { return category_convert (old_key); };
     }
