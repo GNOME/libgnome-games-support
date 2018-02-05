@@ -32,17 +32,20 @@ public enum Style
 
 public class Context : Object
 {
-    /* All these variables are needed by dialog and as parameters to Dialog constructor. */
+    public string app_name { get; construct; }
+    public string category_type { get; construct; }
+    public Gtk.Window? game_window { get; construct; }
+    public Style style { get; construct; }
+    public Importer? importer { get; construct; }
+    public bool load_on_creation { get; construct; default = true; }
+
     private Category? current_category = null;
-    private Style style;
-    private string category_type;
-    private Gtk.Window? game_window;
-    private string app_name;
 
     /* A priority queue enables us to easily fetch the top 10 scores */
     private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
 
     private string user_score_dir;
+    private bool scores_loaded = false;
 
     /* Comparison and hash functions for Map and Priority Queue.*/
     private CompareDataFunc<Score?> scorecmp;
@@ -61,9 +64,7 @@ public class Context : Object
      * know in advance which categories may be in use.
      */
     public delegate Category? CategoryRequestFunc (string category_key);
-    private CategoryRequestFunc category_request;
-
-    private Importer? importer;
+    private CategoryRequestFunc? category_request = null;
 
     class construct
     {
@@ -87,13 +88,17 @@ public class Context : Object
                                   Style style,
                                   Importer? importer)
     {
-        this.app_name = app_name;
-        this.category_type = category_type;
-        this.game_window = game_window;
         this.category_request = (key) => { return category_request (key); };
-        this.style = style;
-        this.importer = importer;
 
+        Object (app_name: app_name,
+                category_type: category_type,
+                game_window: game_window,
+                style: style,
+                importer: importer);
+    }
+
+    public override void constructed ()
+    {
         if (style == Style.POINTS_GREATER_IS_BETTER || style == Style.TIME_GREATER_IS_BETTER)
         {
             scorecmp = (a,b) => {
@@ -112,13 +117,16 @@ public class Context : Object
         if (importer != null)
             importer.run (this, user_score_dir);
 
-        try
+        if (load_on_creation)
         {
-            load_scores_from_files ();
-        }
-        catch (Error e)
-        {
-            warning ("Failed to load scores: %s", e.message);
+            try
+            {
+                load_scores_from_files ();
+            }
+            catch (Error e)
+            {
+                warning ("Failed to load scores: %s", e.message);
+            }
         }
     }
 
@@ -311,14 +319,16 @@ public class Context : Object
     }
 
     private void load_scores_from_files () throws Error
+        requires (!scores_loaded)
     {
+        scores_loaded = true;
+
         if (game_window != null && game_window.visible)
         {
             error ("The application window associated with the GamesScoresContext " +
-                   "was set visible before the Context was constructed. The Context " +
-                   "performs synchronous I/O in the default main context to load " +
-                   "scores when it is constructed, so you should create the Context " +
-                   "before showing your main window.");
+                   "was set visible before loading scores. The Context performs " +
+                   "synchronous I/O in the default main context to load scores, so " +
+                   "so you should do this before showing your main window.");
         }
 
         var directory = File.new_for_path (user_score_dir);
@@ -331,6 +341,13 @@ public class Context : Object
         {
             load_scores_from_file (file_info);
         }
+    }
+
+    public void load_scores (CategoryRequestFunc category_request) throws Error
+        requires (!load_on_creation && this.category_request == null)
+    {
+        this.category_request = (key) => { return category_request (key); };
+        load_scores_from_files ();
     }
 
     internal void run_dialog_internal (Score? new_high_score)
