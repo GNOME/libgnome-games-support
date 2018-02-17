@@ -37,7 +37,6 @@ public class Context : Object
     public Gtk.Window? game_window { get; construct; }
     public Style style { get; construct; }
     public Importer? importer { get; construct; }
-    public bool load_on_creation { get; construct; default = true; }
 
     private Category? current_category = null;
 
@@ -88,13 +87,25 @@ public class Context : Object
                                   Style style,
                                   Importer? importer)
     {
-        this.category_request = (key) => { return category_request (key); };
-
         Object (app_name: app_name,
                 category_type: category_type,
                 game_window: game_window,
                 style: style,
                 importer: importer);
+
+        /* Note: the following functionality can be performed manually by
+         * calling Context.load_scores, to ensure Context is usable even if
+         * constructed with g_object_new.
+         */
+        this.category_request = (key) => { return category_request (key); };
+        try
+        {
+            load_scores_from_files ();
+        }
+        catch (Error e)
+        {
+            warning ("Failed to load scores: %s", e.message);
+        }
     }
 
     public override void constructed ()
@@ -116,18 +127,6 @@ public class Context : Object
 
         if (importer != null)
             importer.run (this, user_score_dir);
-
-        if (load_on_creation)
-        {
-            try
-            {
-                load_scores_from_files ();
-            }
-            catch (Error e)
-            {
-                warning ("Failed to load scores: %s", e.message);
-            }
-        }
     }
 
     internal List<Category?> get_categories ()
@@ -343,8 +342,10 @@ public class Context : Object
         }
     }
 
+    /* Must be called *immediately* after construction, if constructed using
+     * g_object_new. */
     public void load_scores (CategoryRequestFunc category_request) throws Error
-        requires (!load_on_creation && this.category_request == null)
+        requires (this.category_request == null)
     {
         this.category_request = (key) => { return category_request (key); };
         load_scores_from_files ();
