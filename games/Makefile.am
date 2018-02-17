@@ -34,6 +34,7 @@ libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LIBADD = \
 	$(GTK_LIBS)
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_VALAFLAGS = \
+	--abi-stability				\
 	--pkg glib-2.0				\
 	--pkg gtk+-3.0				\
 	--pkg gio-2.0				\

@@ -15,7 +15,7 @@ dnl * If any interfaces have been removed or changed since the last public
 dnl   release, then set age to 0)
 dnl
 dnl http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-AC_SUBST([LIBGNOME_GAMES_SUPPORT_LT_VERSION], [2:4:0])
+AC_SUBST([LIBGNOME_GAMES_SUPPORT_LT_VERSION], [3:0:0])
 
 AC_SUBST([LIBGNOME_GAMES_SUPPORT_API_VERSION], [1])
 
@@ -26,7 +26,7 @@ AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign subdir-objects])
 AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
-AM_PROG_VALAC([0.24])
+AM_PROG_VALAC([0.39.6])
 
 LT_PREREQ([2.2])
 LT_INIT([disable-static])
