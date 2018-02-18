@@ -40,21 +40,17 @@ public class Context : Object
 
     private Category? current_category = null;
 
-    /* A priority queue enables us to easily fetch the top 10 scores */
-    private Gee.HashMap<Category?, Gee.PriorityQueue<Score> > scores_per_category = new Gee.HashMap<Category?, Gee.PriorityQueue<Score> > ((owned) category_hash, (owned) category_equal);
-
-    private string user_score_dir;
-    private bool scores_loaded = false;
-
-    /* Comparison and hash functions for Map and Priority Queue.*/
-    private CompareDataFunc<Score?> scorecmp;
     private static Gee.HashDataFunc<Category?> category_hash = (a) => {
         return str_hash (a.key);
     };
-
     private static Gee.EqualDataFunc<Category?> category_equal = (a,b) => {
         return str_equal (a.key, b.key);
     };
+    private Gee.HashMap<Category?, Gee.List<Score>> scores_per_category =
+        new Gee.HashMap<Category?, Gee.List<Score>> ((owned) category_hash, (owned) category_equal);
+
+    private string user_score_dir;
+    private bool scores_loaded = false;
 
     /* A function provided by the game that converts the category key to a
      * category. Why do we have this, instead of expecting games to pass in a
@@ -110,19 +106,6 @@ public class Context : Object
 
     public override void constructed ()
     {
-        if (style == Style.POINTS_GREATER_IS_BETTER || style == Style.TIME_GREATER_IS_BETTER)
-        {
-            scorecmp = (a,b) => {
-                return (int) (b.score > a.score) - (int) (a.score > b.score);
-            };
-        }
-        else
-        {
-            scorecmp = (a,b) => {
-                return (int) (b.score < a.score) - (int) (a.score < b.score);
-            };
-        }
-
         user_score_dir = Path.build_filename (Environment.get_user_data_dir (), app_name, "scores", null);
 
         if (importer != null)
@@ -145,41 +128,39 @@ public class Context : Object
     /* Primarily used to change name of player and save the changed score to file */
     internal void update_score_name (Score old_score, Category category, string new_name)
     {
-        var list_scores = new List<Score> ();
-        var scores_of_this_category = scores_per_category[category];
-        Score? score = null;
-
-        while (scores_of_this_category.size > 0)
+        foreach (var score in scores_per_category[category])
         {
-            score = scores_of_this_category.poll ();
-
             if (Score.equals (score, old_score))
             {
                 score.user = new_name;
-                list_scores.append (score);
-                break;
+                return;
             }
-            else
-                list_scores.append (score);
         }
-
-        list_scores.foreach ((x) => scores_of_this_category.add (x));
+        assert_not_reached ();
     }
 
-    /* Get a maximum of best n scores from the given category */
+    /* Get the best n scores from the given category, sorted */
     public Gee.List<Score> get_high_scores (Category category, int n = 10)
     {
         var result = new Gee.ArrayList<Score> ();
         if (!scores_per_category.has_key (category))
             return result;
 
-        /* Remove the first n elements and then add them back. Seems insane, but
-         * it's necessary because the PriorityQueue iterators are unordered. */
-        for (int i = 0; i < n && scores_per_category[category].size > 0; i++)
-            result.add (scores_per_category[category].poll ());
-        foreach (var score in result)
-            scores_per_category[category].add (score);
+        if (style == Style.POINTS_GREATER_IS_BETTER || style == Style.TIME_GREATER_IS_BETTER)
+        {
+            scores_per_category[category].sort ((a,b) => {
+                return (int) (b.score > a.score) - (int) (a.score > b.score);
+            });
+        }
+        else
+        {
+            scores_per_category[category].sort ((a,b) => {
+                return (int) (b.score < a.score) - (int) (a.score < b.score);
+            });
+        }
 
+        for (int i = 0; i < n && i < scores_per_category[category].size; i++)
+            result.add (scores_per_category[category][i]);
         return result;
     }
 
@@ -225,7 +206,7 @@ public class Context : Object
 
         /* Check if category exists in the HashTable. Insert one if not. */
         if (!scores_per_category.has_key (category))
-            scores_per_category.set (category, new Gee.PriorityQueue<Score> ((owned) scorecmp));
+            scores_per_category.set (category, new Gee.ArrayList<Score> ());
 
         if (scores_per_category[category].add (score))
             current_category = category;
@@ -282,7 +263,7 @@ public class Context : Object
             return;
 
         var filename = Path.build_filename (user_score_dir, category_key);
-        var scores_of_single_category = new Gee.PriorityQueue<Score> ((owned) scorecmp);
+        var scores_of_single_category = new Gee.ArrayList<Score> ();
         var stream = FileStream.open (filename, "r");
         string line;
         while ((line = stream.read_line ()) != null)
