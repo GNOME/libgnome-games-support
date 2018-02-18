@@ -259,28 +259,28 @@ private class Dialog : Gtk.Dialog
 
     /* Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
        In which case, Label needs to be replaced by Entry allowing for player to enter name. */
-    private void display_single_score (Score x, int row_count, uint no_scores)
+    private void display_single_score (Score score, int row_count, uint no_scores)
     {
-        var rank = (Gtk.Label) grid.get_child_at (0, row_count);
-        rank.set_text (row_count.to_string ());
+        var rank_label = (Gtk.Label) grid.get_child_at (0, row_count);
+        rank_label.set_text (row_count.to_string ());
 
-        var score = (Gtk.Label) grid.get_child_at (1, row_count);
+        var score_label = (Gtk.Label) grid.get_child_at (1, row_count);
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
         {
-            score.set_text (x.score.to_string ());
+            score_label.set_text (score.score.to_string ());
         }
         else
         {
-            var minutes = x.score / 60;
-            var seconds = x.score % 60;
-            score.set_text ("%s %s".printf (
+            var minutes = score.score / 60;
+            var seconds = score.score % 60;
+            score_label.set_text ("%s %s".printf (
                 /* Time which may be displayed on a scores dialog. */
                 ngettext ("%ld minute", "%ld minutes", minutes).printf (minutes),
                 /* Time which may be displayed on a scores dialog. */
                 ngettext ("%ld second", "%ld seconds", seconds).printf (seconds)));
         }
 
-        if (new_high_score != null && Score.equals (x, new_high_score))
+        if (new_high_score != null && Score.equals (score, new_high_score))
         {
             if (no_scores > 1 && row_count == 1)
                 headerbar.subtitle = _("Your score is the best!");
@@ -291,25 +291,25 @@ private class Dialog : Gtk.Dialog
             temp_stack.visible_child_name = "entry";
 
             var entry = (Gtk.Entry) temp_stack.get_visible_child ();
-            entry.text = x.user;
+            entry.text = score.user;
             entry.notify["text"].connect (() => {
-                context.update_score_name (x, active_category, entry.get_text ());
-                x.user = entry.get_text ();
+                context.update_score_name (score, active_category, entry.get_text ());
+                score.user = entry.get_text ();
             });
         }
 
         var name_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
         var widget = name_stack.get_visible_child ();
-        Gtk.Label? label = widget as Gtk.Label;
+        Gtk.Label? user_label = (Gtk.Label) widget;
 
-        if (label != null)
+        if (user_label != null)
         {
-            label.set_text (x.user);
+            user_label.set_text (score.user);
         }
         else
         {
             var entry = (Gtk.Entry) widget;
-            entry.text = x.user;
+            entry.text = score.user;
         }
     }
 
