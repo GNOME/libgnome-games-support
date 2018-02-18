@@ -39,7 +39,7 @@ public class Score : Object
     public string user
     {
         get { return _user; }
-        set { _user = (value == null ? Environment.get_real_name () : user); }
+        set { _user = (value == null ? Environment.get_real_name () : value); }
     }
 
     public Score (long score, int64 time = 0, string? user = null)
