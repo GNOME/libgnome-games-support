@@ -2,21 +2,24 @@
 # Copyright (C) 2016 libgnome-games-support's COPYRIGHT HOLDER
 # This file is distributed under the same license as the libgnome-games-support package.
 # David King <amigadave@amigadave.com>, 2016.
+# Bruce Cowan <bruce@bcowan.eu>, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libgnome-games-support master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-04 03:07+0000\n"
-"PO-Revision-Date: 2016-09-08 08:09+0200\n"
-"Last-Translator: David King <amigadave@amigadave.com>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=libgnome-games-support&keywords=I18N"
+"+L10N&component=general\n"
+"POT-Creation-Date: 2017-09-22 19:48+0000\n"
+"PO-Revision-Date: 2018-03-10 18:34+0000\n"
+"Last-Translator: Bruce Cowan <bruce@bcowan.eu>\n"
 "Language-Team: British English <en_GB@li.org>\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: games/scores/dialog.vala:58
@@ -66,18 +69,22 @@ msgstr "_Done"
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:278
 #, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minute"
-msgstr[1] "%d minutes"
+#| msgid "%d minute"
+#| msgid_plural "%d minutes"
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld minute"
+msgstr[1] "%ld minutes"
 
 #. Time which may be displayed on a scores dialog.
 #: games/scores/dialog.vala:280
 #, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d second"
-msgstr[1] "%d seconds"
+#| msgid "%d second"
+#| msgid_plural "%d seconds"
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld second"
+msgstr[1] "%ld seconds"
 
 #: games/scores/dialog.vala:286
 msgid "Your score is the best!"
