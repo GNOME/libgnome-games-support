@@ -300,10 +300,10 @@ private class Dialog : Gtk.Dialog
 
         var name_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
         var widget = name_stack.get_visible_child ();
-        Gtk.Label? user_label = (Gtk.Label) widget;
 
-        if (user_label != null)
+        if (name_stack.get_visible_child_name () == "label")
         {
+            var user_label = (Gtk.Label) widget;
             user_label.set_text (score.user);
         }
         else
