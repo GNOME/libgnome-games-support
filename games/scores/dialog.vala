@@ -97,10 +97,15 @@ private class Dialog : Gtk.Dialog
         var catbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
         catbar.margin_top = 10;
         catbar.halign = Gtk.Align.CENTER;
-        vbox.pack_start (catbar, true, false, 0);
 
-        var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-        vbox.pack_start (hdiv, false, false, 0);
+        var categories = context.get_categories ();
+        if (categories.length () > 1)
+        {
+            vbox.pack_start (catbar, true, false, 0);
+
+            var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            vbox.pack_start (hdiv, false, false, 0);
+        }
 
         var label = new Gtk.Label (category_type);
         label.use_markup = true;
