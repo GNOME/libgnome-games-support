@@ -270,7 +270,7 @@ private void test_import_from_nonexistent_history_file ()
     /* No error */
 }
 
-public int main (string args[])
+public int main (string[] args)
 {
     /* Start fresh.... */
     delete_scores ();
