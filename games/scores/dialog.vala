@@ -21,7 +21,7 @@
 namespace Games {
 namespace Scores {
 
-private class Dialog : Gtk.Dialog
+private class Dialog : Hdy.Dialog
 {
     private Context context;
     private Category? active_category = null;
@@ -39,8 +39,6 @@ private class Dialog : Gtk.Dialog
     public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string app_name)
     {
         Object (use_header_bar : 1);
-
-        resizable = false;
 
         this.context = context;
         this.transient_for = window;
@@ -83,9 +81,6 @@ private class Dialog : Gtk.Dialog
             vbox.pack_start (description_label, false, false);
 
             vbox.show_all ();
-
-            width_request = 450;
-            height_request = 500;
 
             return;
         }

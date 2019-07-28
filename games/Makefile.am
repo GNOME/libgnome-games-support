@@ -21,7 +21,9 @@ libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_CPPFLAGS = \
 	$(GEE_CFLAGS)					\
 	$(GIO_CFLAGS)					\
 	$(GLIB_CFLAGS)					\
-	$(GTK_CFLAGS)
+	$(GTK_CFLAGS)					\
+	-DHANDY_USE_UNSTABLE_API			\
+	$(HDY_CFLAGS)
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LIBGNOME_GAMES_SUPPORT_LT_VERSION) \
@@ -31,7 +33,8 @@ libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_LIBADD = \
 	$(GEE_LIBS)	\
 	$(GIO_LIBS)	\
 	$(GLIB_LIBS)	\
-	$(GTK_LIBS)
+	$(GTK_LIBS)	\
+	$(HDY_LIBS)
 
 libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_VALAFLAGS = \
 	--abi-stability				\
@@ -39,6 +42,7 @@ libgnome_games_support_@LIBGNOME_GAMES_SUPPORT_API_VERSION@_la_VALAFLAGS = \
 	--pkg gtk+-3.0				\
 	--pkg gio-2.0				\
 	--pkg gee-0.8				\
+	--pkg libhandy-0.0			\
 	--header=libgnome-games-support.h	\
 	--vapi=libgnome-games-support-$(LIBGNOME_GAMES_SUPPORT_API_VERSION).vapi
 
