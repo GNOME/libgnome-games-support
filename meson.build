@@ -19,6 +19,7 @@ glib_dependency     = dependency('glib-2.0',    version: '>= 2.40.0')
 gtk_dependency      = dependency('gtk+-3.0',    version: '>= 3.19.2')
 
 localedir = join_paths(get_option('prefix'), get_option('localedir'))
+includedir = join_paths(get_option('prefix'), get_option('includedir'))
 
 conf = configuration_data ()
 conf.set_quoted ('VERSION', meson.project_version())
