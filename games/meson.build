@@ -7,7 +7,7 @@ lggs_interface_deps = [
     gtk_dependency,
 ]
 
-lggs = library('libgnome-games-support-1',
+lggs = library('gnome-games-support-1',
     [
         'config.vapi',
         'gridframe.vala',
@@ -19,7 +19,6 @@ lggs = library('libgnome-games-support-1',
         'scores/importer.vala',
         'scores/score.vala'
     ],
-    name_prefix: '',
     install: true,
     install_dir: [
         true, # default libdir
@@ -49,7 +48,9 @@ lggs_dependency = declare_dependency(
 pkg = import('pkgconfig')
 pkg.generate(
     lggs,
+    filebase: 'libgnome-games-support-1',
     requires: lggs_interface_deps,
+    name: meson.project_name(),
     description: 'Useful functionality shared among GNOME games',
     subdirs: includesubdir,
 )
