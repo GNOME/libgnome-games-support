@@ -36,7 +36,8 @@ lggs = library('libgnome-games-support-1',
         '--abi-stability',
         '--target-glib', '2.44'
     ],
-    soversion: '3.0.1',
+    soversion: lggs_soversion,
+    version: lggs_library_version,
     dependencies: lggs_interface_deps,
 )
 
