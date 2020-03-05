@@ -29,7 +29,7 @@ valac = meson.get_compiler('vala')  # TODO 0.39.6 min
 gee_dependency = dependency('gee-0.8', version: '>= 0.14.0')
 gio_dependency = dependency('gio-2.0', version: '>= 2.40.0')
 glib_dependency = dependency('glib-2.0', version: '>= 2.40.0')
-gtk_dependency = dependency('gtk+-3.0', version: '>= 3.19.2')
+gtk_dependency = dependency('gtk4', version: '>= 3.98.5')
 
 localedir = join_paths(get_option('prefix'), get_option('localedir'))
 includedir = join_paths(get_option('prefix'), get_option('includedir'))
