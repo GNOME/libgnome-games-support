@@ -85,8 +85,6 @@ private class Dialog : Gtk.Dialog
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
             vbox.add (description_label);
 
-            vbox.show_all ();
-
             width_request = 450;
             height_request = 500;
 
@@ -172,8 +170,6 @@ private class Dialog : Gtk.Dialog
             add_button (_("_Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
 
         load_categories ();
-
-        vbox.show_all ();
     }
 
     private void fill_grid_with_labels ()
