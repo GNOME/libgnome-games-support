@@ -117,6 +117,11 @@ public class GridFrame : Gtk.Bin
         Object (width: width, height: height);
     }
 
+    construct
+    {
+        size_allocate.connect (on_size_allocate);
+    }
+
     public new void @set (int width, int height)
     {
         this.width = width;
@@ -135,32 +140,30 @@ public class GridFrame : Gtk.Bin
         this.yalign = yalign;
     }
 
-    public override void size_allocate (Gtk.Allocation allocation)
+    private void on_size_allocate (int width, int height)
     {
-        base.size_allocate (allocation);
-
-        int xsize = int.max (1, (allocation.width - _xpadding) / _xmult);
-        int ysize = int.max (1, (allocation.height - _ypadding) / _ymult);
+        int xsize = int.max (1, (width  - _xpadding) / _xmult);
+        int ysize = int.max (1, (height - _ypadding) / _ymult);
         int size = int.min (xsize, ysize);
 
         Gtk.Allocation child_allocation = { 0, 0, 0, 0 };
-        child_allocation.width = size * _xmult + _xpadding;
+        child_allocation.width  = size * _xmult + _xpadding;
         child_allocation.height = size * _ymult + _ypadding;
-        child_allocation.x = (int) ((allocation.width - child_allocation.width) * _xalign + allocation.x);
-        child_allocation.y = (int) ((allocation.height - child_allocation.height) * _yalign + allocation.y);
+        child_allocation.x = (int) ((width  - child_allocation.width)  * _xalign + xsize);
+        child_allocation.y = (int) ((height - child_allocation.height) * _yalign + ysize);
 
         if (get_mapped () &&
             (child_allocation.x != old_allocation.x ||
              child_allocation.y != old_allocation.y ||
-             child_allocation.width != old_allocation.width ||
+             child_allocation.width  != old_allocation.width ||
              child_allocation.height != old_allocation.height))
         {
-            get_window ().invalidate_rect (allocation, false);
+            queue_resize ();
         }
 
         Gtk.Widget child = get_child ();
         if (child != null && child.get_visible ())
-            child.size_allocate (child_allocation);
+            child.size_allocate (child_allocation.width, child_allocation.height, /* baseline default */ -1);
 
         old_allocation = child_allocation;
     }
