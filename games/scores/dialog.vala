@@ -73,14 +73,14 @@ private class Dialog : Gtk.Dialog
             image.icon_name = app_name + "-symbolic";
             image.pixel_size = 64;
             image.opacity = 0.2;
-            vbox.pack_start (image, false, false);
+            vbox.add (image);
 
             var title_label = new Gtk.Label ("<b><span size=\"large\">" + _("No scores yet") + "</span></b>");
             title_label.use_markup = true;
-            vbox.pack_start (title_label, false, false);
+            vbox.add (title_label);
 
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
-            vbox.pack_start (description_label, false, false);
+            vbox.add (description_label);
 
             vbox.show_all ();
 
@@ -101,16 +101,16 @@ private class Dialog : Gtk.Dialog
         var categories = context.get_categories ();
         if (categories.length () > 1)
         {
-            vbox.pack_start (catbar, true, false, 0);
+            vbox.add (catbar);
 
             var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            vbox.pack_start (hdiv, false, false, 0);
+            vbox.add (hdiv);
         }
 
         var label = new Gtk.Label (category_type);
         label.use_markup = true;
         label.halign = Gtk.Align.CENTER;
-        catbar.pack_start (label, false, false, 0);
+        catbar.add (label);
 
         if (new_high_score != null)
         {
@@ -118,18 +118,18 @@ private class Dialog : Gtk.Dialog
             category_label.use_markup = true;
             category_label.halign = Gtk.Align.CENTER;
             category_label.valign = Gtk.Align.CENTER;
-            catbar.pack_start (category_label, false, false, 0);
+            catbar.add (category_label);
         }
         else
         {
             combo = new Gtk.ComboBoxText ();
             combo.focus_on_click = false;
-            catbar.pack_start (combo, true, true, 0);
+            catbar.add (combo);
             combo.changed.connect (load_scores);
         }
 
         grid = new Gtk.Grid ();
-        vbox.pack_start (grid, false, false, 0);
+        vbox.add (grid);
 
         grid.row_homogeneous = true;
         grid.column_spacing = 40;
