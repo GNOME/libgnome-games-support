@@ -51,7 +51,7 @@ private class Dialog : Gtk.Dialog
 
         headerbar = (Gtk.HeaderBar) this.get_header_bar ();
 
-        headerbar.show_close_button = (new_high_score == null);
+        headerbar.show_title_buttons = (new_high_score == null);
 
         if (new_high_score != null)
         /* Appears at the top of the dialog, as the heading of the dialog */
