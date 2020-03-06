@@ -61,9 +61,11 @@ private class Dialog : Gtk.Dialog
         else
             headerbar.title = _("Best Times");
 
+        var vbox = this.get_content_area ();
+        vbox.orientation = Gtk.Orientation.VERTICAL;
+
         if (!context.has_scores () && new_high_score == null)
         {
-            var vbox = this.get_content_area ();
             vbox.spacing = 4;
             vbox.border_width = 10;
             vbox.valign = Gtk.Align.CENTER;
@@ -90,7 +92,6 @@ private class Dialog : Gtk.Dialog
             return;
         }
 
-        var vbox = this.get_content_area ();
         vbox.spacing = 20;
         border_width = 10;
 
