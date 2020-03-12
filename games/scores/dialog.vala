@@ -67,7 +67,8 @@ private class Dialog : Gtk.Dialog
         if (!context.has_scores () && new_high_score == null)
         {
             vbox.spacing = 4;
-            vbox.border_width = 10;
+            vbox.hexpand = true;
+            vbox.vexpand = true;
             vbox.valign = Gtk.Align.CENTER;
             vbox.get_style_context ().add_class ("dim-label");
 
@@ -93,28 +94,26 @@ private class Dialog : Gtk.Dialog
         }
 
         vbox.spacing = 20;
-        border_width = 10;
 
         var catbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-        catbar.margin_top = 10;
+        catbar.margin_top = 20;
         catbar.halign = Gtk.Align.CENTER;
 
-        var categories = context.get_categories ();
-        if (categories.length () > 1)
-        {
-            vbox.add (catbar);
+        vbox.add (catbar);
 
-            var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            vbox.add (hdiv);
-        }
+        var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        vbox.add (hdiv);
 
         var label = new Gtk.Label (category_type);
         label.use_markup = true;
         label.halign = Gtk.Align.CENTER;
         catbar.add (label);
 
-        if (new_high_score != null)
+        var categories = context.get_categories ();
+        if (new_high_score != null || categories.length () == 1)
         {
+            if (new_high_score == null)
+                scores_active_category = ((!) categories.first ()).data;
             category_label = new Gtk.Label (scores_active_category.name);
             category_label.use_markup = true;
             category_label.halign = Gtk.Align.CENTER;
@@ -134,7 +133,9 @@ private class Dialog : Gtk.Dialog
 
         grid.row_homogeneous = true;
         grid.column_spacing = 40;
-        grid.margin = 20;
+        grid.margin_start   = 30;
+        grid.margin_end     = 30;
+        grid.margin_bottom  = 20;
         grid.halign = Gtk.Align.CENTER;
 
         /* A column heading in the scores dialog */
@@ -202,7 +203,8 @@ private class Dialog : Gtk.Dialog
             var entry = new Gtk.Entry ();
             entry.visible = true;
             entry.set_size_request (20, 20);
-            entry.expand = false;
+            entry.hexpand = false;
+            entry.vexpand = false;
             stack.add_named (entry, "entry");
 
             stack.visible_child_name = "label";
@@ -214,7 +216,7 @@ private class Dialog : Gtk.Dialog
     private void load_categories ()
     {
         /* If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category. */
-        if (new_high_score != null)
+        if (new_high_score != null || combo == null)
         {
             load_scores ();
         }
@@ -244,7 +246,7 @@ private class Dialog : Gtk.Dialog
     /* loads the scores of current active_category */
     private void load_scores ()
     {
-        if (new_high_score != null)
+        if (new_high_score != null || combo == null)
             active_category = new Category (scores_active_category.key, scores_active_category.name);
         else
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
