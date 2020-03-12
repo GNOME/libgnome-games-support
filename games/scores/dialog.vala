@@ -61,11 +61,14 @@ private class Dialog : Gtk.Dialog
         else
             headerbar.title = _("Best Times");
 
+        var vbox = this.get_content_area ();
+        vbox.orientation = Gtk.Orientation.VERTICAL;
+
         if (!context.has_scores () && new_high_score == null)
         {
-            var vbox = this.get_content_area ();
             vbox.spacing = 4;
-            vbox.border_width = 10;
+            vbox.hexpand = true;
+            vbox.vexpand = true;
             vbox.valign = Gtk.Align.CENTER;
             vbox.get_style_context ().add_class ("dim-label");
 
@@ -73,14 +76,14 @@ private class Dialog : Gtk.Dialog
             image.icon_name = app_name + "-symbolic";
             image.pixel_size = 64;
             image.opacity = 0.2;
-            vbox.pack_start (image, false, false);
+            vbox.add (image);
 
             var title_label = new Gtk.Label ("<b><span size=\"large\">" + _("No scores yet") + "</span></b>");
             title_label.use_markup = true;
-            vbox.pack_start (title_label, false, false);
+            vbox.add (title_label);
 
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
-            vbox.pack_start (description_label, false, false);
+            vbox.add (description_label);
 
             vbox.show_all ();
 
@@ -90,50 +93,49 @@ private class Dialog : Gtk.Dialog
             return;
         }
 
-        var vbox = this.get_content_area ();
         vbox.spacing = 20;
-        border_width = 10;
 
         var catbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-        catbar.margin_top = 10;
+        catbar.margin_top = 20;
         catbar.halign = Gtk.Align.CENTER;
 
-        var categories = context.get_categories ();
-        if (categories.length () > 1)
-        {
-            vbox.pack_start (catbar, true, false, 0);
+        vbox.add (catbar);
 
-            var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            vbox.pack_start (hdiv, false, false, 0);
-        }
+        var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        vbox.add (hdiv);
 
         var label = new Gtk.Label (category_type);
         label.use_markup = true;
         label.halign = Gtk.Align.CENTER;
-        catbar.pack_start (label, false, false, 0);
+        catbar.add (label);
 
-        if (new_high_score != null)
+        var categories = context.get_categories ();
+        if (new_high_score != null || categories.length () == 1)
         {
+            if (new_high_score == null)
+                scores_active_category = ((!) categories.first ()).data;
             category_label = new Gtk.Label (scores_active_category.name);
             category_label.use_markup = true;
             category_label.halign = Gtk.Align.CENTER;
             category_label.valign = Gtk.Align.CENTER;
-            catbar.pack_start (category_label, false, false, 0);
+            catbar.add (category_label);
         }
         else
         {
             combo = new Gtk.ComboBoxText ();
             combo.focus_on_click = false;
-            catbar.pack_start (combo, true, true, 0);
+            catbar.add (combo);
             combo.changed.connect (load_scores);
         }
 
         grid = new Gtk.Grid ();
-        vbox.pack_start (grid, false, false, 0);
+        vbox.add (grid);
 
         grid.row_homogeneous = true;
         grid.column_spacing = 40;
-        grid.margin = 20;
+        grid.margin_start   = 30;
+        grid.margin_end     = 30;
+        grid.margin_bottom  = 20;
         grid.halign = Gtk.Align.CENTER;
 
         /* A column heading in the scores dialog */
@@ -201,7 +203,8 @@ private class Dialog : Gtk.Dialog
             var entry = new Gtk.Entry ();
             entry.visible = true;
             entry.set_size_request (20, 20);
-            entry.expand = false;
+            entry.hexpand = false;
+            entry.vexpand = false;
             stack.add_named (entry, "entry");
 
             stack.visible_child_name = "label";
@@ -213,7 +216,7 @@ private class Dialog : Gtk.Dialog
     private void load_categories ()
     {
         /* If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category. */
-        if (new_high_score != null)
+        if (new_high_score != null || combo == null)
         {
             load_scores ();
         }
@@ -243,7 +246,7 @@ private class Dialog : Gtk.Dialog
     /* loads the scores of current active_category */
     private void load_scores ()
     {
-        if (new_high_score != null)
+        if (new_high_score != null || combo == null)
             active_category = new Category (scores_active_category.key, scores_active_category.name);
         else
             active_category = new Category (combo.get_active_id (), combo.get_active_text ());
