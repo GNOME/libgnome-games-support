@@ -36,7 +36,7 @@ private class Dialog : Gtk.Dialog
     private Score? new_high_score;
     private Category? scores_active_category;
 
-    public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string app_name)
+    public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string icon_name)
     {
         Object (use_header_bar : 1);
 
@@ -73,7 +73,7 @@ private class Dialog : Gtk.Dialog
             vbox.get_style_context ().add_class ("dim-label");
 
             var image = new Gtk.Image ();
-            image.icon_name = app_name + "-symbolic";
+            image.icon_name = icon_name + "-symbolic";
             image.pixel_size = 64;
             image.opacity = 0.2;
             vbox.add (image);
