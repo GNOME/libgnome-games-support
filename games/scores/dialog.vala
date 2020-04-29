@@ -186,7 +186,7 @@ private class Dialog : Gtk.Dialog
 
             var stack = new Gtk.Stack ();
             stack.visible = true;
-            stack.homogeneous = false;
+            stack.hhomogeneous = false;
             stack.vhomogeneous = true;
             stack.transition_type = Gtk.StackTransitionType.NONE;
 
