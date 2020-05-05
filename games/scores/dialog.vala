@@ -55,11 +55,11 @@ private class Dialog : Gtk.Dialog
 
         if (new_high_score != null)
         /* Appears at the top of the dialog, as the heading of the dialog */
-            headerbar.title = _("Congratulations!");
+            this.title = _("Congratulations!");
         else if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
-            headerbar.title = _("High Scores");
+            this.title = _("High Scores");
         else
-            headerbar.title = _("Best Times");
+            this.title = _("Best Times");
 
         var vbox = this.get_content_area ();
         vbox.orientation = Gtk.Orientation.VERTICAL;
@@ -286,11 +286,11 @@ private class Dialog : Gtk.Dialog
 
         if (new_high_score != null && Score.equals (score, new_high_score))
         {
-            if (no_scores > 1 && row_count == 1)
+            /*if (no_scores > 1 && row_count == 1)
                 headerbar.subtitle = _("Your score is the best!");
             else
                 headerbar.subtitle = _("Your score has made the top ten.");
-
+            */
             var temp_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
             temp_stack.visible_child_name = "entry";
 
