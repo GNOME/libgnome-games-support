@@ -24,7 +24,7 @@
 
 namespace Games {
 
-public class GridFrame : Gtk.Bin
+public class GridFrame : Gtk.Widget
 {
     private int _xpadding = 0;
     public int xpadding
@@ -158,7 +158,7 @@ public class GridFrame : Gtk.Bin
             get_window ().invalidate_rect (allocation, false);
         }
 
-        Gtk.Widget child = get_child ();
+        Gtk.Widget child = get_first_child ();
         if (child != null && child.get_visible ())
             child.size_allocate (child_allocation);
 
