@@ -76,14 +76,14 @@ private class Dialog : Gtk.Dialog
             image.icon_name = app_name + "-symbolic";
             image.pixel_size = 64;
             image.opacity = 0.2;
-            vbox.add (image);
+            vbox.append (image);
 
             var title_label = new Gtk.Label ("<b><span size=\"large\">" + _("No scores yet") + "</span></b>");
             title_label.use_markup = true;
-            vbox.add (title_label);
+            vbox.append (title_label);
 
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
-            vbox.add (description_label);
+            vbox.append (description_label);
 
             width_request = 450;
             height_request = 500;
@@ -97,15 +97,15 @@ private class Dialog : Gtk.Dialog
         catbar.margin_top = 20;
         catbar.halign = Gtk.Align.CENTER;
 
-        vbox.add (catbar);
+        vbox.append (catbar);
 
         var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-        vbox.add (hdiv);
+        vbox.append (hdiv);
 
         var label = new Gtk.Label (category_type);
         label.use_markup = true;
         label.halign = Gtk.Align.CENTER;
-        catbar.add (label);
+        catbar.append (label);
 
         var categories = context.get_categories ();
         if (new_high_score != null || categories.length () == 1)
@@ -116,18 +116,18 @@ private class Dialog : Gtk.Dialog
             category_label.use_markup = true;
             category_label.halign = Gtk.Align.CENTER;
             category_label.valign = Gtk.Align.CENTER;
-            catbar.add (category_label);
+            catbar.append (category_label);
         }
         else
         {
             combo = new Gtk.ComboBoxText ();
             combo.focus_on_click = false;
-            catbar.add (combo);
+            catbar.append (combo);
             combo.changed.connect (load_scores);
         }
 
         grid = new Gtk.Grid ();
-        vbox.add (grid);
+        vbox.append (grid);
 
         grid.row_homogeneous = true;
         grid.column_spacing = 40;
