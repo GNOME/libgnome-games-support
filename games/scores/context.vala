@@ -37,6 +37,7 @@ public class Context : Object
     public Gtk.Window? game_window { get; construct; }
     public Style style { get; construct; }
     public Importer? importer { get; construct; }
+    public string icon_name { get; construct; }
 
     private Category? current_category = null;
 
@@ -73,7 +74,17 @@ public class Context : Object
                     CategoryRequestFunc category_request,
                     Style style)
     {
-        this.with_importer (app_name, category_type, game_window, category_request, style, null);
+        this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, null);
+    }
+
+    public Context.with_icon_name (string app_name,
+                                   string category_type,
+                                   Gtk.Window? game_window,
+                                   CategoryRequestFunc category_request,
+                                   Style style,
+                                   string icon_name)
+    {
+        this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, icon_name);
     }
 
     public Context.with_importer (string app_name,
@@ -83,11 +94,23 @@ public class Context : Object
                                   Style style,
                                   Importer? importer)
     {
+        this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, importer, null);
+    }
+
+    public Context.with_importer_and_icon_name (string app_name,
+                                                string category_type,
+                                                Gtk.Window? game_window,
+                                                CategoryRequestFunc category_request,
+                                                Style style,
+                                                Importer? importer = null,
+                                                string? icon_name = null)
+    {
         Object (app_name: app_name,
                 category_type: category_type,
                 game_window: game_window,
                 style: style,
-                importer: importer);
+                importer: importer,
+                icon_name: icon_name ?? app_name);
 
         /* Note: the following functionality can be performed manually by
          * calling Context.load_scores, to ensure Context is usable even if
@@ -335,7 +358,7 @@ public class Context : Object
     internal void run_dialog_internal (Score? new_high_score)
         requires (game_window != null)
     {
-        var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, app_name);
+        var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
         dialog.run ();
         dialog.destroy ();
     }
