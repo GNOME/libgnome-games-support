@@ -68,49 +68,30 @@ public class Context : Object
         Intl.bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
     }
 
-    public Context (string app_name,
-                    string category_type,
-                    Gtk.Window? game_window,
+    public Context (string              app_name,
+                    string              icon_name,
+                    string              category_type,
+                    Gtk.Window?         game_window,
                     CategoryRequestFunc category_request,
-                    Style style)
+                    Style               style)
     {
-        this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, null);
+        this.with_importer (app_name, icon_name, category_type, game_window, category_request, style, null);
     }
 
-    public Context.with_icon_name (string app_name,
-                                   string category_type,
-                                   Gtk.Window? game_window,
-                                   CategoryRequestFunc category_request,
-                                   Style style,
-                                   string icon_name)
+    public Context.with_importer (string                app_name,
+                                  string                icon_name,
+                                  string                category_type,
+                                  Gtk.Window?           game_window,
+                                  CategoryRequestFunc   category_request,
+                                  Style                 style,
+                                  Importer?             importer = null)
     {
-        this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, icon_name);
-    }
-
-    public Context.with_importer (string app_name,
-                                  string category_type,
-                                  Gtk.Window? game_window,
-                                  CategoryRequestFunc category_request,
-                                  Style style,
-                                  Importer? importer)
-    {
-        this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, importer, null);
-    }
-
-    public Context.with_importer_and_icon_name (string app_name,
-                                                string category_type,
-                                                Gtk.Window? game_window,
-                                                CategoryRequestFunc category_request,
-                                                Style style,
-                                                Importer? importer = null,
-                                                string? icon_name = null)
-    {
-        Object (app_name: app_name,
-                category_type: category_type,
-                game_window: game_window,
-                style: style,
-                importer: importer,
-                icon_name: icon_name ?? app_name);
+        Object (app_name:       app_name,
+                icon_name:      icon_name,
+                category_type:  category_type,
+                game_window:    game_window,
+                style:          style,
+                importer:       importer);
 
         /* Note: the following functionality can be performed manually by
          * calling Context.load_scores, to ensure Context is usable even if

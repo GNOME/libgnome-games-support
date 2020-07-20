@@ -46,7 +46,7 @@ private void add_score_sync (Context context, int score, Category category) {
 
 private void create_scores ()
 {
-    Context context = new Context ("libgnome-games-support-test", "Games Type", null, category_request, Style.POINTS_GREATER_IS_BETTER);
+    Context context = new Context ("libgnome-games-support-test", /* icon */ "", "Games Type", null, category_request, Style.POINTS_GREATER_IS_BETTER);
     Category cat = new Category ("cat1", "cat1");
     add_score_sync (context, 101, cat);
     add_score_sync (context, 102, cat);
@@ -178,7 +178,8 @@ private void test_import_from_score_directory ()
 
         var context = new Context.with_importer (
             "libgnome-games-support-test",
-            "",
+            /* icon */ "",
+            /* type */ "",
             null,
             (key) => {
                 assert (key == "new-cat");
@@ -225,7 +226,8 @@ private void test_import_from_history_file ()
 
         var context = new Context.with_importer (
             "libgnome-games-support-test",
-            "",
+            /* icon */ "",
+            /* type */ "",
             null,
             (key) => {
                 assert (key == "new-cat");
@@ -256,7 +258,8 @@ private void test_import_from_nonexistent_history_file ()
 {
     (void) new Context.with_importer (
         "libgnome-games-support-test",
-        "",
+        /* icon */ "",
+        /* type */ "",
         null,
         (key) => {
             return null;
