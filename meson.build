@@ -1,6 +1,6 @@
 project(
     'libgnome-games-support', ['vala', 'c'],
-    version: '1.7.1',
+    version: '1.8.0',
     license: 'LGPLv3+',
     meson_version: '>= 0.50.0',
 )
