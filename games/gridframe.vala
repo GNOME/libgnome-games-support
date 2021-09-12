@@ -110,6 +110,23 @@ public class GridFrame : Gtk.Widget
         }
     }
 
+    private Gtk.Widget _child = null;
+    public Gtk.Widget child {
+        get { return _child; }
+
+        set
+        {
+            if (_child == value)
+                return;
+            if (_child != null)
+                _child.unparent ();
+            _child = value;
+            if (_child != null)
+                _child.set_parent (this);
+            queue_resize ();
+        }
+    }
+
     private Gtk.Allocation old_allocation;
 
     public GridFrame (int width, int height)
