@@ -97,6 +97,8 @@ private class Dialog : Gtk.Dialog
 
         var catbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
         catbar.margin_top = 20;
+        catbar.margin_start = 20;
+        catbar.margin_end = 20;
         catbar.halign = Gtk.Align.CENTER;
 
         vbox.add (catbar);
