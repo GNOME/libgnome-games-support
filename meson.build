@@ -1,6 +1,6 @@
 project(
     'libgnome-games-support', ['vala', 'c'],
-    version: '1.8.2',
+    version: '4.0.0',
     license: 'LGPLv3+',
     meson_version: '>= 0.50.0',
 )
@@ -29,7 +29,7 @@ valac = meson.get_compiler('vala')  # TODO 0.39.6 min
 gee_dependency = dependency('gee-0.8', version: '>= 0.14.0')
 gio_dependency = dependency('gio-2.0', version: '>= 2.40.0')
 glib_dependency = dependency('glib-2.0', version: '>= 2.40.0')
-gtk_dependency = dependency('gtk4', version: '>= 3.96.0')
+gtk_dependency = dependency('gtk4', version: '>= 4.2.0')
 
 localedir = join_paths(get_option('prefix'), get_option('localedir'))
 includedir = join_paths(get_option('prefix'), get_option('includedir'))
