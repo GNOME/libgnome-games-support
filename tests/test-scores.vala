@@ -33,7 +33,7 @@ private void add_score_sync (Context context, int score, Category category) {
     context.add_score.begin (score, category, null, (object, result) => {
         try
         {
-            (void) context.add_score.end (result);
+            context.add_score.end (result);
         }
         catch (Error e)
         {
@@ -254,7 +254,7 @@ private void test_import_from_history_file ()
 
 private void test_import_from_nonexistent_history_file ()
 {
-    (void) new Context.with_importer (
+    var context = new Context.with_importer (
         "libgnome-games-support-test",
         "",
         null,
