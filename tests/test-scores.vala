@@ -254,7 +254,7 @@ private void test_import_from_history_file ()
 
 private void test_import_from_nonexistent_history_file ()
 {
-    var context = new Context.with_importer (
+    new Context.with_importer (
         "libgnome-games-support-test",
         "",
         null,
