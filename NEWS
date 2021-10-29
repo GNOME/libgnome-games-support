@@ -1,4 +1,10 @@
-1.8.1 - March 22, 2020
+1.8.2 - October 29, 2021
+========================
+
+- Add margins to category bar in scores dialog (!8, Andrey Kutejko)
+- Fix build with latest vala (!9, Rico Tzschichholz)
+
+1.8.1 - March 22, 2021
 ======================
 
 - Updated translations

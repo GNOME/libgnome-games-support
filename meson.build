@@ -1,6 +1,6 @@
 project(
     'libgnome-games-support', ['vala', 'c'],
-    version: '1.8.1',
+    version: '1.8.2',
     license: 'LGPLv3+',
     meson_version: '>= 0.50.0',
 )
@@ -15,7 +15,7 @@ project(
 # to 0. When bumping the second version, set the third one to zero.
 #
 # A lot easier than libtool, right?
-library_version = '3.0.3'
+library_version = '3.0.4'
 soversion = library_version.split('.')[0]
 
 # used to install help
