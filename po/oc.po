@@ -5,85 +5,85 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgames-scores&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-15 19:49+0000\n"
-"PO-Revision-Date: 2016-05-05 21:46+0200\n"
-"Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libgnome-games-support/"
+"issues\n"
+"POT-Creation-Date: 2020-06-22 22:16+0000\n"
+"PO-Revision-Date: 2021-11-01 19:54+0100\n"
+"Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 3.0\n"
 "X-Project-Style: gnome\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../games/scores/dialog.vala:58
+#: games/scores/dialog.vala:58
 msgid "Congratulations!"
 msgstr "Felicitacions !"
 
-#: ../games/scores/dialog.vala:60
+#: games/scores/dialog.vala:60
 msgid "High Scores"
 msgstr "Melhoras marcas"
 
-#: ../games/scores/dialog.vala:62
+#: games/scores/dialog.vala:62
 msgid "Best Times"
 msgstr "Melhors tempses"
 
-#: ../games/scores/dialog.vala:78
+#: games/scores/dialog.vala:81
 msgid "No scores yet"
 msgstr "Pas cap de marca pel moment"
 
-#: ../games/scores/dialog.vala:82
+#: games/scores/dialog.vala:85
 msgid "Play some games and your scores will show up here."
 msgstr "Jogatz a certans jòcs e las marcas apareisseràn aicí."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:135
+#: games/scores/dialog.vala:142
 msgid "Rank"
 msgstr "Classament"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:144
+#: games/scores/dialog.vala:151
 msgid "Score"
 msgstr "Marca"
 
-#: ../games/scores/dialog.vala:146
+#: games/scores/dialog.vala:153
 msgid "Time"
 msgstr "Temps"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:153
+#: games/scores/dialog.vala:160
 msgid "Player"
 msgstr "Jogaire"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:163
+#: games/scores/dialog.vala:170
 msgid "_Done"
 msgstr "_Acabat"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:278
+#: games/scores/dialog.vala:286
 #, c-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuta"
-msgstr[1] "%d minutas"
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] "%ld minuta"
+msgstr[1] "%ld minutas"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:280
+#: games/scores/dialog.vala:288
 #, c-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d segonda"
-msgstr[1] "%d segondas"
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] "%ld segonda"
+msgstr[1] "%ld segondas"
 
-#: ../games/scores/dialog.vala:286
+#: games/scores/dialog.vala:294
 msgid "Your score is the best!"
-msgstr "Avètz la melhora marca !"
+msgstr "Avètz la melhora marca !"
 
-#: ../games/scores/dialog.vala:288
+#: games/scores/dialog.vala:296
 msgid "Your score has made the top ten."
 msgstr "Vòstra marca es dins las 10 primièras."
