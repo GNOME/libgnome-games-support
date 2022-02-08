@@ -31,6 +31,8 @@ private class Dialog : Gtk.Dialog
     private Gtk.Label? category_label = null;
     private Gtk.HeaderBar? headerbar = null;
     private Gtk.Grid grid;
+    private Gtk.Label window_title;
+    private Gtk.Label window_subtitle;
 
     private Style scores_style;
     private Score? new_high_score;
@@ -50,17 +52,38 @@ private class Dialog : Gtk.Dialog
         scores_style = style;
         scores_active_category = current_cat;
 
+        // Copied from AdwWindowTitle.
+        window_title = new Gtk.Label (null);
+        window_title.ellipsize = Pango.EllipsizeMode.END;
+        window_title.wrap = false;
+        window_title.single_line_mode = true;
+        window_title.width_chars = 5;
+        window_title.add_css_class ("title");
+
+        window_subtitle = new Gtk.Label (null);
+        window_subtitle.ellipsize = Pango.EllipsizeMode.END;
+        window_subtitle.wrap = false;
+        window_subtitle.single_line_mode = true;
+        window_subtitle.visible = false;
+        window_subtitle.add_css_class ("subtitle");
+
+        var title_widget = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        title_widget.valign = Gtk.Align.CENTER;
+        title_widget.append (window_title);
+        title_widget.append (window_subtitle);
+
         headerbar = (Gtk.HeaderBar) this.get_header_bar ();
 
+        headerbar.set_title_widget (title_widget);
         headerbar.show_title_buttons = (new_high_score == null);
 
         if (new_high_score != null)
         /* Appears at the top of the dialog, as the heading of the dialog */
-            headerbar.title = _("Congratulations!");
+            window_title.label = _("Congratulations!");
         else if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
-            headerbar.title = _("High Scores");
+            window_title.label = _("High Scores");
         else
-            headerbar.title = _("Best Times");
+            window_title.label = _("Best Times");
 
         var vbox = this.get_content_area ();
         vbox.orientation = Gtk.Orientation.VERTICAL;
@@ -289,10 +312,11 @@ private class Dialog : Gtk.Dialog
 
         if (new_high_score != null && Score.equals (score, new_high_score))
         {
+            window_subtitle.visible = true;
             if (no_scores > 1 && row_count == 1)
-                headerbar.subtitle = _("Your score is the best!");
+                window_subtitle.label = _("Your score is the best!");
             else
-                headerbar.subtitle = _("Your score has made the top ten.");
+                window_subtitle.label = _("Your score has made the top ten.");
 
             var temp_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
             temp_stack.visible_child_name = "entry";
