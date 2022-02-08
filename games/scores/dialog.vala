@@ -43,6 +43,7 @@ private class Dialog : Gtk.Dialog
         resizable = false;
 
         this.context = context;
+        this.modal = true;
         this.transient_for = window;
         this.new_high_score = new_high_score;
 
