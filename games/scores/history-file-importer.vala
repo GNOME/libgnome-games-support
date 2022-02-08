@@ -49,11 +49,10 @@ public class HistoryFileImporter : Importer
 
     public static int64 parse_date (string date)
     {
-        TimeVal timeval = {};
-        var ret = timeval.from_iso8601 (date);
-        if (!ret)
+        var date_time = new DateTime.from_iso8601 (date, null);
+        if (date_time == null)
             warning ("Failed to parse date: %s", date);
-        return timeval.tv_sec;
+        return date_time.to_unix ();
     }
 
     /* Each game uses a somewhat different format for its scores; one game might
