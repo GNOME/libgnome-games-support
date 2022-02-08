@@ -359,13 +359,10 @@ public class Context : Object
         requires (game_window != null)
     {
         var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
+        dialog.response.connect ((dialog, response) => {
+            dialog.destroy ();
+        });
         dialog.present ();
-        dialog.response.connect (on_score_confirmed);
-    }
-
-    internal void on_score_confirmed (Gtk.Widget dialog, int response)
-    {
-        dialog.destroy ();
     }
 
     public void run_dialog ()
