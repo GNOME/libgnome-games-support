@@ -1,0 +1,11 @@
+stages:
+  - build
+
+meson-test:
+ image: fedora:latest
+ stage: build
+ script:
+   - dnf install -y meson libgee-devel vala gcc gtk4-devel
+   - meson _build .
+   - ninja -C _build
+   - meson test -C _build
