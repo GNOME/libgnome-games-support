@@ -1,3 +1,9 @@
+2.0.beta - February 11, 2022
+============================
+
+- Port to GTK 4, thank you: Arnaud B., Robert Roth, Andrey Kutejko, Maximiliano
+- New API version: libgnome-games-support-2, should be parallel-installable
+
 1.8.2 - October 29, 2021
 ========================
 
