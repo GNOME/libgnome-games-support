@@ -18,6 +18,9 @@ project(
 library_version = '4.0.0'
 soversion = library_version.split('.')[0]
 
+# libgnome-games-support-2
+api_version = '2'
+
 # used to install help
 gnome = import('gnome')
 # used for internationalization
@@ -36,7 +39,7 @@ includedir = join_paths(get_option('prefix'), get_option('includedir'))
 
 conf = configuration_data()
 conf.set_quoted('VERSION', meson.project_version())
-conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
+conf.set_quoted('GETTEXT_PACKAGE', meson.project_name() + api_version)
 conf.set_quoted('LOCALEDIR', localedir)
 
 configure_file(output: 'config.h', configuration: conf)
