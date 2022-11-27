@@ -7,11 +7,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GNOME 3.24\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgnome-games-support&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-22 13:11+0000\n"
-"PO-Revision-Date: 2017-09-08 14:09+0300\n"
-"Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libgnome-games-support/"
+"issues\n"
+"POT-Creation-Date: 2021-09-19 15:35+0000\n"
+"PO-Revision-Date: 2021-10-05 16:37+0300\n"
+"Last-Translator: Launchpad translators\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 3.0\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
 #: games/scores/dialog.vala:58
@@ -34,40 +34,40 @@ msgstr "Лепшыя вынікі"
 msgid "Best Times"
 msgstr "Лепшы час"
 
-#: games/scores/dialog.vala:78
+#: games/scores/dialog.vala:81
 msgid "No scores yet"
 msgstr "Вынікаў яшчэ няма"
 
-#: games/scores/dialog.vala:82
+#: games/scores/dialog.vala:85
 msgid "Play some games and your scores will show up here."
-msgstr "Гуляйце ў некаторыя гульні і вашыя балы будуць адлюстроўвацца тут."
+msgstr "Згуляйце ў што-небудзь і тут з'явяцца вашы вынікі."
 
 #. A column heading in the scores dialog
-#: games/scores/dialog.vala:135
+#: games/scores/dialog.vala:144
 msgid "Rank"
 msgstr "Ранг"
 
 #. A column heading in the scores dialog
-#: games/scores/dialog.vala:144
+#: games/scores/dialog.vala:153
 msgid "Score"
 msgstr "Балы"
 
-#: games/scores/dialog.vala:146
+#: games/scores/dialog.vala:155
 msgid "Time"
 msgstr "Час"
 
 #. A column heading in the scores dialog
-#: games/scores/dialog.vala:153
+#: games/scores/dialog.vala:162
 msgid "Player"
 msgstr "Гулец"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: games/scores/dialog.vala:163
+#: games/scores/dialog.vala:172
 msgid "_Done"
-msgstr "_Выканана"
+msgstr "_Гатова"
 
 #. Time which may be displayed on a scores dialog.
-#: games/scores/dialog.vala:278
+#: games/scores/dialog.vala:288
 #, c-format
 msgid "%ld minute"
 msgid_plural "%ld minutes"
@@ -76,7 +76,7 @@ msgstr[1] "%ld хвіліны"
 msgstr[2] "%ld хвілін"
 
 #. Time which may be displayed on a scores dialog.
-#: games/scores/dialog.vala:280
+#: games/scores/dialog.vala:290
 #, c-format
 msgid "%ld second"
 msgid_plural "%ld seconds"
@@ -84,10 +84,10 @@ msgstr[0] "%ld секунда"
 msgstr[1] "%ld секунды"
 msgstr[2] "%ld секунд"
 
-#: games/scores/dialog.vala:286
+#: games/scores/dialog.vala:296
 msgid "Your score is the best!"
 msgstr "Ваш вынік найлепшы!"
 
-#: games/scores/dialog.vala:288
+#: games/scores/dialog.vala:298
 msgid "Your score has made the top ten."
-msgstr "Ваш вынік увайшоў у спіс 10 найлепшых."
+msgstr "Ваш вынік трапіў у дзясятку лепшых."
