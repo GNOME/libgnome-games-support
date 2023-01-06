@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libgnome-games-support/"
+"issues\n"
+"POT-Creation-Date: 2022-10-04 13:35+0000\n"
+"Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
+"Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
+"Language: ab\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-DamnedLies-Scope: partial\n"
+
+#. Appears at the top of the dialog, as the heading of the dialog
+#: games/scores/dialog.vala:58
+msgid "Congratulations!"
+msgstr "Ишәыдаҳныҳәалоит!"
+
+#: games/scores/dialog.vala:60
+msgid "High Scores"
+msgstr "Иреиӷьу алҵшәақәа"
+
+#: games/scores/dialog.vala:62
+msgid "Best Times"
+msgstr "Иреиӷьу аамҭа"
+
+#: games/scores/dialog.vala:81
+msgid "No scores yet"
+msgstr "Макьаана акәаталақәа ыҟаӡам"
+
+#: games/scores/dialog.vala:85
+msgid "Play some games and your scores will show up here."
+msgstr "Ԥыҭк ахәмаррақәа шәаныхәмарлак ашьҭахь, шәкәаталақәа абраҟа ицәырҵоит."
+
+#. A column heading in the scores dialog
+#: games/scores/dialog.vala:144
+msgid "Rank"
+msgstr "Аранг"
+
+#. A column heading in the scores dialog
+#: games/scores/dialog.vala:153
+msgid "Score"
+msgstr "Акапан"
+
+#: games/scores/dialog.vala:155
+msgid "Time"
+msgstr "Аамҭа"
+
+#. A column heading in the scores dialog
+#: games/scores/dialog.vala:162
+msgid "Player"
+msgstr "Ахәмарҩы"
+
+#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
+#: games/scores/dialog.vala:172
+msgid "_Done"
+msgstr "_Ихиоуп"
+
+#. Time which may be displayed on a scores dialog.
+#: games/scores/dialog.vala:288
+#, c-format
+msgid "%ld minute"
+msgid_plural "%ld minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Time which may be displayed on a scores dialog.
+#: games/scores/dialog.vala:290
+#, c-format
+msgid "%ld second"
+msgid_plural "%ld seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: games/scores/dialog.vala:296
+msgid "Your score is the best!"
+msgstr "Шәара шәылҵшәа зегьы иреиӷьуп!"
+
+#: games/scores/dialog.vala:298
+msgid "Your score has made the top ten."
+msgstr "Шәара шәылҵшәа  иреиӷьу жәаба рахь иалалеит."
