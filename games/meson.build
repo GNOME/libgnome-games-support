@@ -26,6 +26,7 @@ lggs = library('gnome-games-support-2',
         true, # default vapidir
     ],
     c_args: [
+        '-w',
         # https://github.com/mesonbuild/meson/issues/4763
         '-include', 'config.h'
     ],

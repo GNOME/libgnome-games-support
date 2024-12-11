@@ -4,6 +4,9 @@ lggs_tests = executable(
     vala_args: [
         '--target-glib=2.44',
     ],
+    c_args: [
+        '-w'
+    ],
     dependencies: [
         gee_dependency,
         glib_dependency,
