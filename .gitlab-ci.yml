@@ -1,11 +1,8 @@
-stages:
-  - build
-
-meson-test:
- image: fedora:latest
- stage: build
- script:
-   - dnf install -y meson libgee-devel vala gcc gtk4-devel
-   - meson _build .
-   - ninja -C _build
-   - meson test -C _build
+include:
+ - project: "GNOME/citemplates"
+   file: "templates/default-rules.yml"
+ - component: gitlab.gnome.org/GNOME/citemplates/gnomeos-basic-ci@master
+ - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+   inputs:
+     dist-job-name: "build-gnomeos"
+     tarball-artifact-path: "_builddir/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz"
