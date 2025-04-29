@@ -1,70 +1,72 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Daniel Korostil <ted.korostiled@gmail.com>, 2016, 2017.
+# Yuri Chornoivan <yurchor@ukr.net>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-20 14:04+0200\n"
-"PO-Revision-Date: 2017-03-20 14:05+0300\n"
-"Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
-"Language-Team: linux.org.ua\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libgnome-games-support/i"
+"ssues\n"
+"POT-Creation-Date: 2025-04-29 14:14+0000\n"
+"PO-Revision-Date: 2025-04-29 21:43+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #. Appears at the top of the dialog, as the heading of the dialog
-#: ../games/scores/dialog.vala:58
+#: games/scores/dialog.vala:62
 msgid "Congratulations!"
 msgstr "Вітаємо!"
 
-#: ../games/scores/dialog.vala:60
+#: games/scores/dialog.vala:64
 msgid "High Scores"
 msgstr "Найкращі результати"
 
-#: ../games/scores/dialog.vala:62
+#: games/scores/dialog.vala:66
 msgid "Best Times"
 msgstr "Найкращий час"
 
-#: ../games/scores/dialog.vala:78
+#: games/scores/dialog.vala:84
 msgid "No scores yet"
 msgstr "Без балів поки"
 
-#: ../games/scores/dialog.vala:82
+#: games/scores/dialog.vala:86
 msgid "Play some games and your scores will show up here."
 msgstr "Зіграйте якусь гру і бали з'являться тут."
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:135
+#: games/scores/dialog.vala:143
 msgid "Rank"
 msgstr "Ранг"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:144
+#: games/scores/dialog.vala:152
 msgid "Score"
 msgstr "Бал"
 
-#: ../games/scores/dialog.vala:146
+#: games/scores/dialog.vala:154
 msgid "Time"
 msgstr "Час"
 
 #. A column heading in the scores dialog
-#: ../games/scores/dialog.vala:153
+#: games/scores/dialog.vala:161
 msgid "Player"
 msgstr "Гравець"
 
 #. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: ../games/scores/dialog.vala:163
-msgid "_Done"
-msgstr "_Зроблено"
+#: games/scores/dialog.vala:171
+#| msgid "_Done"
+msgid "Done"
+msgstr "Виконано"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:278
+#: games/scores/dialog.vala:292
 #, c-format
 msgid "%ld minute"
 msgid_plural "%ld minutes"
@@ -73,7 +75,7 @@ msgstr[1] "%ld хвилини"
 msgstr[2] "%ld хвилин"
 
 #. Time which may be displayed on a scores dialog.
-#: ../games/scores/dialog.vala:280
+#: games/scores/dialog.vala:294
 #, c-format
 msgid "%ld second"
 msgid_plural "%ld seconds"
@@ -81,10 +83,10 @@ msgstr[0] "%ld секунда"
 msgstr[1] "%ld секунди"
 msgstr[2] "%ld секунд"
 
-#: ../games/scores/dialog.vala:286
+#: games/scores/dialog.vala:300
 msgid "Your score is the best!"
 msgstr "Ваші результат — найкращий!"
 
-#: ../games/scores/dialog.vala:288
+#: games/scores/dialog.vala:302
 msgid "Your score has made the top ten."
 msgstr "Ваш результат попав у десятку найкращих."
