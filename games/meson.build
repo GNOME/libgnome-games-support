@@ -1,6 +1,7 @@
 includesubdir = 'gnome-games-support-2'
 
 lggs_interface_deps = [
+    adw_dependency,
     gee_dependency,
     gio_dependency,
     glib_dependency,

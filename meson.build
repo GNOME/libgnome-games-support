@@ -29,6 +29,7 @@ i18n = import('i18n')
 cc = meson.get_compiler('c')
 valac = meson.get_compiler('vala')  # TODO 0.39.6 min
 
+adw_dependency = dependency ('libadwaita-1', version: '>= 1.0')
 gee_dependency = dependency('gee-0.8', version: '>= 0.14.0')
 gio_dependency = dependency('gio-2.0', version: '>= 2.40.0')
 glib_dependency = dependency('glib-2.0', version: '>= 2.40.0')

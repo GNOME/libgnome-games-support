@@ -21,7 +21,7 @@
 namespace Games {
 namespace Scores {
 
-private class Dialog : Gtk.Dialog
+private class Dialog : Adw.Dialog
 {
     private Context context;
     private Category? active_category = null;
@@ -29,10 +29,11 @@ private class Dialog : Gtk.Dialog
 
     private Gtk.ComboBoxText? combo = null;
     private Gtk.Label? category_label = null;
-    private Gtk.HeaderBar? headerbar = null;
+    private Adw.ToolbarView toolbar;
+    private Adw.HeaderBar headerbar;
+    private Adw.WindowTitle dialog_title;
     private Gtk.Grid grid;
-    private Gtk.Label window_title;
-    private Gtk.Label window_subtitle;
+    private Gtk.Button done_button = null;
 
     private Style scores_style;
     private Score? new_high_score;
@@ -40,61 +41,39 @@ private class Dialog : Gtk.Dialog
 
     public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string icon_name)
     {
-        Object (use_header_bar : 1);
-
-        resizable = false;
-
         this.context = context;
-        this.modal = true;
-        this.transient_for = window;
         this.new_high_score = new_high_score;
 
         scores_style = style;
         scores_active_category = current_cat;
 
-        // Copied from AdwWindowTitle.
-        window_title = new Gtk.Label (null);
-        window_title.ellipsize = Pango.EllipsizeMode.END;
-        window_title.wrap = false;
-        window_title.single_line_mode = true;
-        window_title.width_chars = 5;
-        window_title.add_css_class ("title");
-
-        window_subtitle = new Gtk.Label (null);
-        window_subtitle.ellipsize = Pango.EllipsizeMode.END;
-        window_subtitle.wrap = false;
-        window_subtitle.single_line_mode = true;
-        window_subtitle.visible = false;
-        window_subtitle.add_css_class ("subtitle");
-
-        var title_widget = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        title_widget.valign = Gtk.Align.CENTER;
-        title_widget.append (window_title);
-        title_widget.append (window_subtitle);
-
-        headerbar = (Gtk.HeaderBar) this.get_header_bar ();
-
-        headerbar.set_title_widget (title_widget);
-        headerbar.show_title_buttons = (new_high_score == null);
+        Gtk.Builder builder = new Gtk.Builder ();
+        toolbar = new Adw.ToolbarView ();
+        headerbar = new Adw.HeaderBar ();
+        dialog_title = new Adw.WindowTitle ("", "");
+        headerbar.set_title_widget (dialog_title);
+        headerbar.set_show_end_title_buttons (new_high_score == null);
+        headerbar.set_show_start_title_buttons (new_high_score == null);
+        this.set_child (toolbar);
+        toolbar.add_child (builder, headerbar, "top");
 
         if (new_high_score != null)
         /* Appears at the top of the dialog, as the heading of the dialog */
-            window_title.label = _("Congratulations!");
+            dialog_title.set_title (_("Congratulations!"));
         else if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
-            window_title.label = _("High Scores");
+            dialog_title.set_title (_("High Scores"));
         else
-            window_title.label = _("Best Times");
+            dialog_title.set_title (_("Best Times"));
 
-        var vbox = this.get_content_area ();
-        vbox.orientation = Gtk.Orientation.VERTICAL;
+        Gtk.Box vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
+        toolbar.add_child (builder, vbox, null);
 
         if (!context.has_scores () && new_high_score == null)
         {
-            vbox.spacing = 4;
             vbox.hexpand = true;
             vbox.vexpand = true;
             vbox.valign = Gtk.Align.CENTER;
-            vbox.get_style_context ().add_class ("dim-label");
+            vbox.add_css_class ("dim-label");
 
             var image = new Gtk.Image ();
             image.icon_name = icon_name + "-symbolic";
@@ -102,9 +81,7 @@ private class Dialog : Gtk.Dialog
             image.opacity = 0.2;
             vbox.append (image);
 
-            var title_label = new Gtk.Label ("<b><span size=\"large\">" + _("No scores yet") + "</span></b>");
-            title_label.use_markup = true;
-            vbox.append (title_label);
+            dialog_title.set_title (_("No scores yet"));
 
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
             vbox.append (description_label);
@@ -189,11 +166,18 @@ private class Dialog : Gtk.Dialog
         grid.baseline_row = 0;
         fill_grid_with_labels ();
 
-        if (new_high_score != null)
+        if (new_high_score != null) {
             /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
-            add_button (_("_Done"), Gtk.ResponseType.OK).get_style_context ().add_class ("suggested-action");
+            done_button = new Gtk.Button.with_label (_("Done"));
+            done_button.add_css_class ("suggested-action");
+            headerbar.pack_start (done_button);
+        }
 
         load_categories ();
+
+        done_button.clicked.connect (() => {
+           this.close ();
+        });
     }
 
     private void fill_grid_with_labels ()
@@ -312,11 +296,10 @@ private class Dialog : Gtk.Dialog
 
         if (new_high_score != null && Score.equals (score, new_high_score))
         {
-            window_subtitle.visible = true;
             if (no_scores > 1 && row_count == 1)
-                window_subtitle.label = _("Your score is the best!");
+                dialog_title.set_subtitle (_("Your score is the best!"));
             else
-                window_subtitle.label = _("Your score has made the top ten.");
+                dialog_title.set_subtitle (_("Your score has made the top ten."));
 
             var temp_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
             temp_stack.visible_child_name = "entry";
