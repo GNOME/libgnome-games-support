@@ -355,14 +355,31 @@ public class Context : Object
         load_scores_from_files ();
     }
 
+    /* FIXME: Nested main loops are dangerous. This code violates the essential
+     * rule:
+     *
+     *   Never iterate a context created outside the library, including the
+     *   global-default or thread-default contexts. Otherwise, sources created
+     *   in the application may be dispatched when the application is not
+     *   expecting it, causing re-entrancy problems for the application code.
+     *
+     * This is why gtk_dialog_run() was removed. We should remove this too, but
+     * unfortunately, run_dialog() is public API. At least we ought to provide a
+     * replacement that only shows the dialog without running it.
+     *
+     * When changing this, we will also need to change add_score_internal().
+     */
     internal void run_dialog_internal (Score? new_high_score)
         requires (game_window != null)
     {
+        var main_loop = new MainLoop (null);
         var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
         dialog.response.connect ((dialog, response) => {
             dialog.destroy ();
+            main_loop.quit ();
         });
         dialog.present ();
+        main_loop.run ();
     }
 
     public void run_dialog ()
