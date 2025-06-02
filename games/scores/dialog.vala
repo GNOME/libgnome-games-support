@@ -170,14 +170,11 @@ private class Dialog : Adw.Dialog
             /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
             done_button = new Gtk.Button.with_label (_("Done"));
             done_button.add_css_class ("suggested-action");
+            done_button.clicked.connect (() => this.close ());
             headerbar.pack_start (done_button);
         }
 
         load_categories ();
-
-        done_button.clicked.connect (() => {
-           this.close ();
-        });
     }
 
     private void fill_grid_with_labels ()
