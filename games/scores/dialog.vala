@@ -25,19 +25,19 @@ private class Dialog : Adw.Dialog
 {
     private Context context;
     private Category? active_category = null;
-    private int rows_to_display = 10;
+    private List<Category?> categories = null;
+    private ListStore? score_model = null;
 
-    private Gtk.ComboBoxText? combo = null;
-    private Gtk.Label? category_label = null;
-    private Adw.ToolbarView toolbar;
-    private Adw.HeaderBar headerbar;
-    private Adw.WindowTitle dialog_title;
-    private Gtk.Grid grid;
     private Gtk.Button done_button = null;
+    private Gtk.DropDown? drop_down = null;
+    private Gtk.ColumnView? score_view;
+    private Gtk.ColumnViewColumn rank_column;
+    private Gtk.ColumnViewColumn score_column;
+    private Gtk.ColumnViewColumn player_column;
 
     private Style scores_style;
     private Score? new_high_score;
-    private Category? scores_active_category;
+    private string? score_or_time;
 
     public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string icon_name)
     {
@@ -45,31 +45,26 @@ private class Dialog : Adw.Dialog
         this.new_high_score = new_high_score;
 
         scores_style = style;
-        scores_active_category = current_cat;
+        categories = context.get_categories ();
+        active_category = current_cat;
 
         Gtk.Builder builder = new Gtk.Builder ();
-        toolbar = new Adw.ToolbarView ();
-        headerbar = new Adw.HeaderBar ();
-        dialog_title = new Adw.WindowTitle ("", "");
-        headerbar.set_title_widget (dialog_title);
+        Adw.ToolbarView toolbar = new Adw.ToolbarView ();
+        Adw.HeaderBar headerbar = new Adw.HeaderBar ();
         headerbar.set_show_end_title_buttons (new_high_score == null);
-        headerbar.set_show_start_title_buttons (new_high_score == null);
-        this.set_child (toolbar);
+        set_child (toolbar);
         toolbar.add_child (builder, headerbar, "top");
+        set_content_width (400);
+        set_content_height (500);
 
-        if (new_high_score != null)
-        /* Appears at the top of the dialog, as the heading of the dialog */
-            dialog_title.set_title (_("Congratulations!"));
-        else if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
-            dialog_title.set_title (_("High Scores"));
-        else
-            dialog_title.set_title (_("Best Times"));
-
-        Gtk.Box vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
-        toolbar.add_child (builder, vbox, null);
+        if (active_category == null)
+            active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
 
         if (!context.has_scores () && new_high_score == null)
         {
+            /* Empty State */
+            Gtk.Box vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
+            toolbar.add_child (builder, vbox, null);
             vbox.hexpand = true;
             vbox.vexpand = true;
             vbox.valign = Gtk.Align.CENTER;
@@ -81,264 +76,233 @@ private class Dialog : Adw.Dialog
             image.opacity = 0.2;
             vbox.append (image);
 
-            dialog_title.set_title (_("No scores yet"));
+            set_title (_("No scores yet"));
 
             var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
             vbox.append (description_label);
 
-            width_request = 450;
-            height_request = 500;
-
             return;
         }
 
-        vbox.spacing = 20;
-
-        var catbar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-        catbar.margin_top = 20;
-        catbar.margin_start = 20;
-        catbar.margin_end = 20;
-        catbar.halign = Gtk.Align.CENTER;
-
-        vbox.append (catbar);
-
-        var hdiv = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-        vbox.append (hdiv);
-
-        var label = new Gtk.Label (category_type);
-        label.use_markup = true;
-        label.halign = Gtk.Align.CENTER;
-        catbar.append (label);
-
-        var categories = context.get_categories ();
-        if (new_high_score != null || categories.length () == 1)
-        {
-            if (new_high_score == null)
-                scores_active_category = ((!) categories.first ()).data;
-            category_label = new Gtk.Label (scores_active_category.name);
-            category_label.use_markup = true;
-            category_label.halign = Gtk.Align.CENTER;
-            category_label.valign = Gtk.Align.CENTER;
-            catbar.append (category_label);
-        }
-        else
-        {
-            combo = new Gtk.ComboBoxText ();
-            combo.focus_on_click = false;
-            catbar.append (combo);
-            combo.changed.connect (load_scores);
-        }
-
-        grid = new Gtk.Grid ();
-        vbox.append (grid);
-
-        grid.row_homogeneous = true;
-        grid.column_spacing = 40;
-        grid.margin_start   = 30;
-        grid.margin_end     = 30;
-        grid.margin_bottom  = 20;
-        grid.halign = Gtk.Align.CENTER;
-
-        /* A column heading in the scores dialog */
-        string string_rank = _("Rank");
-        var label_column_1 = new Gtk.Label ("<span weight='bold'>" + string_rank + "</span>");
-        label_column_1.use_markup = true;
-        grid.attach (label_column_1, 0, 0, 1, 1);
-
-        string score_or_time = "";
+        score_or_time = "";
+        string new_score_or_time = "";
 
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
-            /* A column heading in the scores dialog */
+        {
             score_or_time = _("Score");
+            new_score_or_time = _("New Score in");
+        }
         else
+        {
             score_or_time = _("Time");
+            new_score_or_time = _("New Time in");
+        }
 
-        var label_column_2 = new Gtk.Label ("<span weight='bold'>" + score_or_time + "</span>");
-        label_column_2.use_markup = true;
-        grid.attach (label_column_2, 1, 0, 1, 1);
+        /* Decide what the title should be */
+        categories = context.get_categories ();
+        if (new_high_score != null)
+        {
+            var title_widget = new Adw.WindowTitle (_("Congratulations!"), @"$new_score_or_time $category_type $(active_category.name)");
+            headerbar.set_title_widget (title_widget);
 
-        /* A column heading in the scores dialog */
-        string string_player = _("Player");
-        var label_column_3 = new Gtk.Label ("<span weight='bold'>" + string_player + "</span>");
-        label_column_3.use_markup = true;
-        grid.attach (label_column_3, 2, 0, 1, 1);
-
-        grid.baseline_row = 0;
-        fill_grid_with_labels ();
-
-        if (new_high_score != null) {
-            /* Appears on the top right corner of the dialog. Clicking the button closes the dialog. */
+            /* Button in the top right corner, finishes the dialog */
             done_button = new Gtk.Button.with_label (_("Done"));
             done_button.add_css_class ("suggested-action");
             done_button.clicked.connect (() => this.close ());
-            headerbar.pack_start (done_button);
+            headerbar.pack_end (done_button);
         }
-
-        load_categories ();
-    }
-
-    private void fill_grid_with_labels ()
-    {
-        for (int row = 1; row <= rows_to_display; row++)
+        else if (categories.length () == 1)
         {
-            for (int column = 0; column <= 1; column++)
-            {
-                var label = new Gtk.Label ("");
-                label.visible = true;
-                label.halign = Gtk.Align.CENTER;
-                label.valign = Gtk.Align.CENTER;
-
-                grid.attach (label, column, row, 1, 1);
-            }
-
-            var stack = new Gtk.Stack ();
-            stack.visible = true;
-            stack.hhomogeneous = false;
-            stack.vhomogeneous = true;
-            stack.transition_type = Gtk.StackTransitionType.NONE;
-
-            var label = new Gtk.Label ("");
-            label.visible = true;
-            label.justify = Gtk.Justification.CENTER;
-            label.valign = Gtk.Align.CENTER;
-            stack.add_named (label, "label");
-
-            var entry = new Gtk.Entry ();
-            entry.visible = true;
-            entry.set_size_request (20, 20);
-            entry.hexpand = false;
-            entry.vexpand = false;
-            stack.add_named (entry, "entry");
-
-            stack.visible_child_name = "label";
-            grid.attach (stack, 2, row, 1, 1);
-        }
-    }
-
-    /* load names and keys of all categories in ComboBoxText */
-    private void load_categories ()
-    {
-        /* If we are adding a high score, we don't wish to load all categories. We only wish to load scores of active category. */
-        if (new_high_score != null || combo == null)
-        {
-            load_scores ();
-        }
-
-        if (combo == null)
-            return;
-
-        var categories = context.get_categories ();
-        categories.foreach ((x) => combo.append (x.key, x.name));
-
-        if (scores_active_category == null)
-            combo.active_id = categories.nth_data (0).key;
-        else
-            combo.active_id = scores_active_category.key;
-
-        if (active_category == null)
-        {
-            active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
+            active_category = ((!) categories.first ()).data;
+            set_title (active_category.name);
         }
         else
         {
-            active_category.key = categories.nth_data (0).key;
-            active_category.name = categories.nth_data (0).name;
+            drop_down = new Gtk.DropDown.from_strings (load_categories ());
+            drop_down.notify["selected"].connect(() => {
+                var selected_index = drop_down.get_selected();
+                if (selected_index != -1)
+                    load_scores_for_category (categories.nth_data (selected_index));
+            });
+            headerbar.set_title_widget (drop_down);
         }
+
+        /* Add the data to the dialog */
+        var scroll = new Gtk.ScrolledWindow ();
+        score_view = new Gtk.ColumnView (null);
+        score_view.set_reorderable (false);
+        score_view.set_tab_behavior (ITEM);
+        setup_columns ();
+        load_scores_for_category (active_category);
+        scroll.set_child (score_view);
+        toolbar.add_child (builder, scroll, null);
+        set_focus (score_view);
     }
 
-    /* loads the scores of current active_category */
-    private void load_scores ()
+    /* load names of all categories into a string array */
+    private string[] load_categories ()
     {
-        if (new_high_score != null || combo == null)
-            active_category = new Category (scores_active_category.key, scores_active_category.name);
+        string[] categories_array = {};
+
+        categories.foreach ((x) => categories_array += x.name);
+
+        return categories_array;
+    }
+
+    /*
+     * Most of the code below is from gnome-mahjongg
+     * Copyright 2010-2013 Robert Ancell
+     * Copyright 2010-2025 Mahjongg Contributors
+     */
+
+    private void load_scores_for_category (Category category)
+    {
+        score_model.remove_all ();
+        var best_n_scores = context.get_high_scores (category, 10);
+        foreach (var score in best_n_scores) {
+            score_model.append (score);
+        }
+        score_view.scroll_to (0, null, Gtk.ListScrollFlags.FOCUS, null);
+        active_category = category;
+    }
+
+    private void setup_columns ()
+    {
+        set_up_rank_column ();
+        set_up_score_column ();
+        set_up_player_column ();
+        score_view.append_column (rank_column);
+        score_view.append_column (score_column);
+        score_view.append_column (player_column);
+        score_column.set_expand (true);
+        score_column.set_fixed_width (0);
+        player_column.set_expand (true);
+        player_column.set_fixed_width (0);
+
+        score_model = new ListStore (typeof (Score));
+        var sort_model = new Gtk.SortListModel (score_model, score_view.sorter);
+        score_view.model = new Gtk.NoSelection (sort_model);
+
+        if (scores_style == Style.POINTS_LESS_IS_BETTER || scores_style == Style.TIME_LESS_IS_BETTER)
+            score_view.sort_by_column (rank_column, Gtk.SortType.ASCENDING);
         else
-            active_category = new Category (combo.get_active_id (), combo.get_active_text ());
+            score_view.sort_by_column (rank_column, Gtk.SortType.DESCENDING);
 
-        var best_n_scores = context.get_high_scores (active_category, rows_to_display);
-
-        int row_count = 1;
-
-        foreach (var score in best_n_scores)
-        {
-            display_single_score (score, row_count, best_n_scores.size);
-            row_count++;
-        }
-
-        if (row_count < rows_to_display + 1)
-            make_remaining_labels_empty (row_count);
+        score_view.sorter.changed.connect (() => {
+            /* Scroll to top when resorting */
+            score_view.scroll_to (0, null, Gtk.ListScrollFlags.FOCUS, null);
+        });
     }
 
-    /* Use Stack to switch between Entry and Label. All data displayed as labels except when a new high score is being added.
-       In which case, Label needs to be replaced by Entry allowing for player to enter name. */
-    private void display_single_score (Score score, int row_count, uint no_scores)
-    {
-        var rank_label = (Gtk.Label) grid.get_child_at (0, row_count);
-        rank_label.set_text (row_count.to_string ());
+    private static int rank_sorter_cb (Score entry1, Score entry2) {
+        return (int) (entry1.score > entry2.score) - (int) (entry1.score < entry2.score);
+    }
 
-        var score_label = (Gtk.Label) grid.get_child_at (1, row_count);
+    private void set_up_rank_column () {
+        var factory = new Gtk.SignalListItemFactory ();
+        var sorter = new Gtk.MultiSorter ();
+
+        factory.setup.connect ((factory, object) => {
+            unowned var list_item = object as Gtk.ListItem;
+            var label = new Gtk.Label (null) {
+                width_chars = 3,
+                xalign = 0
+            };
+            label.add_css_class ("caption");
+            label.add_css_class ("numeric");
+            list_item.child = label;
+        });
+        factory.bind.connect ((factory, object) => {
+            unowned var list_item = object as Gtk.ListItem;
+            unowned var label = list_item.child as Gtk.Label;
+            unowned var score = list_item.item as Score;
+            uint position;
+            score_model.find (score, out position);
+
+            if (score == new_high_score)
+                    label.add_css_class ("heading");
+
+            label.label = (position + 1).to_string ();
+        });
+        sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) rank_sorter_cb));
+
+        rank_column = new Gtk.ColumnViewColumn ("Rank", factory);
+        rank_column.sorter = sorter;
+    }
+
+    private void set_up_score_column () {
+        var factory = new Gtk.SignalListItemFactory ();
+
+        factory.setup.connect ((factory, object) => {
+            unowned var list_item = object as Gtk.ListItem;
+            var label = new Gtk.Inscription (null);
+
+            label.add_css_class ("numeric");
+            list_item.child = label;
+        });
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
         {
-            score_label.set_text (score.score.to_string ());
+            factory.bind.connect ((factory, object) => {
+                unowned var list_item = object as Gtk.ListItem;
+                unowned var label = list_item.child as Gtk.Inscription;
+                unowned var score = list_item.item as Score;
+
+                if (score == new_high_score)
+                    label.add_css_class ("heading");
+
+                label.text = score.score.to_string ();
+            });
         }
         else
         {
-            var minutes = score.score / 60;
-            var seconds = score.score % 60;
-            score_label.set_text ("%s %s".printf (
-                /* Time which may be displayed on a scores dialog. */
-                dngettext (GETTEXT_PACKAGE, "%ld minute", "%ld minutes", minutes).printf (minutes),
-                /* Time which may be displayed on a scores dialog. */
-                dngettext (GETTEXT_PACKAGE, "%ld second", "%ld seconds", seconds).printf (seconds)));
-        }
+            factory.bind.connect ((factory, object) => {
+                unowned var list_item = object as Gtk.ListItem;
+                unowned var label = list_item.child as Gtk.Inscription;
+                unowned var score = list_item.item as Score;
+                string time_label = "%lds".printf (score.score);
+                if (score.score >= 60)
+                    time_label = "%ldm %lds".printf (score.score / 60, score.score % 60);
 
-        if (new_high_score != null && Score.equals (score, new_high_score))
-        {
-            if (no_scores > 1 && row_count == 1)
-                dialog_title.set_subtitle (_("Your score is the best!"));
-            else
-                dialog_title.set_subtitle (_("Your score has made the top ten."));
+                if (score == new_high_score)
+                    label.add_css_class ("heading");
 
-            var temp_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
-            temp_stack.visible_child_name = "entry";
-
-            var entry = (Gtk.Entry) temp_stack.get_visible_child ();
-            entry.text = score.user;
-            entry.notify["text"].connect (() => {
-                context.update_score_name (score, active_category, entry.get_text ());
-                score.user = entry.get_text ();
+                label.text = time_label;
             });
         }
 
-        var name_stack = (Gtk.Stack) grid.get_child_at (2, row_count);
-        var widget = name_stack.get_visible_child ();
-
-        if (name_stack.get_visible_child_name () == "label")
-        {
-            var user_label = (Gtk.Label) widget;
-            user_label.set_text (score.user);
-        }
-        else
-        {
-            var entry = (Gtk.Entry) widget;
-            entry.text = score.user;
-        }
+        score_column = new Gtk.ColumnViewColumn (score_or_time, factory);
+        score_column.sorter = rank_column.sorter;
     }
 
-    /* Fill all labels from row row_count onwards with empty strings. */
-    private void make_remaining_labels_empty (int row_count)
-    {
-        for (int i = row_count; i <= rows_to_display; i++)
-        {
-            for (int j = 0; j <= 1; j++)
-            {
-                var label = (Gtk.Label) grid.get_child_at (j, i);
-                label.set_text ("");
-            }
+    private void set_up_player_column () {
+        var factory = new Gtk.SignalListItemFactory ();
 
-            var stack = (Gtk.Stack) grid.get_child_at (2, i);
-            var label = (Gtk.Label) stack.get_visible_child ();
-            label.set_text ("");
-        }
+        factory.bind.connect ((factory, object) => {
+            unowned var list_item = object as Gtk.ListItem;
+            unowned var score = list_item.item as Score;
+
+            if (score == new_high_score)
+            {
+                var entry = new Gtk.Entry ();
+                entry.text = score.user;
+                entry.set_has_frame (false);
+                entry.add_css_class ("heading");
+                entry.notify["text"].connect (() => {
+                    context.update_score_name (score, active_category, entry.get_text ());
+                    score.user = entry.get_text ();
+                });
+                entry.activate.connect (() => this.close ());
+                list_item.child = entry;
+                entry.grab_focus ();
+                score_view.scroll_to (list_item.get_position (), null, Gtk.ListScrollFlags.NONE, null);
+            }
+            else
+            {
+                list_item.child = new Gtk.Inscription (score.user);
+            }
+        });
+
+        player_column = new Gtk.ColumnViewColumn (_("Player"), factory);
     }
 }
 
