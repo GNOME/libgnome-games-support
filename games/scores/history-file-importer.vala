@@ -35,7 +35,13 @@ public class HistoryFileImporter : Importer
      */
     [Version (deprecated=true, deprecated_since="2.2")]
     public delegate void HistoryConvertFunc (string line, out Score score, out Category category);
-    private HistoryConvertFunc history_convert;
+    private HistoryConvertFunc? history_convert;
+
+    construct
+    {
+        /* Unset this manually because it holds a circular ref the Importer. */
+        this.finished.connect (() => this.history_convert = null);
+    }
 
     [Version (deprecated=true, deprecated_since="2.2")]
     public HistoryFileImporter (HistoryConvertFunc history_convert)
