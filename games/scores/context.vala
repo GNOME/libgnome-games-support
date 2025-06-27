@@ -36,8 +36,10 @@ public class Context : Object
     public string category_type { get; construct; }
     public Gtk.Window? game_window { get; construct; }
     public Style style { get; construct; }
-    public Importer? importer { get; construct; }
     public string icon_name { get; construct; }
+
+    [Version (deprecated=true, deprecated_since="2.2")]
+    public Importer? importer { get; construct; }
 
     private Category? current_category = null;
 
@@ -87,6 +89,7 @@ public class Context : Object
         this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, icon_name);
     }
 
+    [Version (deprecated=true, deprecated_since="2.2")]
     public Context.with_importer (string app_name,
                                   string category_type,
                                   Gtk.Window? game_window,
@@ -97,6 +100,7 @@ public class Context : Object
         this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, importer, null);
     }
 
+    [Version (deprecated=true, deprecated_since="2.2")]
     public Context.with_importer_and_icon_name (string app_name,
                                                 string category_type,
                                                 Gtk.Window? game_window,

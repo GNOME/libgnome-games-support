@@ -63,8 +63,10 @@ namespace Scores {
  * loaded before showing the main window.
  */
 
+[Version (deprecated=true, deprecated_since="2.2")]
 public abstract class Importer : Object
 {
+    [Version (deprecated=true, deprecated_since="2.2")]
     protected abstract void importOldScores (Context context, File new_scores_dir) throws Error;
 
     internal void run (Context context, string new_scores_dir)
