@@ -72,11 +72,11 @@ private string get_score_filename_for_category (string category_name)
     return Path.build_filename (get_score_directory_name (), category_name);
 }
 
-private void delete_scores ()
+private void remove_directory (string path)
 {
     try
     {
-        var directory = File.new_for_path (get_score_directory_name ());
+        var directory = File.new_for_path (path);
         if (directory.query_exists ())
         {
             var enumerator = directory.enumerate_children (FileAttribute.STANDARD_NAME, 0);
@@ -89,15 +89,17 @@ private void delete_scores ()
             }
             directory.@delete ();
         }
-
-        var parent_directory = File.new_for_path (get_test_directory_name ());
-        if (parent_directory.query_exists ())
-            parent_directory.@delete ();
     }
     catch (Error e)
     {
         error (e.message);
     }
+}
+
+private void delete_scores ()
+{
+    remove_directory (get_score_directory_name ());
+    remove_directory (get_test_directory_name ());
 }
 
 private void test_scores_files_exist ()
