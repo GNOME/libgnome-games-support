@@ -38,6 +38,12 @@ public class DirectoryImporter : Importer
     public delegate string? CategoryConvertFunc (string old_key);
     private CategoryConvertFunc? category_convert;
 
+    construct
+    {
+        /* Unset this manually because it holds a circular ref the Importer. */
+        this.finished.connect (() => this.category_convert = null);
+    }
+
     public DirectoryImporter ()
     {
         /* Default converter for games that don't require category migration. */

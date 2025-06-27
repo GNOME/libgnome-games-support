@@ -67,21 +67,29 @@ public abstract class Importer : Object
 {
     protected abstract void importOldScores (Context context, File new_scores_dir) throws Error;
 
+    /* This would be much nicer as an abstract function rather than a signal;
+     * however, adding a new abstract function would enlarge the class struct,
+     * breaking ABI.
+     */
+    public signal void finished ();
+
     internal void run (Context context, string new_scores_dir)
     {
         var new_dir = File.new_for_path (new_scores_dir);
-        if (new_dir.query_exists ())
-            return;
+        if (!new_dir.query_exists ())
+        {
+            try
+            {
+                new_dir.make_directory_with_parents ();
+                importOldScores (context, new_dir);
+            }
+            catch (Error e)
+            {
+                warning ("Failed to import scores: %s", e.message);
+            }
+        }
 
-        try
-        {
-            new_dir.make_directory_with_parents ();
-            importOldScores (context, new_dir);
-        }
-        catch (Error e)
-        {
-            warning ("Failed to import scores: %s", e.message);
-        }
+        finished ();
     }
 }
 

@@ -125,6 +125,9 @@ public class Context : Object
         {
             warning ("Failed to load scores: %s", e.message);
         }
+
+        /* Unset this manually because it holds a circular ref on Context. */
+        this.category_request = null;
     }
 
     public override void constructed ()
@@ -353,6 +356,9 @@ public class Context : Object
     {
         this.category_request = (key) => { return category_request (key); };
         load_scores_from_files ();
+
+        /* Unset this manually because it holds a circular ref on Context. */
+        this.category_request = null;
     }
 
     /* FIXME: Nested main loops are dangerous. This code violates the essential
