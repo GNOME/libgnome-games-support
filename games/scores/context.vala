@@ -227,13 +227,8 @@ public class Context : Object
         yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
 
-    internal async bool add_score_internal (Score score,
-                                            Category category,
-                                            bool allow_dialog,
-                                            Cancellable? cancellable) throws Error
+    private async bool add_score_internal (Score score, Category category, Cancellable? cancellable) throws Error
     {
-        var high_score_added = is_high_score (score.score, category);
-
         /* Check if category exists in the HashTable. Insert one if not. */
         if (!scores_per_category.has_key (category))
             scores_per_category.set (category, new Gee.ArrayList<Score> ());
@@ -241,24 +236,22 @@ public class Context : Object
         if (scores_per_category[category].add (score))
             current_category = category;
 
-        /* Note that the score's player name can change while the dialog is
-         * running.
-         */
-        if (high_score_added && allow_dialog)
-            run_dialog_internal (score);
+        var high_score_added = is_high_score (score.score, category);
+        if (high_score_added && game_window != null)
+            yield do_present_dialog (score, cancellable);
 
-        yield save_score_to_file (score, current_category, cancellable);
+        yield save_score_to_file (score, category, cancellable);
         return high_score_added;
     }
 
-    /* Return true if a dialog was launched on attaining high score */
+    /* Returns true if a dialog was launched on attaining high score. */
     public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
     {
-        /* Don't allow the dialog if it wouldn't have a parent, or in tests. */
-        return yield add_score_internal (new Score (score), category, game_window != null, cancellable);
+        return yield add_score_internal (new Score (score), category, cancellable);
     }
 
     internal bool add_score_sync (Score score, Category category) throws Error
+        requires (game_window == null)
     {
         var main_context = new MainContext ();
         var main_loop = new MainLoop (main_context);
@@ -266,7 +259,7 @@ public class Context : Object
         Error error = null;
 
         main_context.push_thread_default ();
-        add_score_internal.begin (score, category, false, null, (object, result) => {
+        add_score_internal.begin (score, category, null, (object, result) => {
             try
             {
                 ret = add_score_internal.end (result);
@@ -365,33 +358,50 @@ public class Context : Object
         this.category_request = null;
     }
 
-    /* FIXME: Nested main loops are dangerous. This code violates the essential
-     * rule:
+    /* This code violates the essential rule:
      *
      *   Never iterate a context created outside the library, including the
      *   global-default or thread-default contexts. Otherwise, sources created
      *   in the application may be dispatched when the application is not
      *   expecting it, causing re-entrancy problems for the application code.
      *
-     * This is why gtk_dialog_run() was removed. We should remove this too, but
-     * unfortunately, run_dialog() is public API. At least we ought to provide a
-     * replacement that only shows the dialog without running it.
-     *
-     * When changing this, we will also need to change add_score_internal().
+     * This is why gtk_dialog_run() was removed.
      */
-    internal void run_dialog_internal (Score? new_high_score)
+    [Version (deprecated=true, deprecated_since="2.2")]
+    public void run_dialog ()
         requires (game_window != null)
     {
         var main_loop = new MainLoop (null);
-        var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
+        var dialog = new Dialog (this, category_type, style, null, current_category, game_window, icon_name);
         dialog.closed.connect (() => main_loop.quit ());
         dialog.present (game_window);
         main_loop.run ();
     }
 
-    public void run_dialog ()
+    private async Dialog do_present_dialog (Score? new_high_score,
+                                            Cancellable? cancellable) throws Error
+        requires (game_window != null)
     {
-        run_dialog_internal (null);
+        var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
+        dialog.closed.connect (() => do_present_dialog.callback ());
+        dialog.present (game_window);
+        yield;
+
+        /* Throw if cancelled. Cancelling won't make this function return any
+         * sooner, but we still have to throw the expected error code.
+         */
+        if (cancellable != null)
+            cancellable.set_error_if_cancelled ();
+
+        return dialog;
+    }
+
+    /* Returns after the user has closed the dialog. */
+    [Version (since="2.2")]
+    public async void present_dialog (Cancellable? cancellable) throws Error
+        requires (game_window != null)
+    {
+        yield do_present_dialog (null, cancellable);
     }
 
     public bool has_scores ()
