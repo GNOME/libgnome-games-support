@@ -73,7 +73,7 @@ public abstract class Importer : Object
      * however, adding a new abstract function would enlarge the class struct,
      * breaking ABI.
      */
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (since="2.2", deprecated=true, deprecated_since="2.2")]
     public signal void finished ();
 
     internal void run (Context context, string new_scores_dir)
