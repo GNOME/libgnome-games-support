@@ -64,6 +64,9 @@ public class Context : Object
     public delegate Category? CategoryRequestFunc (string category_key);
     private CategoryRequestFunc? category_request = null;
 
+    [Version (since="2.2")]
+    public signal void dialog_closed ();
+
     class construct
     {
         Intl.bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -241,7 +244,12 @@ public class Context : Object
 
         var high_score_added = is_high_score (score.score, category);
         if (high_score_added && game_window != null)
-            yield do_present_dialog (score, cancellable);
+        {
+            ulong id = dialog_closed.connect (() => add_score_internal.callback ());
+            do_present_dialog (score);
+            yield;
+            disconnect (id);
+        }
 
         yield save_score_to_file (score, category, cancellable);
         return high_score_added;
@@ -353,30 +361,19 @@ public class Context : Object
         main_loop.run ();
     }
 
-    private async Dialog do_present_dialog (Score? new_high_score,
-                                            Cancellable? cancellable) throws Error
+    private void do_present_dialog (Score? new_high_score = null)
         requires (game_window != null)
     {
         var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
-        dialog.closed.connect (() => do_present_dialog.callback ());
+        dialog.closed.connect (() => dialog_closed ());
         dialog.present (game_window);
-        yield;
-
-        /* Throw if cancelled. Cancelling won't make this function return any
-         * sooner, but we still have to throw the expected error code.
-         */
-        if (cancellable != null)
-            cancellable.set_error_if_cancelled ();
-
-        return dialog;
     }
 
-    /* Returns after the user has closed the dialog. */
     [Version (since="2.2")]
-    public async void present_dialog (Cancellable? cancellable) throws Error
+    public void present_dialog ()
         requires (game_window != null)
     {
-        yield do_present_dialog (null, cancellable);
+        do_present_dialog ();
     }
 
     public bool has_scores ()
