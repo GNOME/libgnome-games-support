@@ -227,7 +227,10 @@ public class Context : Object
         yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
 
-    private async bool add_score_internal (Score score, Category category, Cancellable? cancellable) throws Error
+    /* This is separate from add_score() for use by HistoryFileImporter.
+     * At the next API break, we should merge this into add_score().
+     */
+    internal async bool add_score_internal (Score score, Category category, Cancellable? cancellable) throws Error
     {
         /* Check if category exists in the HashTable. Insert one if not. */
         if (!scores_per_category.has_key (category))
@@ -248,34 +251,6 @@ public class Context : Object
     public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
     {
         return yield add_score_internal (new Score (score), category, cancellable);
-    }
-
-    internal bool add_score_sync (Score score, Category category) throws Error
-        requires (game_window == null)
-    {
-        var main_context = new MainContext ();
-        var main_loop = new MainLoop (main_context);
-        var ret = false;
-        Error error = null;
-
-        main_context.push_thread_default ();
-        add_score_internal.begin (score, category, null, (object, result) => {
-            try
-            {
-                ret = add_score_internal.end (result);
-            }
-            catch (Error e)
-            {
-                error = e;
-            }
-            main_loop.quit ();
-        });
-        main_loop.run ();
-        main_context.pop_thread_default ();
-
-        if (error != null)
-            throw error;
-        return ret;
     }
 
     private void load_scores_from_file (FileInfo file_info) throws Error

@@ -88,11 +88,39 @@ public class HistoryFileImporter : Importer
             history_convert (line, out score, out category);
             if (score == null || category == null)
                 warning ("Failed to import from %s score line %s", history_filename, line);
-            context.add_score_sync (score, category);
+            add_score_sync (context, score, category);
         }
 
         var history_file = File.new_for_path (history_filename);
         history_file.@delete ();
+    }
+
+    internal bool add_score_sync (Context context, Score score, Category category) throws Error
+        requires (context.game_window == null)
+    {
+        var main_context = new MainContext ();
+        var main_loop = new MainLoop (main_context);
+        var ret = false;
+        Error error = null;
+
+        main_context.push_thread_default ();
+        context.add_score_internal.begin (score, category, null, (object, result) => {
+            try
+            {
+                ret = context.add_score_internal.end (result);
+            }
+            catch (Error e)
+            {
+                error = e;
+            }
+            main_loop.quit ();
+        });
+        main_loop.run ();
+        main_context.pop_thread_default ();
+
+        if (error != null)
+            throw error;
+        return ret;
     }
 }
 
