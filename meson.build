@@ -15,7 +15,7 @@ project(
 # to 0. When bumping the second version, set the third one to zero.
 #
 # A lot easier than libtool, right?
-library_version = '4.1.1'
+library_version = '4.1.0'
 soversion = library_version.split('.')[0]
 
 # libgnome-games-support-2
