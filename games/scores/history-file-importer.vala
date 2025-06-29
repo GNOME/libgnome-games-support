@@ -95,7 +95,7 @@ public class HistoryFileImporter : Importer
         history_file.@delete ();
     }
 
-    internal bool add_score_sync (Context context, Score score, Category category) throws Error
+    private bool add_score_sync (Context context, Score score, Category category) throws Error
         requires (context.game_window == null)
     {
         var main_context = new MainContext ();
