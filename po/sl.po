@@ -7,94 +7,54 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libgames-scores master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libgnome-games-support&keywords=I18N"
-"+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-19 15:42+0000\n"
-"PO-Revision-Date: 2017-10-15 20:46+0200\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/libgnome-games-support/"
+"issues\n"
+"POT-Creation-Date: 2025-06-28 00:59+0000\n"
+"PO-Revision-Date: 2025-06-29 12:39+0200\n"
+"Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? "
-"2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#. Appears at the top of the dialog, as the heading of the dialog
-#: games/scores/dialog.vala:58
-msgid "Congratulations!"
-msgstr "Čestitke!"
-
-#: games/scores/dialog.vala:60
-msgid "High Scores"
-msgstr "Najboljši rezultati"
-
-#: games/scores/dialog.vala:62
-msgid "Best Times"
-msgstr "Najboljši časi"
-
-#: games/scores/dialog.vala:78
+#: games/scores/dialog.vala:79
 msgid "No scores yet"
-msgstr "Ni še rezultatov"
+msgstr "Še ni rezultatov"
 
-#: games/scores/dialog.vala:82
+#: games/scores/dialog.vala:81
 msgid "Play some games and your scores will show up here."
 msgstr "Po igranju iger bodo rezultati prikazani na tem mestu."
 
-#. A column heading in the scores dialog
-#: games/scores/dialog.vala:135
-msgid "Rank"
-msgstr "Ocena"
-
-#. A column heading in the scores dialog
-#: games/scores/dialog.vala:144
+#: games/scores/dialog.vala:92
 msgid "Score"
 msgstr "Rezultat"
 
-#: games/scores/dialog.vala:146
+#: games/scores/dialog.vala:93
+msgid "New Score in"
+msgstr "Zabeležen nov rezultat"
+
+#: games/scores/dialog.vala:97
 msgid "Time"
 msgstr "Čas"
 
-#. A column heading in the scores dialog
-#: games/scores/dialog.vala:153
+#: games/scores/dialog.vala:98
+msgid "New Time in"
+msgstr "Zabeležen nov čas"
+
+#: games/scores/dialog.vala:105
+msgid "Congratulations!"
+msgstr "Čestitke!"
+
+#. Button in the top right corner, finishes the dialog
+#: games/scores/dialog.vala:109
+msgid "Done"
+msgstr "Končano"
+
+#: games/scores/dialog.vala:305
 msgid "Player"
 msgstr "Igralec"
-
-#. Appears on the top right corner of the dialog. Clicking the button closes the dialog.
-#: games/scores/dialog.vala:163
-msgid "_Done"
-msgstr "_Končano"
-
-#. Time which may be displayed on a scores dialog.
-#: games/scores/dialog.vala:278
-#, c-format
-msgid "%ld minute"
-msgid_plural "%ld minutes"
-msgstr[0] "%ld minut"
-msgstr[1] "%ld minuta"
-msgstr[2] "%ld minuti"
-msgstr[3] "%ld minute"
-
-#. Time which may be displayed on a scores dialog.
-#: games/scores/dialog.vala:280
-#, c-format
-msgid "%ld second"
-msgid_plural "%ld seconds"
-msgstr[0] "%ld sekund"
-msgstr[1] "%ld sekunda"
-msgstr[2] "%ld sekundi"
-msgstr[3] "%ld sekunde"
-
-#: games/scores/dialog.vala:286
-msgid "Your score is the best!"
-msgstr "Dosežen rezultat je najboljši doslej!"
-
-#: games/scores/dialog.vala:288
-msgid "Your score has made the top ten."
-msgstr "Dosežen rezultat se uvršča med najboljših deset."
-
-#~ msgid "Done"
-#~ msgstr "Končano"
