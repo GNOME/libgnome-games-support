@@ -22,7 +22,7 @@ soversion = library_version.split('.')[0]
 api_version = '2'
 
 cc = meson.get_compiler('c')
-valac = meson.get_compiler('vala')  # TODO 0.39.6 min
+valac = meson.get_compiler('vala')
 
 adw_dependency = dependency ('libadwaita-1', version: '>= 1.0')
 gee_dependency = dependency('gee-0.8', version: '>= 0.14.0')
