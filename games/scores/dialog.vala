@@ -28,18 +28,19 @@ private class Dialog : Adw.Dialog
     private List<Category?> categories = null;
     private ListStore? score_model = null;
 
+    private Adw.ToolbarView toolbar;
     private Gtk.Button done_button = null;
     private Gtk.DropDown? drop_down = null;
     private Gtk.ColumnView? score_view;
-    private Gtk.ColumnViewColumn rank_column;
-    private Gtk.ColumnViewColumn score_column;
-    private Gtk.ColumnViewColumn player_column;
+    private Gtk.ColumnViewColumn? rank_column;
+    private Gtk.ColumnViewColumn? score_column;
+    private Gtk.ColumnViewColumn? player_column;
 
     private Style scores_style;
     private Score? new_high_score;
     private string? score_or_time;
 
-    public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, Gtk.Window window, string icon_name)
+    public Dialog (Context context, string category_type, Style style, Score? new_high_score, Category? current_cat, string icon_name)
     {
         this.context = context;
         this.new_high_score = new_high_score;
@@ -49,7 +50,7 @@ private class Dialog : Adw.Dialog
         active_category = current_cat;
 
         Gtk.Builder builder = new Gtk.Builder ();
-        Adw.ToolbarView toolbar = new Adw.ToolbarView ();
+        toolbar = new Adw.ToolbarView ();
         Adw.HeaderBar headerbar = new Adw.HeaderBar ();
         headerbar.set_show_end_title_buttons (new_high_score == null);
         set_child (toolbar);
@@ -136,7 +137,6 @@ private class Dialog : Adw.Dialog
         load_scores_for_category (active_category);
         scroll.set_child (score_view);
         toolbar.add_child (builder, scroll, null);
-        set_focus (score_view);
     }
 
     /* load names of all categories into a string array */
@@ -162,7 +162,7 @@ private class Dialog : Adw.Dialog
         foreach (var score in best_n_scores) {
             score_model.append (score);
         }
-        score_view.scroll_to (0, null, Gtk.ListScrollFlags.FOCUS, null);
+        score_view.scroll_to (0, null, Gtk.ListScrollFlags.NONE, null);
         active_category = category;
     }
 
@@ -293,6 +293,7 @@ private class Dialog : Adw.Dialog
                 });
                 entry.activate.connect (() => this.close ());
                 list_item.child = entry;
+                this.set_focus (score_view);
                 entry.grab_focus ();
                 score_view.scroll_to (list_item.get_position (), null, Gtk.ListScrollFlags.NONE, null);
             }
@@ -303,6 +304,37 @@ private class Dialog : Adw.Dialog
         });
 
         player_column = new Gtk.ColumnViewColumn (_("Player"), factory);
+    }
+
+    internal void add_bottom_buttons (Context.NewGameFunc new_game_func, Context.QuitAppFunc quit_app_func)
+    {
+        var builder = new Gtk.Builder ();
+        Gtk.CenterBox bottom_bar = new Gtk.CenterBox ();
+        Gtk.Button new_game_button = new Gtk.Button.with_label (_("_New Game"));
+        new_game_button.set_use_underline (true);
+        new_game_button.set_can_shrink (true);
+        new_game_button.clicked.connect (() => {
+            this.close ();
+            new_game_func ();
+        });
+        Gtk.Button quit_button = new Gtk.Button ();
+        quit_button.set_can_shrink (true);
+        Adw.ButtonContent content = new Adw.ButtonContent ();
+        content.set_icon_name ("application-exit-symbolic");
+        content.set_label (_("_Quit"));
+        content.set_use_underline (true);
+        content.set_can_shrink (true);
+        quit_button.set_child (content);
+        quit_button.clicked.connect (() => {
+            this.close ();
+            quit_app_func ();
+        });
+        new_game_button.add_css_class ("pill");
+        quit_button.add_css_class ("toolbar");
+        bottom_bar.add_css_class ("toolbar");
+        bottom_bar.add_child (builder, new_game_button, "center");
+        bottom_bar.add_child (builder, quit_button, "end");
+        toolbar.add_child (builder, bottom_bar, "bottom");
     }
 }
 

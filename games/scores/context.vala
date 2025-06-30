@@ -245,10 +245,10 @@ public class Context : Object
         var high_score_added = is_high_score (score.score, category);
         if (high_score_added && game_window != null)
         {
-            ulong id = dialog_closed.connect (() => add_score_internal.callback ());
-            do_present_dialog (score);
+            var dialog = new Dialog (this, category_type, style, score, current_category, icon_name);
+            dialog.closed.connect (() => add_score_internal.callback ());
+            dialog.present (game_window);
             yield;
-            disconnect (id);
         }
 
         yield save_score_to_file (score, category, cancellable);
@@ -259,6 +259,38 @@ public class Context : Object
     public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
     {
         return yield add_score_internal (new Score (score), category, cancellable);
+    }
+
+    public delegate void NewGameFunc ();
+    public delegate void QuitAppFunc ();
+
+    /**
+     *
+     * Adds some buttons to the bottom of the dialog that aid the flow of a game that chooses to use it.
+     */
+    [Version (since="2.2")]
+    public async bool add_score_full (long score_value, Category category, NewGameFunc new_game_func, QuitAppFunc quit_app_func, Cancellable? cancellable) throws Error
+    {
+        Score score = new Score (score_value);
+        /* Check if category exists in the HashTable. Insert one if not. */
+        if (!scores_per_category.has_key (category))
+            scores_per_category.set (category, new Gee.ArrayList<Score> ());
+
+        if (scores_per_category[category].add (score))
+            current_category = category;
+
+        var high_score_added = is_high_score (score.score, category);
+        if (high_score_added)
+        {
+            var dialog = new Dialog (this, category_type, style, score, current_category, icon_name);
+            dialog.closed.connect (() => add_score_full.callback ());
+            dialog.present (game_window);
+            dialog.add_bottom_buttons (new_game_func, quit_app_func);
+            yield;
+        }
+
+        yield save_score_to_file (score, category, cancellable);
+        return high_score_added;
     }
 
     private void load_scores_from_file (FileInfo file_info) throws Error
@@ -355,25 +387,19 @@ public class Context : Object
         requires (game_window != null)
     {
         var main_loop = new MainLoop (null);
-        var dialog = new Dialog (this, category_type, style, null, current_category, game_window, icon_name);
+        var dialog = new Dialog (this, category_type, style, null, current_category, icon_name);
         dialog.closed.connect (() => main_loop.quit ());
         dialog.present (game_window);
         main_loop.run ();
-    }
-
-    private void do_present_dialog (Score? new_high_score = null)
-        requires (game_window != null)
-    {
-        var dialog = new Dialog (this, category_type, style, new_high_score, current_category, game_window, icon_name);
-        dialog.closed.connect (() => dialog_closed ());
-        dialog.present (game_window);
     }
 
     [Version (since="2.2")]
     public void present_dialog ()
         requires (game_window != null)
     {
-        do_present_dialog ();
+        var dialog = new Dialog (this, category_type, style, null, current_category, icon_name);
+        dialog.closed.connect (() => dialog_closed ());
+        dialog.present (game_window);
     }
 
     public bool has_scores ()
