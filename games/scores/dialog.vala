@@ -64,23 +64,13 @@ private class Dialog : Adw.Dialog
         if (!context.has_scores () && new_high_score == null)
         {
             /* Empty State */
-            Gtk.Box vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
-            toolbar.add_child (builder, vbox, null);
-            vbox.hexpand = true;
-            vbox.vexpand = true;
-            vbox.valign = Gtk.Align.CENTER;
-            vbox.add_css_class ("dim-label");
-
-            var image = new Gtk.Image ();
-            image.icon_name = icon_name + "-symbolic";
-            image.pixel_size = 64;
-            image.opacity = 0.2;
-            vbox.append (image);
-
             set_title (_("No scores yet"));
 
-            var description_label = new Gtk.Label (_("Play some games and your scores will show up here."));
-            vbox.append (description_label);
+            Adw.StatusPage status_page = new Adw.StatusPage ();
+            toolbar.add_child (builder, status_page, null);
+            status_page.set_icon_name (icon_name + "-symbolic");
+            status_page.set_description (_("Play some games and your scores will show up here."));
+            status_page.add_css_class ("dim-label");
 
             return;
         }
