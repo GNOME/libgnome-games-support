@@ -21,9 +21,19 @@
 namespace Games {
 namespace Scores {
 
+/**
+ * A category of {@link Games.Scores.Score}, usually the game mode (hard, easy, medium) that a score is from.
+ *
+ */
 public class Category : Object
 {
     private string _key;
+    /**
+     * A non-translated string that is not user facing and is used to identify the Category.
+     *
+     * Category ``key``s may contain only hyphens, underscores, and alphanumeric characters.
+     *
+     */
     public string key
     {
         get { return _key; }
@@ -40,9 +50,17 @@ public class Category : Object
         }
     }
 
-    /* This is a user-friendly name. It should be marked for translation. */
+    /**
+     * A user-friendly name for the Category.
+     * This should be marked for translation.
+     *
+     */
     public string name { get; set; }
 
+    /**
+     * Creates a new Category.
+     *
+     */
     public Category (string key, string name)
     {
         Object (key: key, name: name);

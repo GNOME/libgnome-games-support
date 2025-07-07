@@ -22,6 +22,14 @@
 namespace Games {
 namespace Scores {
 
+/**
+ * The style that a {@link Games.Scores.Score} uses.
+ *
+ * This tells the score dialog if it should display the scores as a time or as points.
+ *
+ * It also tells the score dialog if a larger or smaller score should get a higher ranking.
+ *
+ */
 public enum Style
 {
     POINTS_GREATER_IS_BETTER,
@@ -30,15 +38,48 @@ public enum Style
     TIME_LESS_IS_BETTER
 }
 
+/**
+ * An object that holds information for using {@link Games.Scores.Score}s.
+ *
+ */
 public class Context : Object
 {
+    /**
+     * An App ID (eg. ``org.gnome.Mines``).
+     *
+     */
     public string app_name { get; construct; }
+
+    /**
+     * Describes all of the categories.
+     * Make sure to put a colon at the end (eg. "Minefield:", "Difficulty Level:").
+     *
+     */
     public string category_type { get; construct; }
+
+    /**
+     * The window that the game will be inside of, this is the window the score dialog will be presented upon.
+     *
+     */
     public Gtk.Window? game_window { get; construct; }
+
+    /**
+     * The {@link Games.Scores.Style} that the context should use.
+     *
+     */
     public Style style { get; construct; }
+
+    /**
+     * The ID for the icon that will be used in the score dialog's empty screen (eg. ``org.gnome.Quadrapassel``).
+     *
+     */
     public string icon_name { get; construct; }
 
     [Version (deprecated=true, deprecated_since="2.2")]
+    /**
+     * The {@link [Games.Scores.Importer]} for the context (eg. HistoryFileImporter).
+     *
+     */
     public Importer? importer { get; construct; }
 
     private Category? current_category = null;
@@ -55,15 +96,22 @@ public class Context : Object
     private string user_score_dir;
     private bool scores_loaded = false;
 
-    /* A function provided by the game that converts the category key to a
-     * category. Why do we have this, instead of expecting games to pass in a
-     * list of categories? Because some games need to create categories on the
+    /**
+     * A function provided by the game that converts the category key to a category.
+     *
+     * Why do we have this, instead of expecting games to pass in a list
+     * of categories? Because some games need to create categories on the
      * fly, like Mines, which allows for custom board sizes. These games do not
      * know in advance which categories may be in use.
+     *
      */
     public delegate Category? CategoryRequestFunc (string category_key);
     private CategoryRequestFunc? category_request = null;
 
+    /**
+     * Emitted when the score dialog is closed.
+     *
+     */
     [Version (since="2.2")]
     public signal void dialog_closed ();
 
@@ -73,6 +121,19 @@ public class Context : Object
         Intl.bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
     }
 
+    /**
+     * Creates a new Context.
+     *
+     * ``app_name`` is your App ID (eg. ``org.gnome.Mines``).
+     *
+     * ``category_type`` describes all of the categories, make sure to put a colon at the end (eg. "Minefield:", "Difficulty Level:").
+     *
+     * ``game_window`` is the window that the game will be inside of, this is the window the score dialog will be presented upon.
+     *
+     * ``category_request`` is a function that takes a category key and produces the user-facing name for it/
+     *
+     *
+     */
     public Context (string app_name,
                     string category_type,
                     Gtk.Window? game_window,
@@ -82,6 +143,22 @@ public class Context : Object
         this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, null);
     }
 
+    /**
+     * Creates a new Context.
+     *
+     * ``app_name`` is your App ID (eg. ``org.gnome.Mines``)
+     *
+     * ``category_type`` describes all of the categories, make sure to put a colon at the end (eg. "Minefield:", "Difficulty Level:").
+     *
+     * ``game_window`` is the window that the game will be inside of, this is the window the score dialog will be presented upon.
+     *
+     * ``category_request`` is a function that takes a category key and produces the user-facing name for it.
+     *
+     * ``style changes`` the way {@link Games.Scores.Score}s are presented.
+     *
+     * ``icon_name`` is the ID for your app's icon (eg. ``org.gnome.Quadrapassel``).
+     *
+     */
     public Context.with_icon_name (string app_name,
                                    string category_type,
                                    Gtk.Window? game_window,
@@ -172,7 +249,10 @@ public class Context : Object
         assert_not_reached ();
     }
 
-    /* Get the best n scores from the given category, sorted */
+    /**
+     * Get the best n scores from the given category, sorted.
+     *
+     */
     public Gee.List<Score> get_high_scores (Category category, int n = 10)
     {
         var result = new Gee.ArrayList<Score> ();
@@ -255,7 +335,10 @@ public class Context : Object
         return high_score_added;
     }
 
-    /* Returns true if a dialog was launched on attaining high score. */
+    /**
+     * Returns true if a dialog was launched on attaining high score.
+     *
+     */
     public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
     {
         return yield add_score_internal (new Score (score), category, cancellable);
@@ -265,8 +348,12 @@ public class Context : Object
     public delegate void QuitAppFunc ();
 
     /**
-     *
      * Adds some buttons to the bottom of the dialog that aid the flow of a game that chooses to use it.
+     *
+     * ``new_game_func`` is called when the user presses the 'New Game' button on the dialog
+     *
+     * ``quit_app_func`` is called when the user presses the 'Quit' button on the dialog
+     *
      */
     [Version (since="2.2")]
     public async bool add_score_full (long score_value, Category category, NewGameFunc new_game_func, QuitAppFunc quit_app_func, Cancellable? cancellable) throws Error
@@ -361,8 +448,11 @@ public class Context : Object
         }
     }
 
-    /* Must be called *immediately* after construction, if constructed using
-     * g_object_new. */
+    /**
+     * Must be called *immediately* after construction, if constructed using
+     * g_object_new.
+     *
+     */
     public void load_scores (CategoryRequestFunc category_request) throws Error
         requires (this.category_request == null)
     {
@@ -393,6 +483,10 @@ public class Context : Object
         main_loop.run ();
     }
 
+    /**
+     * Presents the score dialog on top of ``game_window``.
+     *
+     */
     [Version (since="2.2")]
     public void present_dialog ()
         requires (game_window != null)
@@ -402,6 +496,10 @@ public class Context : Object
         dialog.present (game_window);
     }
 
+    /**
+     * Returns true if this contains {@link Games.Scores.Score}s.
+     *
+     */
     public bool has_scores ()
     {
         foreach (var scores in scores_per_category.values)
