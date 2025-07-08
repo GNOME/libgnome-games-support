@@ -21,14 +21,25 @@
 namespace Games {
 namespace Scores {
 
+/**
+ * An object used for storing a score and some data about it.
+ * This is usually only used inside of libgnome-games-support.
+ *
+ */
 public class Score : Object
 {
+    /**
+     * The amount of points or time that a user has achieved.
+     *
+     */
     public long score { get; set; }
 
-    /* Although the scores dialog does not currently display the time a
-     * score was achieved, it did in the past and it might again in the future.
-     */
     private int64 _time;
+    /**
+     * Although the scores dialog does not currently display the time a
+     * score was achieved, it did in the past and it might again in the future.
+     *
+     */
     public int64 time
     {
         get { return _time; }
@@ -36,17 +47,38 @@ public class Score : Object
     }
 
     private string _user;
+    /**
+     * The player who achieved the score.
+     *
+     * If ``user`` is set to null, it will automatically be set to the current User's real name.
+     *
+     */
     public string user
     {
         get { return _user; }
         set { _user = (value == null ? Environment.get_real_name () : value); }
     }
 
+    /**
+     * Creates a new Score.
+     *
+     * If ``time`` is set to 0, it will be set to the current time.
+     *
+     * If ``user`` is null, it will automatically be set to the
+     * current user's real name.
+     *
+     */
     public Score (long score, int64 time = 0, string? user = null)
     {
         Object (score: score, time: time, user: user);
     }
 
+    /**
+     * Returns true if the scores are equal.
+     *
+     * Every field in both of the scores must be equal for this to return true.
+     *
+     */
     public static bool equals (Score a, Score b)
     {
         return a.score == b.score && a.time == b.time && a.user == b.user;

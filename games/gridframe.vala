@@ -18,15 +18,24 @@
  * along with libgnome-games-support.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// A container that guarantees that the internal allocated space is a fixed
-// multiple of an integer. This is a fairly literal translation of the LGPLv2+
+// This is a fairly literal translation of the LGPLv2+
 // original by Callum McKenzie, itself based on GtkFrame and GtkAspectFrame.
 
 namespace Games {
 
+/**
+ * A container that guarantees that the internal allocated space is a fixed
+ * multiple of an integer.
+ *
+ */
 public class GridFrame : Gtk.Widget
 {
+
     private int _xpadding = 0;
+    /**
+     * The horizontal padding of the GridFrame.
+     *
+     */
     public int xpadding
     {
         get { return _xpadding; }
@@ -42,6 +51,10 @@ public class GridFrame : Gtk.Widget
     }
 
     private int _ypadding = 0;
+    /**
+     * The vertical padding of the GridFrame.
+     *
+     */
     public int ypadding
     {
         get { return _ypadding; }
@@ -57,6 +70,10 @@ public class GridFrame : Gtk.Widget
     }
 
     private int _xmult = 1;
+    /**
+     * The width of the GridFrame.
+     *
+     */
     public int width
     {
         get { return _xmult; }
@@ -72,6 +89,10 @@ public class GridFrame : Gtk.Widget
     }
 
     private int _ymult = 1;
+    /**
+     * The height of the GridFrame.
+     *
+     */
     public int height
     {
         get { return _ymult; }
@@ -87,6 +108,11 @@ public class GridFrame : Gtk.Widget
     }
 
     private float _xalign = 0.5f;
+    /**
+     * The horizontal alignment of the GridFrame.
+     * ranges from zero to one, .5 makes the GridFrame centered.
+     *
+     */
     public float xalign
     {
         get { return _xalign; }
@@ -99,6 +125,11 @@ public class GridFrame : Gtk.Widget
     }
 
     private float _yalign = 0.5f;
+    /**
+     * The vertical alignment of the GridFrame.
+     * ranges from zero to one, .5 makes the GridFrame centered.
+     *
+     */
     public float yalign
     {
         get { return _yalign; }
@@ -111,6 +142,10 @@ public class GridFrame : Gtk.Widget
     }
 
     private Gtk.Widget _child = null;
+    /**
+     * The child of the GridFrame.
+     *
+     */
     public Gtk.Widget child {
         get { return _child; }
 
@@ -129,11 +164,19 @@ public class GridFrame : Gtk.Widget
 
     private Gtk.Allocation old_allocation;
 
+    /**
+     * Creates a new GridFrame.
+     *
+     */
     public GridFrame (int width, int height)
     {
         Object (width: width, height: height);
     }
 
+    /**
+     * Disposes of the GridFrame and removes it's child from itself.
+     *
+     */
     protected override void dispose () {
         child.unparent ();
         child = null;
@@ -141,24 +184,42 @@ public class GridFrame : Gtk.Widget
         base.dispose ();
     }
 
+    /**
+     * Sets the width and height of the GridFrame.
+     *
+     */
     public new void @set (int width, int height)
     {
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * Sets the horizontal and vertical (x and y) padding of the GridFrame.
+     *
+     */
     public void set_padding (int xpadding, int ypadding)
     {
         this.xpadding = xpadding;
         this.ypadding = ypadding;
     }
 
+    /**
+     * Sets the horizontal and vertical (x and y) alignment of the GridFrame.
+     *
+     * ``xalign`` and ``yalign`` range from zero to one, if both are set to .5 the GridFrame will be centered.
+     *
+     */
     public void set_alignment (float xalign, float yalign)
     {
         this.xalign = xalign;
         this.yalign = yalign;
     }
 
+    /**
+     * {@link Gtk.Widget.size_allocate}
+     *
+     */
     public override void size_allocate (int width, int height, int baseline)
     {
         base.size_allocate (width, height, baseline);

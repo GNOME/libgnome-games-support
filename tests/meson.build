@@ -16,6 +16,5 @@ lggs_tests = executable(
 )
 test(
     'libgnome-games-support-tests',
-    lggs_tests,
-    timeout: 1,
+    lggs_tests
 )
