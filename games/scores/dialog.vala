@@ -29,7 +29,7 @@ private class Dialog : Adw.Dialog
     private ListStore? score_model = null;
 
     private Adw.ToolbarView toolbar;
-    private Gtk.Button done_button = null;
+    private Gtk.Button? done_button = null;
     private Gtk.DropDown? drop_down = null;
     private Gtk.ColumnView? score_view;
     private Gtk.ColumnViewColumn? rank_column;
@@ -45,10 +45,6 @@ private class Dialog : Adw.Dialog
         this.context = context;
         this.new_high_score = new_high_score;
 
-        scores_style = style;
-        categories = context.get_categories ();
-        active_category = current_cat;
-
         Gtk.Builder builder = new Gtk.Builder ();
         toolbar = new Adw.ToolbarView ();
         Adw.HeaderBar headerbar = new Adw.HeaderBar ();
@@ -57,9 +53,6 @@ private class Dialog : Adw.Dialog
         toolbar.add_child (builder, headerbar, "top");
         set_content_width (400);
         set_content_height (500);
-
-        if (active_category == null)
-            active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
 
         if (!context.has_scores () && new_high_score == null)
         {
@@ -75,6 +68,13 @@ private class Dialog : Adw.Dialog
             return;
         }
 
+        scores_style = style;
+        categories = context.get_categories ();
+        active_category = current_cat;
+
+        if (active_category == null)
+            active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
+        
         score_or_time = "";
         string new_score_or_time = "";
 
@@ -115,6 +115,7 @@ private class Dialog : Adw.Dialog
                 if (selected_index != -1)
                     load_scores_for_category (categories.nth_data (selected_index));
             });
+            drop_down.set_selected (categories.index (active_category));
             headerbar.set_title_widget (drop_down);
         }
 
