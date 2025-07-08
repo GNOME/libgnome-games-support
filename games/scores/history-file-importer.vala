@@ -96,7 +96,6 @@ public class HistoryFileImporter : Importer
     }
 
     private bool add_score_sync (Context context, Score score, Category category) throws Error
-        requires (context.game_window == null)
     {
         var main_context = new MainContext ();
         var main_loop = new MainLoop (main_context);
