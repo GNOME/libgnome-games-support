@@ -247,7 +247,6 @@ public class Context : Object
         {
             ulong id = dialog_closed.connect (() => add_score_internal.callback ());
             do_present_dialog (score);
-            yield;
             disconnect (id);
         }
 
