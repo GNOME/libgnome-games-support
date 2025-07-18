@@ -328,7 +328,6 @@ public class Context : Object
             var dialog = new Dialog (this, category_type, style, score, current_category, icon_name);
             dialog.closed.connect (() => add_score_internal.callback ());
             dialog.present (game_window);
-            yield;
         }
 
         yield save_score_to_file (score, category, cancellable);
