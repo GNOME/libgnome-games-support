@@ -27,7 +27,7 @@ namespace Scores {
  * should probably be used by Five or More, Nibbles, Robots, Tali, and nothing
  * else.
  */
-[Version (deprecated=true, deprecated_since="2.2")]
+[Version (deprecated=true, deprecated_since="3.0")]
 public class DirectoryImporter : Importer
 {
     /* A function provided by the game that converts the old category key to a
@@ -36,7 +36,7 @@ public class DirectoryImporter : Importer
      * function will be called once for each file in the game's local data
      * directory, and some of those files might not be valid categories.
      */
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public delegate string? CategoryConvertFunc (string old_key);
     private CategoryConvertFunc? category_convert;
 
@@ -46,20 +46,20 @@ public class DirectoryImporter : Importer
         this.finished.connect (() => this.category_convert = null);
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public DirectoryImporter ()
     {
         /* Default converter for games that don't require category migration. */
         set_category_convert_func ((old_key) => { return old_key; });
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public DirectoryImporter.with_convert_func (CategoryConvertFunc category_convert)
     {
         set_category_convert_func (category_convert);
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public void set_category_convert_func (CategoryConvertFunc category_convert)
     {
         this.category_convert = (old_key) => { return category_convert (old_key); };

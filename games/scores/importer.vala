@@ -63,17 +63,17 @@ namespace Scores {
  * loaded before showing the main window.
  */
 
-[Version (deprecated=true, deprecated_since="2.2")]
+[Version (deprecated=true, deprecated_since="3.0")]
 public abstract class Importer : Object
 {
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     protected abstract void importOldScores (Context context, File new_scores_dir) throws Error;
 
     /* This would be much nicer as an abstract function rather than a signal;
      * however, adding a new abstract function would enlarge the class struct,
      * breaking ABI.
      */
-    [Version (since="2.2", deprecated=true, deprecated_since="2.2")]
+    [Version (since="3.0", deprecated=true, deprecated_since="3.0")]
     public signal void finished ();
 
     internal void run (Context context, string new_scores_dir)

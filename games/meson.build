@@ -1,4 +1,4 @@
-includesubdir = 'gnome-games-support-2'
+includesubdir = get_option('superproject_name') + '_gnome-games-support'
 
 lggs_interface_deps = [
     adw_dependency,
@@ -8,7 +8,7 @@ lggs_interface_deps = [
     gtk_dependency,
 ]
 
-lggs = library('gnome-games-support-2',
+lggs = static_library('gnome-games-support-3',
     [
         'config.vapi',
         'gridframe.vala',
@@ -28,31 +28,9 @@ lggs = library('gnome-games-support-2',
     ],
     c_args: [
         '-w',
-        # https://github.com/mesonbuild/meson/issues/4763
-        '-include', 'config.h'
+	'-DGETTEXT_PACKAGE="@0@"'.format (gettext_package),
+	'-DLOCALEDIR="@0@"'.format (localedir),
     ],
     vala_header: 'libgnome-games-support.h',
-    vala_vapi: 'libgnome-games-support-2.vapi',
-    vala_args: [
-        '--abi-stability',
-        '--target-glib=2.44',
-    ],
-    soversion: soversion,
-    version: library_version,
     dependencies: lggs_interface_deps,
-)
-
-lggs_dependency = declare_dependency(
-    link_with: lggs,
-    include_directories: include_directories('.'),
-)
-
-pkg = import('pkgconfig')
-pkg.generate(
-    lggs,
-    filebase: 'libgnome-games-support-2',
-    requires: lggs_interface_deps,
-    name: meson.project_name(),
-    description: 'Useful functionality shared among GNOME games',
-    subdirs: includesubdir,
 )

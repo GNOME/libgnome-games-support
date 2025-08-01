@@ -75,7 +75,7 @@ public class Context : Object
      */
     public string icon_name { get; construct; }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     /**
      * The {@link [Games.Scores.Importer]} for the context (eg. HistoryFileImporter).
      *
@@ -112,7 +112,7 @@ public class Context : Object
      * Emitted when the score dialog is closed.
      *
      */
-    [Version (since="2.2")]
+    [Version (since="3.0")]
     public signal void dialog_closed ();
 
     class construct
@@ -169,7 +169,7 @@ public class Context : Object
         this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, null, icon_name);
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public Context.with_importer (string app_name,
                                   string category_type,
                                   Gtk.Window? game_window,
@@ -180,7 +180,7 @@ public class Context : Object
         this.with_importer_and_icon_name (app_name, category_type, game_window, category_request, style, importer, null);
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public Context.with_importer_and_icon_name (string app_name,
                                                 string category_type,
                                                 Gtk.Window? game_window,
@@ -355,7 +355,7 @@ public class Context : Object
      * ``quit_app_func`` is called when the user presses the 'Quit' button on the dialog
      *
      */
-    [Version (since="2.2")]
+    [Version (since="3.0")]
     public async bool add_score_full (long score_value, Category category, NewGameFunc new_game_func, QuitAppFunc quit_app_func, Cancellable? cancellable) throws Error
     {
         Score score = new Score (score_value);
@@ -472,7 +472,7 @@ public class Context : Object
      *
      * This is why gtk_dialog_run() was removed.
      */
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public void run_dialog ()
         requires (game_window != null)
     {
@@ -487,7 +487,7 @@ public class Context : Object
      * Presents the score dialog on top of ``game_window``.
      *
      */
-    [Version (since="2.2")]
+    [Version (since="3.0")]
     public void present_dialog ()
         requires (game_window != null)
     {

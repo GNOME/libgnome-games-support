@@ -27,13 +27,13 @@ namespace Scores {
  * class should probably be used by Klotski, Mines, Swell Foop, Mahjongg,
  * Tetravex, Quadrapassel, and nothing else.
  */
-[Version (deprecated=true, deprecated_since="2.2")]
+[Version (deprecated=true, deprecated_since="3.0")]
 public class HistoryFileImporter : Importer
 {
     /* A function provided by the game that converts a line in its history file
      * to a Score and Category we can use.
      */
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public delegate void HistoryConvertFunc (string line, out Score score, out Category category);
     private HistoryConvertFunc? history_convert;
 
@@ -43,13 +43,13 @@ public class HistoryFileImporter : Importer
         this.finished.connect (() => this.history_convert = null);
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public HistoryFileImporter (HistoryConvertFunc history_convert)
     {
         set_history_convert_func (history_convert);
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public void set_history_convert_func (HistoryConvertFunc history_convert)
     {
         this.history_convert = (line, out score, out category) => {
@@ -57,7 +57,7 @@ public class HistoryFileImporter : Importer
         };
     }
 
-    [Version (deprecated=true, deprecated_since="2.2")]
+    [Version (deprecated=true, deprecated_since="3.0")]
     public static int64 parse_date (string date)
     {
         var date_time = new DateTime.from_iso8601 (date, null);
