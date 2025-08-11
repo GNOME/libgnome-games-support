@@ -115,7 +115,10 @@ private class Dialog : Adw.Dialog
                 if (selected_index != -1)
                     load_scores_for_category (categories.nth_data (selected_index));
             });
-            drop_down.set_selected (categories.index (active_category));
+            int active_category_index = categories.index (active_category);
+            if (active_category_index != -1)
+                drop_down.set_selected (active_category_index - 1);
+
             headerbar.set_title_widget (drop_down);
         }
 
