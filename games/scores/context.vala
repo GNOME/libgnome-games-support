@@ -253,38 +253,32 @@ public class Context : Object
         yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
 
-    /* This is separate from add_score() for use by HistoryFileImporter.
-     * At the next API break, we should merge this into add_score().
-     */
-    internal async bool add_score_internal (Score score, Category category, Cancellable? cancellable) throws Error
-    {
-        /* Check if category exists in the HashTable. Insert one if not. */
-        if (!scores_per_category.has_key (category))
-            scores_per_category.set (category, new Gee.ArrayList<Score> ());
-
-        if (scores_per_category[category].add (score))
-            current_category = category;
-
-        var high_score_added = is_high_score (score.score, category);
-        if (high_score_added && game_window != null)
-        {
-            var dialog = new Dialog (this, category_type, style, score, current_category, icon_name);
-            dialog.closed.connect (() => add_score_internal.callback ());
-            dialog.present (game_window);
-            yield;
-        }
-
-        yield save_score_to_file (score, category, cancellable);
-        return high_score_added;
-    }
-
     /**
      * Returns true if a dialog was launched on attaining high score.
      *
      */
     public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
     {
-        return yield add_score_internal (new Score (score), category, cancellable);
+        var the_score = new Score (score);
+
+        /* Check if category exists in the HashTable. Insert one if not. */
+        if (!scores_per_category.has_key (category))
+            scores_per_category.set (category, new Gee.ArrayList<Score> ());
+
+        if (scores_per_category[category].add (the_score))
+            current_category = category;
+
+        var high_score_added = is_high_score (the_score.score, category);
+        if (high_score_added && game_window != null)
+        {
+            var dialog = new Dialog (this, category_type, style, the_score, current_category, icon_name);
+            dialog.closed.connect (() => add_score.callback ());
+            dialog.present (game_window);
+            yield;
+        }
+
+        yield save_score_to_file (the_score, category, cancellable);
+        return high_score_added;
     }
 
     public delegate void NewGameFunc ();
