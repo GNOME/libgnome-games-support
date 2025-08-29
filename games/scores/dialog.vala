@@ -70,10 +70,10 @@ private class Dialog : Adw.Dialog
 
         scores_style = style;
         categories = context.get_categories ();
-        active_category = current_cat;
-
-        if (active_category == null)
-            active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
+        if (current_cat == null)
+            active_category = categories.nth_data (0);
+        else
+            active_category = current_cat;
         
         score_or_time = "";
         string new_score_or_time = "";
@@ -110,17 +110,13 @@ private class Dialog : Adw.Dialog
         else
         {
             drop_down = new Gtk.DropDown.from_strings (load_categories ());
+            drop_down.set_selected (categories.index (active_category));
             drop_down.notify["selected"].connect(() => {
                 var selected_index = drop_down.get_selected();
                 if (selected_index != -1)
                     load_scores_for_category (categories.nth_data (selected_index));
             });
-            for (int i = 0; i != categories.length (); i++)
-            {
-                var category = categories.nth_data (i);
-                if (category == active_category)
-                    drop_down.set_selected (i);
-            }
+            headerbar.set_title_widget (drop_down);
         }
 
         /* Add the data to the dialog */
