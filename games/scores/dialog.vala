@@ -121,6 +121,8 @@ private class Dialog : Adw.Dialog
                 if (category == active_category)
                     drop_down.set_selected (i);
             }
+
+            headerbar.set_title_widget (drop_down);
         }
 
         /* Add the data to the dialog */
