@@ -192,7 +192,7 @@ private class Dialog : Adw.Dialog
     private void load_scores_for_category (Category category)
     {
         score_model.remove_all ();
-        var best_n_scores = context.get_high_scores (category, 10);
+        var best_n_scores = context.get_high_scores (category);
         foreach (var score in best_n_scores)
             score_model.append (score);
 

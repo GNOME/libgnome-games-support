@@ -83,6 +83,12 @@ public class Context : Object
      */
     public string icon_name { get; construct; }
 
+    /**
+     * The maximum size of the high score list in the score dialog (``-1`` for unlimited).
+     *
+     */
+    public int max_high_scores { get; construct; }
+
     private Category? current_category = null;
 
     private HashTable<Category, GenericArray<Score>> scores_per_category =
@@ -144,19 +150,23 @@ public class Context : Object
      *
      * ``icon_name`` is the ID for your app's icon (e.g. ``org.gnome.Quadrapassel``).
      *
+     * ``max_high_scores`` is the maximum size of the high score list in the score dialog (``-1`` for unlimited).
+     *
      */
     public Context (string app_name,
                     string category_type,
                     Gtk.Window? game_window,
                     CategoryRequestFunc category_request,
                     Style style,
-                    string? icon_name = null)
+                    string? icon_name = null,
+                    int max_high_scores = 10)
     {
         Object (app_name: app_name,
                 category_type: category_type,
                 game_window: game_window,
                 style: style,
-                icon_name: icon_name ?? app_name);
+                icon_name: icon_name ?? app_name,
+                max_high_scores: max_high_scores <= -1 ? int.MAX : max_high_scores);
 
         /* Note: the following functionality can be performed manually by
          * calling Context.load_scores, to ensure Context is usable even if
@@ -211,7 +221,7 @@ public class Context : Object
      * Get the best n scores from the given category, sorted.
      *
      */
-    public Score[] get_high_scores (Category category, int n = 10)
+    public Score[] get_high_scores (Category category, int n = -1)
     {
         var result = new Score[0];
         if (!scores_per_category.contains (category))
@@ -223,6 +233,9 @@ public class Context : Object
             scores_per_category[category].sort (Score.score_greater_sorter);
         else
             scores_per_category[category].sort (Score.score_less_sorter);
+
+        if (n <= -1)
+            n = max_high_scores;
 
         for (int i = 0; i < n && i < scores.length; i++) {
             var score = scores[i];
@@ -241,10 +254,10 @@ public class Context : Object
         if (best_scores == null)
             return true;
 
-        if (best_scores.length < 10)
+        if (best_scores.length < max_high_scores)
             return true;
 
-        var lowest = best_scores[9].score;
+        var lowest = best_scores[max_high_scores - 1].score;
 
         if (style == Style.POINTS_LESS_IS_BETTER || style == Style.TIME_LESS_IS_BETTER)
             return score_value < lowest;
