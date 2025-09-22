@@ -25,7 +25,6 @@ private class Dialog : Adw.Dialog
 {
     private Context context;
     private Category? active_category = null;
-    private List<Category?> categories = null;
     private ListStore? score_model = null;
 
     private Adw.ToolbarView toolbar;
@@ -69,7 +68,8 @@ private class Dialog : Adw.Dialog
         }
 
         scores_style = style;
-        categories = context.get_categories ();
+
+        var categories = context.get_categories ();
         active_category = current_cat;
 
         if (active_category == null)
@@ -109,7 +109,7 @@ private class Dialog : Adw.Dialog
         }
         else
         {
-            drop_down = new Gtk.DropDown.from_strings (load_categories ());
+            drop_down = new Gtk.DropDown.from_strings (category_names (categories));
             drop_down.notify["selected"].connect(() => {
                 var selected_index = drop_down.get_selected();
                 if (selected_index != -1)
@@ -137,7 +137,7 @@ private class Dialog : Adw.Dialog
     }
 
     /* load names of all categories into a string array */
-    private string[] load_categories ()
+    private string[] category_names (List<weak Category> categories)
     {
         string[] categories_array = {};
 

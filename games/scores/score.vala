@@ -83,6 +83,11 @@ public class Score : Object
     {
         return a.score == b.score && a.time == b.time && a.user == b.user;
     }
+
+    internal Score copy ()
+    {
+        return new Score (score, time, user);
+    }
 }
 
 } /* namespace Scores */
