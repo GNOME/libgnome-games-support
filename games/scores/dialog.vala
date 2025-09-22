@@ -93,20 +93,22 @@ private class Dialog : Adw.Dialog
 
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
         {
+            /* Translators: %1$s is the category type, %2$s is the category (e.g. "New Score for Level: 1") */
+            new_score_or_time = _("New Score for %1$s: %2$s").printf (category_type, active_category.name);
             score_or_time = _("Score");
-            new_score_or_time = _("New Score in");
         }
         else
         {
+            /* Translators: %1$s is the category type, %2$s is the category (e.g. "New Time for Level: 1") */
+            new_score_or_time = _("New Time for %1$s: %2$s").printf (category_type, active_category.name);
             score_or_time = _("Time");
-            new_score_or_time = _("New Time in");
         }
 
         /* Decide what the title should be */
         categories = context.get_categories ();
         if (new_high_score != null)
         {
-            var title_widget = new Adw.WindowTitle (_("Congratulations!"), @"$new_score_or_time $category_type $(active_category.name)");
+            var title_widget = new Adw.WindowTitle (_("Congratulations!"), new_score_or_time);
             headerbar.set_title_widget (title_widget);
         }
         else if (categories.length () == 1)
@@ -117,6 +119,29 @@ private class Dialog : Adw.Dialog
         else
         {
             drop_down = new Gtk.DropDown.from_strings (load_categories ());
+            var list_factory = drop_down.get_factory ();
+            var button_factory = new Gtk.SignalListItemFactory ();
+
+            button_factory.setup.connect ((factory, object) => {
+                unowned var list_item = object as Gtk.ListItem;
+
+                list_item.child = new Gtk.Label (null) {
+                    ellipsize = Pango.EllipsizeMode.END,
+                    xalign = 0
+                };
+            });
+            button_factory.bind.connect ((factory, object) => {
+                unowned var list_item = object as Gtk.ListItem;
+                unowned var string_object = list_item.item as Gtk.StringObject;
+                unowned var label = list_item.child as Gtk.Label;
+
+                /* Translators: %1$s is the category type, %2$s is the category (e.g. "Level: 1") */
+                label.label = _("%1$s: %2$s").printf (category_type, string_object.@string);
+            });
+
+            drop_down.set_factory (button_factory);
+            drop_down.set_list_factory (list_factory);
+
             drop_down.notify["selected"].connect(() => {
                 var selected_index = drop_down.get_selected();
                 if (selected_index != -1)
