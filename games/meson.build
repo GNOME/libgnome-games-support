@@ -7,7 +7,7 @@ lggs_interface_deps = [
     gtk_dependency,
 ]
 
-files = [
+sources = [
     'config.vapi',
     'appearance-group.vala',
     'gridframe.vala',
@@ -20,7 +20,7 @@ files = [
 vala_args = []
 
 if get_option('sounds')
-    files += 'sounds.vala'
+    sources += 'sounds.vala'
 
     vala_args += '--vapidir=' + meson.project_source_root () / 'games' / 'vapi'
 
@@ -31,7 +31,7 @@ if get_option('sounds')
 endif
 
 lggs = static_library('gnome-games-support-3',
-    files,
+    sources,
     c_args: [
         '-w',
         '-DGETTEXT_PACKAGE="@0@"'.format (gettext_package),
