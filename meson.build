@@ -15,6 +15,8 @@ gtk_dependency = dependency('gtk4', version: '>= 4.2.0')
 
 includedir = join_paths(get_option('prefix'), get_option('includedir'))
 localedir = join_paths(get_option('prefix'), get_option('localedir'))
+libdir = join_paths(get_option('prefix'), get_option('libdir'))
+datadir = join_paths(get_option('prefix'), get_option('datadir'))
 gettext_package = get_option('superproject_name') + '_' + meson.project_name()
 
 subdir('po')
