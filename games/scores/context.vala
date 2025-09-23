@@ -19,6 +19,9 @@
  * along with libgnome-games-support.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Games {
+namespace Scores {
+
 /* Remove workaround once https://gitlab.gnome.org/GNOME/vala/-/issues/1429 is fixed. */
 namespace Workaround
 {
@@ -27,9 +30,6 @@ namespace Workaround
         Gdk.Display display, Gtk.StyleProvider provider, uint priority
     );
 }
-
-namespace Games {
-namespace Scores {
 
 /**
  * The style that a {@link Games.Scores.Score} uses.
