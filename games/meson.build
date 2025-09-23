@@ -30,6 +30,12 @@ if get_option('sounds')
     ]
 endif
 
+conditional_args = {}
+
+if get_option('introspection') == 'gir' or get_option('introspection') == 'typelib'
+    conditional_args += { 'vala_gir': 'GnomeGamesSupport-3.0.gir' }
+endif
+
 lggs = static_library('gnome-games-support-3',
     sources,
     c_args: [
@@ -40,4 +46,21 @@ lggs = static_library('gnome-games-support-3',
     vala_header: 'libgnome-games-support.h',
     vala_args: vala_args,
     dependencies: lggs_interface_deps,
+    kwargs: conditional_args,
 )
+
+if get_option('introspection') == 'typelib'
+    g_ir_compiler = find_program('g-ir-compiler')
+    typelib = custom_target('gnome-games-support-3-typelib',
+        input: lggs.vala_gir(),
+        output: get_option('superproject_name') + '_GnomeGamesSupport-3.0.typelib',
+        command: [
+            g_ir_compiler,
+            '--output',
+            '@OUTPUT@',
+            '@INPUT@',
+        ],
+        install: true,
+        install_dir: libdir / 'girepository-1.0',
+    )
+endif
