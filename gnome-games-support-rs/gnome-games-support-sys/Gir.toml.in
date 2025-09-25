@@ -1,0 +1,18 @@
+[options]
+library = "GnomeGamesSupport"
+library_name = "libgnome-games-support-3"
+version = "3.0"
+min_cfg_version = "3.0"
+target_path = "."
+girs_directories = [@gir_files@]
+work_mode = "sys"
+single_version_file = true
+external_libraries = [
+    "GLib",
+    "GObject",
+    "Gio",
+    "Gtk",
+]
+
+[external_libraries]
+Adw = { crate = "libadwaita", min_version = "0.8" }

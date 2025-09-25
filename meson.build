@@ -28,3 +28,5 @@ lggs_dependency = declare_dependency(
 )
 
 subdir('tests')
+
+subdir('gnome-games-support-rs')

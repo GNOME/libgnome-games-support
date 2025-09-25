@@ -1,0 +1,15 @@
+[submodule "gir"]
+	path = gir
+	url = https://github.com/gtk-rs/gir
+	update = none
+	branch = main
+[submodule "gir-files"]
+	path = gir-files
+	url = https://github.com/gtk-rs/gir-files
+	update = none
+	branch = main
+[submodule "libadwaita-rs"]
+	path = libadwaita-rs
+	url = https://gitlab.gnome.org/World/Rust/libadwaita-rs.git
+	update = none
+	branch = main
