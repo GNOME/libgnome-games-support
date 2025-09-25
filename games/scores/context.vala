@@ -47,6 +47,10 @@ public enum Style
     TIME_LESS_IS_BETTER
 }
 
+public delegate void NewGameFunc ();
+public delegate void QuitAppFunc ();
+public delegate Category? CategoryRequestFunc (string category_key);
+
 /**
  * An object that holds information for using {@link Games.Scores.Score}s.
  *
@@ -103,7 +107,6 @@ public class Context : Object
      * know in advance which categories may be in use.
      *
      */
-    public delegate Category? CategoryRequestFunc (string category_key);
     private CategoryRequestFunc? category_request = null;
 
     /**
@@ -300,9 +303,6 @@ public class Context : Object
         yield save_score_to_file (the_score, category, cancellable);
         return high_score_added;
     }
-
-    public delegate void NewGameFunc ();
-    public delegate void QuitAppFunc ();
 
     /**
      * Adds extra info to the score, and optionally, some buttons to the bottom of the dialog that aid the flow of a game.

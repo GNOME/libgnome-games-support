@@ -347,7 +347,7 @@ private class Dialog : Adw.Dialog
         player_column = new Gtk.ColumnViewColumn (_("Player"), factory);
     }
 
-    internal void add_bottom_buttons (Context.NewGameFunc new_game_func, Context.QuitAppFunc quit_app_func)
+    internal void add_bottom_buttons (NewGameFunc new_game_func, QuitAppFunc quit_app_func)
     {
         headerbar.set_show_end_title_buttons (true);
         new_game_button = new Gtk.Button.with_label (_("_New Game")) {
