@@ -21,6 +21,18 @@
 namespace Games {
 namespace Scores {
 
+private const string DIALOG_STYLE = """
+dialog.scores columnview {
+    background: transparent;
+}
+
+dialog.scores columnview header button,
+dialog.scores columnview row cell {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+""";
+
 private class Dialog : Adw.Dialog
 {
     private Context context;
@@ -71,6 +83,8 @@ private class Dialog : Adw.Dialog
         scores_style = style;
         categories = context.get_categories ();
         active_category = current_cat;
+
+        add_css_class ("scores");
 
         if (active_category == null)
             active_category = new Category (categories.nth_data (0).key, categories.nth_data (0).name);
