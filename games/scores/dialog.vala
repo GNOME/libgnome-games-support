@@ -137,6 +137,9 @@ private class Dialog : Adw.Dialog
                     drop_down.set_selected (i);
             }
 
+            unowned var popover = drop_down.get_last_child () as Gtk.Popover;
+            popover.halign = Gtk.Align.CENTER;
+
             headerbar.set_title_widget (drop_down);
         }
 
@@ -202,8 +205,12 @@ private class Dialog : Adw.Dialog
         });
     }
 
-    private static int rank_sorter_cb (Score entry1, Score entry2) {
-        return (int) (entry1.score > entry2.score) - (int) (entry1.score < entry2.score);
+    private static int score_greater_sorter (Score a, Score b) {
+        return (int) (a.score < b.score) - (int) (a.score > b.score);
+    }
+
+    private static int score_less_sorter (Score a, Score b) {
+        return (int) (a.score > b.score) - (int) (a.score < b.score);
     }
 
     private void set_up_rank_column () {
@@ -232,7 +239,11 @@ private class Dialog : Adw.Dialog
 
             label.label = (position + 1).to_string ();
         });
-        sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) rank_sorter_cb));
+
+        if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.TIME_GREATER_IS_BETTER)
+            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) score_greater_sorter));
+        else
+            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) score_less_sorter));
 
         rank_column = new Gtk.ColumnViewColumn ("Rank", factory);
         rank_column.sorter = sorter;
@@ -301,9 +312,8 @@ private class Dialog : Adw.Dialog
                 });
                 entry.activate.connect (() => finish_button.activate ());
                 list_item.child = entry;
-                this.set_focus (score_view);
-                entry.grab_focus ();
                 score_view.scroll_to (list_item.get_position (), null, Gtk.ListScrollFlags.NONE, null);
+                entry.grab_focus ();
             }
             else
             {
