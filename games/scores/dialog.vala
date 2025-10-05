@@ -205,14 +205,6 @@ private class Dialog : Adw.Dialog
         });
     }
 
-    private static int score_greater_sorter (Score a, Score b) {
-        return (int) (a.score < b.score) - (int) (a.score > b.score);
-    }
-
-    private static int score_less_sorter (Score a, Score b) {
-        return (int) (a.score > b.score) - (int) (a.score < b.score);
-    }
-
     private void set_up_rank_column () {
         var factory = new Gtk.SignalListItemFactory ();
         var sorter = new Gtk.MultiSorter ();
@@ -237,13 +229,13 @@ private class Dialog : Adw.Dialog
             if (score == new_high_score)
                     label.add_css_class ("heading");
 
-            label.label = (position + 1).to_string ();
+            label.label = score.rank.to_string ();
         });
 
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.TIME_GREATER_IS_BETTER)
-            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) score_greater_sorter));
+            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) Score.score_greater_sorter));
         else
-            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) score_less_sorter));
+            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) Score.score_less_sorter));
 
         rank_column = new Gtk.ColumnViewColumn ("Rank", factory);
         rank_column.sorter = sorter;

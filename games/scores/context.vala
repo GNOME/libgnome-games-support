@@ -223,20 +223,17 @@ public class Context : Object
             return result;
 
         if (style == Style.POINTS_GREATER_IS_BETTER || style == Style.TIME_GREATER_IS_BETTER)
-        {
-            scores_per_category[category].sort ((a,b) => {
-                return (int) (b.score > a.score) - (int) (a.score > b.score);
-            });
-        }
+            scores_per_category[category].sort (Score.score_greater_sorter);
         else
-        {
-            scores_per_category[category].sort ((a,b) => {
-                return (int) (b.score < a.score) - (int) (a.score < b.score);
-            });
-        }
+            scores_per_category[category].sort (Score.score_less_sorter);
 
         for (int i = 0; i < n && i < scores_per_category[category].size; i++)
-            result.add (scores_per_category[category][i]);
+        {
+            var score = scores_per_category[category][i];
+            score.rank = i + 1;
+            result.add (score);
+        }
+
         return result;
     }
 
