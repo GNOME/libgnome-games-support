@@ -211,25 +211,19 @@ private class Dialog : Adw.Dialog
 
         factory.setup.connect ((factory, object) => {
             unowned var list_item = object as Gtk.ListItem;
-            var label = new Gtk.Label (null) {
-                width_chars = 3,
-                xalign = 0
-            };
+            var label = new Gtk.Inscription (null);
             label.add_css_class ("caption");
             label.add_css_class ("numeric");
             list_item.child = label;
         });
         factory.bind.connect ((factory, object) => {
             unowned var list_item = object as Gtk.ListItem;
-            unowned var label = list_item.child as Gtk.Label;
+            unowned var label = list_item.child as Gtk.Inscription;
             unowned var score = list_item.item as Score;
             uint position;
             score_model.find (score, out position);
 
-            if (score == new_high_score)
-                    label.add_css_class ("heading");
-
-            label.label = score.rank.to_string ();
+            label.text = score.rank.to_string ();
         });
 
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.TIME_GREATER_IS_BETTER)
@@ -247,8 +241,8 @@ private class Dialog : Adw.Dialog
         factory.setup.connect ((factory, object) => {
             unowned var list_item = object as Gtk.ListItem;
             var label = new Gtk.Inscription (null);
-
             label.add_css_class ("numeric");
+
             list_item.child = label;
         });
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.POINTS_LESS_IS_BETTER)
@@ -257,9 +251,6 @@ private class Dialog : Adw.Dialog
                 unowned var list_item = object as Gtk.ListItem;
                 unowned var label = list_item.child as Gtk.Inscription;
                 unowned var score = list_item.item as Score;
-
-                if (score == new_high_score)
-                    label.add_css_class ("heading");
 
                 label.text = score.score.to_string ();
             });
@@ -270,14 +261,11 @@ private class Dialog : Adw.Dialog
                 unowned var list_item = object as Gtk.ListItem;
                 unowned var label = list_item.child as Gtk.Inscription;
                 unowned var score = list_item.item as Score;
-                string time_label = "%lds".printf (score.score);
+
                 if (score.score >= 60)
-                    time_label = "%ldm %lds".printf (score.score / 60, score.score % 60);
-
-                if (score == new_high_score)
-                    label.add_css_class ("heading");
-
-                label.text = time_label;
+                    label.text = "%ldm %lds".printf (score.score / 60, score.score % 60);
+                else
+                    label.text = "%lds".printf (score.score);
             });
         }
 
