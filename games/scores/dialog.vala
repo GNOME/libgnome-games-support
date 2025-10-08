@@ -42,7 +42,7 @@ private class Dialog : Adw.Dialog
 
     private Adw.ToolbarView toolbar;
     private Adw.HeaderBar headerbar;
-    private Gtk.Button? finish_button = null; // This is either the 'Done' or 'New Game' button
+    private Gtk.Button? new_game_button = null;
     private Gtk.DropDown? drop_down = null;
     private Gtk.ColumnView? score_view;
     private Gtk.ColumnViewColumn? rank_column;
@@ -58,12 +58,10 @@ private class Dialog : Adw.Dialog
         this.context = context;
         this.new_high_score = new_high_score;
 
-        Gtk.Builder builder = new Gtk.Builder ();
         toolbar = new Adw.ToolbarView ();
         headerbar = new Adw.HeaderBar ();
-        headerbar.set_show_end_title_buttons (new_high_score == null);
         set_child (toolbar);
-        toolbar.add_child (builder, headerbar, "top");
+        toolbar.add_top_bar (headerbar);
         set_content_width (400);
         set_content_height (500);
 
@@ -73,7 +71,7 @@ private class Dialog : Adw.Dialog
             set_title (_("No scores yet"));
 
             Adw.StatusPage status_page = new Adw.StatusPage ();
-            toolbar.add_child (builder, status_page, null);
+            toolbar.set_content (status_page);
             status_page.set_icon_name (icon_name + "-symbolic");
             status_page.set_description (_("Play some games and your scores will show up here."));
             status_page.add_css_class ("dim-label");
@@ -110,12 +108,6 @@ private class Dialog : Adw.Dialog
         {
             var title_widget = new Adw.WindowTitle (_("Congratulations!"), @"$new_score_or_time $category_type $(active_category.name)");
             headerbar.set_title_widget (title_widget);
-
-            /* 'Done' Button in the top right corner, finishes the dialog */
-            finish_button = new Gtk.Button.with_label (_("Done"));
-            finish_button.add_css_class ("suggested-action");
-            finish_button.clicked.connect (() => this.close ());
-            headerbar.pack_end (finish_button);
         }
         else if (categories.length () == 1)
         {
@@ -151,7 +143,8 @@ private class Dialog : Adw.Dialog
         setup_columns ();
         load_scores_for_category (active_category);
         scroll.set_child (score_view);
-        toolbar.add_child (builder, scroll, null);
+        toolbar.set_content (scroll);
+        this.focus_widget = score_view;
     }
 
     /* load names of all categories into a string array */
@@ -174,9 +167,9 @@ private class Dialog : Adw.Dialog
     {
         score_model.remove_all ();
         var best_n_scores = context.get_high_scores (category, 10);
-        foreach (var score in best_n_scores) {
+        foreach (var score in best_n_scores)
             score_model.append (score);
-        }
+
         score_view.scroll_to (0, null, Gtk.ListScrollFlags.NONE, null);
         active_category = category;
     }
@@ -203,6 +196,19 @@ private class Dialog : Adw.Dialog
             /* Scroll to top when resorting */
             score_view.scroll_to (0, null, Gtk.ListScrollFlags.FOCUS, null);
         });
+
+        if (new_high_score == null)
+            return;
+
+        var controller = new Gtk.EventControllerFocus ();
+        controller.enter.connect (() => {
+            Idle.add (() => {
+                score_view.scroll_to (new_high_score.rank - 1, null, Gtk.ListScrollFlags.FOCUS, null);
+                score_view.child_focus (Gtk.DirectionType.TAB_FORWARD);  // Focus the text entry
+                return false;
+            });
+        });
+        score_view.add_controller (controller);
     }
 
     private void set_up_rank_column () {
@@ -220,8 +226,6 @@ private class Dialog : Adw.Dialog
             unowned var list_item = object as Gtk.ListItem;
             unowned var label = list_item.child as Gtk.Inscription;
             unowned var score = list_item.item as Score;
-            uint position;
-            score_model.find (score, out position);
 
             label.text = score.rank.to_string ();
         });
@@ -290,10 +294,14 @@ private class Dialog : Adw.Dialog
                     context.update_score_name (score, active_category, entry.get_text ());
                     score.user = entry.get_text ();
                 });
-                entry.activate.connect (() => finish_button.activate ());
+                entry.activate.connect (() => {
+                    if (new_game_button != null)
+                        new_game_button.activate ();
+                    else
+                        this.close ();
+                });
+
                 list_item.child = entry;
-                score_view.scroll_to (list_item.get_position (), null, Gtk.ListScrollFlags.NONE, null);
-                entry.grab_focus ();
             }
             else
             {
@@ -306,12 +314,12 @@ private class Dialog : Adw.Dialog
 
     internal void add_bottom_buttons (Context.NewGameFunc new_game_func, Context.QuitAppFunc quit_app_func)
     {
-        headerbar.remove (finish_button);
-        finish_button = new Gtk.Button.with_label (_("_New Game")) {
+        headerbar.set_show_end_title_buttons (true);
+        new_game_button = new Gtk.Button.with_label (_("_New Game")) {
             can_shrink = true,
             use_underline = true
         };
-        finish_button.clicked.connect (() => {
+        new_game_button.clicked.connect (() => {
             this.close ();
             new_game_func ();
         });
@@ -335,13 +343,13 @@ private class Dialog : Adw.Dialog
         var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         var bottom_bar = new Gtk.CenterBox () {
             hexpand = true,
-            center_widget = finish_button,
+            center_widget = new_game_button,
             end_widget = quit_button
         };
         box.append (bottom_bar);
 
-        finish_button.add_css_class ("pill");
-        finish_button.add_css_class ("suggested-action");
+        new_game_button.add_css_class ("pill");
+        new_game_button.add_css_class ("suggested-action");
         box.add_css_class ("toolbar");
         bottom_bar.add_css_class ("toolbar");
         toolbar.add_bottom_bar (box);
