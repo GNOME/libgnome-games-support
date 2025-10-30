@@ -114,7 +114,8 @@ private class Dialog : Adw.Dialog
         else if (categories.length () == 1)
         {
             active_category = ((!) categories.first ()).data;
-            set_title (active_category.name);
+            /* Translators: %1$s is the category type, %2$s is the category (e.g. "Level: 1") */
+            set_title (_("%1$s: %2$s").printf (category_type, active_category.name));
         }
         else
         {
