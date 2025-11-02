@@ -194,7 +194,11 @@ public class Context : Object
     public Category[] get_categories ()
     {
         var categories = scores_per_category.get_keys ();
-        categories.sort ((a, b) => strcmp (a.name, b.name));
+        categories.sort ((a, b) => {
+            string key_1 = a.name.collate_key_for_filename ();
+            string key_2 = b.name.collate_key_for_filename ();
+            return strcmp (key_1, key_2);
+        });
         var cat_array = new Category[0];
         foreach (var category in categories)
         {
