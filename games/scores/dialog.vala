@@ -331,7 +331,15 @@ private class Dialog : Adw.Dialog
             }
             else
             {
-                list_item.child = new Gtk.Inscription (score.user);
+                var label = new Gtk.Inscription (score.user);
+                label.has_tooltip = true;
+                label.query_tooltip.connect ((x, y, keyboard_tooltip, tooltip) => {
+                    tooltip.set_text ("%s\n%s\n%s".printf (
+                        score.user, score.get_user_extra_info (), new DateTime.from_unix_utc (score.time).format ("%x")
+                    ));
+                    return true;
+                });
+                list_item.child = label;
             }
         });
 

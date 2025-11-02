@@ -278,7 +278,7 @@ public class Context : Object
 
         var file = File.new_for_path (Path.build_filename (user_score_dir, category.key));
         var stream = file.append_to (FileCreateFlags.NONE);
-        var line = @"$(score.score) $(score.time) $(score.user)\n";
+        var line = @"$(score.score)$(score.get_internal_extra_info ()) $(score.time) $(score.user)\n";
 
         yield stream.write_all_async (line.data, Priority.DEFAULT, cancellable, null);
     }
@@ -322,9 +322,15 @@ public class Context : Object
      * ``quit_app_func`` is called when the user presses the 'Quit' button on the dialog
      *
      */
-    public async bool add_score_full (long score_value, Category category, NewGameFunc new_game_func, QuitAppFunc quit_app_func, Cancellable? cancellable) throws Error
+    public async bool add_score_full (long score_value,
+                                      Category category,
+                                      string? extra_info,
+                                      NewGameFunc new_game_func,
+                                      QuitAppFunc quit_app_func,
+                                      Cancellable? cancellable) throws Error
     {
         Score score = new Score (score_value);
+        score.extra_info = extra_info;
         /* Check if category exists in the HashTable. Insert one if not. */
         if (!scores_per_category.contains (category))
             scores_per_category[category] = new GenericArray<Score> ();
@@ -368,7 +374,11 @@ public class Context : Object
                 continue;
             }
 
-            var score_value = long.parse (tokens[0]);
+            long score_value = 0;
+
+            /* '#' adds extra info */
+            var score_tokens = tokens[0].split ("#", 2);
+            score_value = long.parse (score_tokens[0]);
             var time = int64.parse (tokens[1]);
 
             if (score_value == 0 && tokens[0] != "0" ||
@@ -383,7 +393,11 @@ public class Context : Object
             else
                 debug ("Assuming current username for old score %s in %s.", line, filename);
 
-            scores_of_single_category.add (new Score (score_value, time, user));
+            var score = new Score (score_value, time, user);
+            if (score_tokens.length == 2)
+                score._extra_info = score_tokens[1];
+
+            scores_of_single_category.add (score);
         }
 
         scores_per_category[category] = scores_of_single_category;
