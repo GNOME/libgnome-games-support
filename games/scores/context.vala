@@ -66,12 +66,6 @@ public class Context : Object
     public string category_type { get; construct; }
 
     /**
-     * The window that the game will be inside of, this is the window the score dialog will be presented upon.
-     *
-     */
-    public Gtk.Window? game_window { get; construct; }
-
-    /**
      * The {@link Games.Scores.Style} that the context should use.
      *
      */
@@ -138,11 +132,9 @@ public class Context : Object
     /**
      * Creates a new Context.
      *
-     * ``app_name`` is your App ID (e.g. ``org.gnome.Mines``)
+     * ``app_name`` is your App ID (e.g. ``org.gnome.Mines``).
      *
      * ``category_type`` describes all of the categories (e.g. "Minefield", "Level").
-     *
-     * ``game_window`` is the window that the game will be inside of, this is the window the score dialog will be presented upon.
      *
      * ``category_request`` is a function that takes a category key and produces the user-facing name for it.
      *
@@ -155,7 +147,6 @@ public class Context : Object
      */
     public Context (string app_name,
                     string category_type,
-                    Gtk.Window? game_window,
                     CategoryRequestFunc category_request,
                     Style style,
                     string? icon_name = null,
@@ -163,7 +154,6 @@ public class Context : Object
     {
         Object (app_name: app_name,
                 category_type: category_type,
-                game_window: game_window,
                 style: style,
                 icon_name: icon_name ?? app_name,
                 max_high_scores: max_high_scores <= -1 ? int.MAX : max_high_scores);
@@ -287,7 +277,7 @@ public class Context : Object
      * Returns true if a dialog was launched on attaining high score.
      *
      */
-    public async bool add_score (long score, Category category, Cancellable? cancellable) throws Error
+    public async bool add_score (long score, Category category, Gtk.Window? game_window, Cancellable? cancellable) throws Error
     {
         var the_score = new Score (score);
 
@@ -315,7 +305,7 @@ public class Context : Object
     public delegate void QuitAppFunc ();
 
     /**
-     * Adds some buttons to the bottom of the dialog that aid the flow of a game that chooses to use it.
+     * Adds extra info to the score, and optionally, some buttons to the bottom of the dialog that aid the flow of a game.
      *
      * ``new_game_func`` is called when the user presses the 'New Game' button on the dialog
      *
@@ -325,8 +315,9 @@ public class Context : Object
     public async bool add_score_full (long score_value,
                                       Category category,
                                       string? extra_info,
-                                      NewGameFunc new_game_func,
-                                      QuitAppFunc quit_app_func,
+                                      Gtk.Window? game_window,
+                                      NewGameFunc? new_game_func,
+                                      QuitAppFunc? quit_app_func,
                                       Cancellable? cancellable) throws Error
     {
         Score score = new Score (score_value);
@@ -339,12 +330,14 @@ public class Context : Object
         current_category = category;
 
         var high_score_added = is_high_score (score.score, category);
-        if (high_score_added)
+        if (high_score_added && game_window != null)
         {
             var dialog = new Dialog (this, category_type, style, score, current_category, icon_name);
             dialog.closed.connect (() => add_score_full.callback ());
             dialog.present (game_window);
-            dialog.add_bottom_buttons (new_game_func, quit_app_func);
+            if (new_game_func != null && quit_app_func != null)
+                dialog.add_bottom_buttons (new_game_func, quit_app_func);
+
             yield;
         }
 
@@ -408,14 +401,6 @@ public class Context : Object
     {
         scores_loaded = true;
 
-        if (game_window != null && game_window.visible)
-        {
-            error ("The application window associated with the GamesScoresContext " +
-                   "was set visible before loading scores. The Context performs " +
-                   "synchronous I/O in the default main context to load scores, so " +
-                   "so you should do this before showing your main window.");
-        }
-
         var directory = File.new_for_path (user_score_dir);
         if (!directory.query_exists ())
             return;
@@ -449,8 +434,7 @@ public class Context : Object
      * ``selected_category`` is the score category to select by default (optional)
      *
      */
-    public void present_dialog (Category? selected_category = null)
-        requires (game_window != null)
+    public void present_dialog (Gtk.Window game_window, Category? selected_category = null)
     {
         if (selected_category == null || !scores_per_category.contains (selected_category))
             selected_category = current_category;
