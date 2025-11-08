@@ -64,6 +64,7 @@ public class Score : Object
     /**
      * An optional __translated__ string to be shown to the user when
      * they hover over a score in the score dialog.
+     * You may want to append a newline for formatting.
      *
      */
     public string extra_info
