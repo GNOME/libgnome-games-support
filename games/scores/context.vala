@@ -104,7 +104,6 @@ public class Context : Object
      *
      */
     public delegate Category? CategoryRequestFunc (string category_key);
-    private CategoryRequestFunc? category_request = null;
 
     /**
      * Emitted when the score dialog is closed.
@@ -162,18 +161,14 @@ public class Context : Object
          * calling Context.load_scores, to ensure Context is usable even if
          * constructed with g_object_new.
          */
-        this.category_request = (key) => { return category_request (key); };
         try
         {
-            load_scores_from_files ();
+            load_scores (category_request);
         }
         catch (Error e)
         {
             warning ("Failed to load scores: %s", e.message);
         }
-
-        /* Unset this manually because it holds a circular ref on Context. */
-        this.category_request = null;
     }
 
     public override void constructed ()
@@ -324,7 +319,9 @@ public class Context : Object
         return AddScoreResult (high_score_added, action);
     }
 
-    private void load_scores_from_file (FileInfo file_info) throws Error
+    private void load_scores_from_file (FileInfo file_info,
+                                        CategoryRequestFunc category_request)
+        throws Error
     {
         var category_key = file_info.get_name ();
         var category = category_request (category_key);
@@ -375,7 +372,13 @@ public class Context : Object
         scores_per_category[category] = scores_of_single_category;
     }
 
-    private void load_scores_from_files () throws Error
+    /**
+     * Must be called *immediately* after construction, if constructed using
+     * g_object_new.
+     *
+     */
+    public void load_scores (CategoryRequestFunc category_request)
+        throws Error
         requires (!scores_loaded)
     {
         scores_loaded = true;
@@ -388,23 +391,8 @@ public class Context : Object
         FileInfo file_info;
         while ((file_info = enumerator.next_file ()) != null)
         {
-            load_scores_from_file (file_info);
+            load_scores_from_file (file_info, category_request);
         }
-    }
-
-    /**
-     * Must be called *immediately* after construction, if constructed using
-     * g_object_new.
-     *
-     */
-    public void load_scores (CategoryRequestFunc category_request) throws Error
-        requires (this.category_request == null)
-    {
-        this.category_request = (key) => { return category_request (key); };
-        load_scores_from_files ();
-
-        /* Unset this manually because it holds a circular ref on Context. */
-        this.category_request = null;
     }
 
     /**
