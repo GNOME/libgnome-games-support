@@ -32,6 +32,17 @@ namespace Games {
 namespace Scores {
 
 /**
+ * A function provided by the game that converts the category key to a category.
+ *
+ * Why do we have this, instead of expecting games to pass in a list
+ * of categories? Because some games need to create categories on the
+ * fly, like Mines, which allows for custom board sizes. These games do not
+ * know in advance which categories may be in use.
+ *
+ */
+public delegate Category? CategoryRequestFunc (string category_key);
+
+/**
  * The style that a {@link Games.Scores.Score} uses.
  *
  * This tells the score dialog if it should display the scores as a time or as points.
@@ -93,17 +104,6 @@ public class Context : Object
 
     private string user_score_dir;
     private bool scores_loaded = false;
-
-    /**
-     * A function provided by the game that converts the category key to a category.
-     *
-     * Why do we have this, instead of expecting games to pass in a list
-     * of categories? Because some games need to create categories on the
-     * fly, like Mines, which allows for custom board sizes. These games do not
-     * know in advance which categories may be in use.
-     *
-     */
-    public delegate Category? CategoryRequestFunc (string category_key);
 
     /**
      * Emitted when the score dialog is closed.
@@ -433,7 +433,7 @@ public class Context : Object
  */
 [SimpleType]
 public enum AddScoreAction {
-    NONE = 0,
+    NONE,
     NEW_GAME,
     QUIT
 }
