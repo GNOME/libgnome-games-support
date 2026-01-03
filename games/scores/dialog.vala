@@ -249,6 +249,7 @@ private class Dialog : Adw.Dialog
             var label = new Gtk.Inscription (null);
             label.add_css_class ("caption");
             label.add_css_class ("numeric");
+            label.xalign = 0.5f;
             list_item.child = label;
         });
         factory.bind.connect ((factory, object) => {
@@ -285,7 +286,7 @@ private class Dialog : Adw.Dialog
                 unowned var label = list_item.child as Gtk.Inscription;
                 unowned var score = list_item.item as Score;
 
-                label.text = score.score.to_string ();
+                label.text = "%'ld".printf (score.score);
             });
         }
         else
