@@ -272,7 +272,8 @@ public class Context : Object
      * Returns true if a dialog was launched on attaining high score.
      *
      */
-    public async bool add_score (long score, Category category, Gtk.Window? game_window, Cancellable? cancellable) throws Error
+    public async bool add_score (long score, Category category, Gtk.Window? game_window, Cancellable? cancellable)
+        throws Error
     {
         var result = yield add_score_full (score, category, null, game_window, false, cancellable);
         return result.high_score_added;

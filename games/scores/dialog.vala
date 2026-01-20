@@ -90,7 +90,7 @@ private class Dialog : Adw.Dialog
 
         if (active_category == null)
             active_category = new Category (categories[0].key, categories[0].name);
-        
+
         score_or_time = "";
         string new_score_or_time = "";
 
@@ -152,8 +152,8 @@ private class Dialog : Adw.Dialog
                     drop_down.set_selected (i);
             }
 
-            drop_down.notify["selected"].connect(() => {
-                var selected_index = drop_down.get_selected();
+            drop_down.notify["selected"].connect (() => {
+                var selected_index = drop_down.get_selected ();
                 if (selected_index != -1)
                     load_scores_for_category (categories[selected_index]);
             });
