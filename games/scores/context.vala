@@ -254,6 +254,24 @@ public class Context : Object
         return score_value > lowest;
     }
 
+    public async void delete_scores () throws Error
+    {
+        scores_per_category.remove_all ();
+        var directory = File.new_for_path (user_score_dir);
+        if ((yield directory.query_info_async (FileAttribute.STANDARD_TYPE, 0)) != null)
+        {
+            var enumerator = yield directory.enumerate_children_async (FileAttribute.STANDARD_NAME, 0);
+            FileInfo file_info;
+            while ((file_info = (yield enumerator.next_files_async (1)).nth_data (0)) != null)
+            {
+                var file_name = file_info.get_name ();
+                var file = directory.get_child (file_name);
+                yield file.delete_async ();
+            }
+            yield directory.delete_async ();
+        }
+    }
+
     private async void save_score_to_file (Score score, Category category, Cancellable? cancellable) throws Error
     {
         if (DirUtils.create_with_parents (user_score_dir, 0766) == -1)

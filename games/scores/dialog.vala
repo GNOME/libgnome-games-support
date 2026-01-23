@@ -81,6 +81,14 @@ private class Dialog : Adw.Dialog
             return;
         }
 
+        if (new_high_score == null)
+        {
+            var delete_button = new Gtk.Button.from_icon_name ("user-trash-symbolic");
+            delete_button.tooltip_text = _("Clear Scores…");
+            delete_button.clicked.connect (show_clear_scores_dialog);
+            headerbar.pack_start (delete_button);
+        }
+
         scores_style = style;
 
         var categories = context.get_categories ();
@@ -391,6 +399,34 @@ private class Dialog : Adw.Dialog
         box.add_css_class ("toolbar");
         bottom_bar.add_css_class ("toolbar");
         toolbar.add_bottom_bar (box);
+    }
+
+    private async void show_clear_scores_dialog ()
+    {
+        var dialog = new Adw.AlertDialog (
+            _("Clear All Scores?"),
+            _("This will clear every score for every layout.")
+        );
+        dialog.default_response = "cancel";
+        dialog.add_response ("cancel", _("_Cancel"));
+        dialog.add_response ("clear", _("Clear All"));
+        dialog.set_response_appearance ("clear", Adw.ResponseAppearance.DESTRUCTIVE);
+
+        var response = yield dialog.choose (this, null);
+        if (response == "clear")
+        {
+            this.close ();
+            context.delete_scores.begin ((obj, res) => {
+                try
+                {
+                    context.delete_scores.end (res);
+                }
+                catch (Error e)
+                {
+                    warning ("Failed to delete scores: %s", e.message);
+                }
+            });
+        }
     }
 }
 
