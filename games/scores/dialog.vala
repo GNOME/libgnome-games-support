@@ -352,6 +352,16 @@ private class Dialog : Adw.Dialog
                 list_item.child = label;
             }
         });
+        if (new_high_score != null)
+        {
+            factory.unbind.connect ((factory, object) => {
+                unowned var list_item = object as Gtk.ListItem;
+                unowned var score = list_item.item as Score;
+
+                if (score == new_high_score)
+                    player_entry = null;
+            });
+        }
 
         player_column = new Gtk.ColumnViewColumn (_("Player"), factory);
     }
