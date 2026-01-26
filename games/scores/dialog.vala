@@ -1,6 +1,7 @@
 /* -*- Mode: vala; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  *
  * Copyright © 2014 Nikhar Agrawal
+ * Copyright © 2014-2026 libgnome-games-support Contributors
  *
  * This file is part of libgnome-games-support.
  *
@@ -196,12 +197,6 @@ private class Dialog : Adw.Dialog
 
         return categories_array;
     }
-
-    /*
-     * Most of the code below is from gnome-mahjongg
-     * Copyright 2010-2013 Robert Ancell
-     * Copyright 2010-2025 Mahjongg Contributors
-     */
 
     private void load_scores_for_category (Category category)
     {
