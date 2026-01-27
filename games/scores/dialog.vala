@@ -49,10 +49,12 @@ private class Dialog : Adw.Dialog
     private Gtk.ColumnViewColumn? score_column;
     private Gtk.ColumnViewColumn? player_column;
     private Gtk.Entry? player_entry;
+    private Category[] categories;
 
     private Style scores_style;
     private Score? new_high_score;
     private string? score_or_time;
+    private string category_type;
 
     public AddScoreAction action { get; set; default = AddScoreAction.NONE; }
 
@@ -60,6 +62,7 @@ private class Dialog : Adw.Dialog
     {
         this.context = context;
         this.new_high_score = new_high_score;
+        this.category_type = category_type;
 
         toolbar = new Adw.ToolbarView ();
         headerbar = new Adw.HeaderBar ();
@@ -92,7 +95,7 @@ private class Dialog : Adw.Dialog
 
         scores_style = style;
 
-        var categories = context.get_categories ();
+        categories = context.get_categories ();
         active_category = current_cat;
 
         add_css_class ("scores");
@@ -142,14 +145,7 @@ private class Dialog : Adw.Dialog
                     xalign = 0
                 };
             });
-            button_factory.bind.connect ((factory, object) => {
-                unowned var list_item = object as Gtk.ListItem;
-                unowned var string_object = list_item.item as Gtk.StringObject;
-                unowned var label = list_item.child as Gtk.Label;
-
-                /* Translators: %1$s is the category type, %2$s is the category (e.g. "Level: 1") */
-                label.label = _("%1$s: %2$s").printf (category_type, string_object.@string);
-            });
+            button_factory.bind.connect (drop_down_button_cb);
 
             drop_down.set_factory (button_factory);
             drop_down.set_list_factory (list_factory);
@@ -161,11 +157,7 @@ private class Dialog : Adw.Dialog
                     drop_down.set_selected (i);
             }
 
-            drop_down.notify["selected"].connect (() => {
-                var selected_index = drop_down.get_selected ();
-                if (selected_index != -1)
-                    load_scores_for_category (categories[selected_index]);
-            });
+            drop_down.notify["selected"].connect (drop_down_selected_cb);
 
             unowned var button = drop_down.get_first_child () as Gtk.Button;
             button.has_frame = false;
@@ -186,6 +178,23 @@ private class Dialog : Adw.Dialog
         scroll.set_child (score_view);
         toolbar.set_content (scroll);
         this.focus_widget = score_view;
+    }
+
+    private void drop_down_selected_cb ()
+    {
+        var selected_index = drop_down.get_selected ();
+        if (selected_index != -1)
+            load_scores_for_category (categories[selected_index]);
+    }
+
+    private void drop_down_button_cb (Gtk.SignalListItemFactory factory, Object object)
+    {
+        unowned var list_item = object as Gtk.ListItem;
+        unowned var string_object = list_item.item as Gtk.StringObject;
+        unowned var label = list_item.child as Gtk.Label;
+
+        /* Translators: %1$s is the category type, %2$s is the category (e.g. "Level: 1") */
+        label.label = _("%1$s: %2$s").printf (category_type, string_object.@string);
     }
 
     /* load names of all categories into a string array */
