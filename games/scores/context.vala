@@ -65,10 +65,11 @@ public enum Style
 public class Context : Object
 {
     /**
-     * An App ID (e.g. ``org.gnome.Mines``).
+     * The name for the directory, inside the user's data_dir, that holds the scores.
+     * This is not a complete path and is usually an app id.
      *
      */
-    public string app_name { get; construct; }
+    public string score_directory { get; construct; }
 
     /**
      * Describes all of the categories (e.g. "Minefield", "Level").
@@ -83,7 +84,8 @@ public class Context : Object
     public Style style { get; construct; }
 
     /**
-     * The ID for the icon that will be used in the score dialog's empty screen (e.g. ``org.gnome.Quadrapassel``).
+     * The ID for the icon that will be used in the score dialog's empty screen
+     * (e.g. ``org.gnome.Mines``). This defaults to ``score_directory``.
      *
      */
     public string icon_name { get; construct; }
@@ -138,7 +140,7 @@ public class Context : Object
     /**
      * Creates a new Context.
      *
-     * ``app_name`` is your App ID (e.g. ``org.gnome.Mines``).
+     * ``score_directory`` is the name for the directory, inside the user's data_dir, that holds the scores.
      *
      * ``category_type`` describes all of the categories (e.g. "Minefield", "Level").
      *
@@ -146,14 +148,14 @@ public class Context : Object
      *
      * ``style changes`` the way {@link Games.Scores.Score}s are presented.
      *
-     * ``icon_name`` is the ID for your app's icon (e.g. ``org.gnome.Quadrapassel``).
+     * ``icon_name`` is the ID for your app's icon (e.g. ``org.gnome.Mines``). This defaults to ``score_directory``.
      *
      * ``max_high_scores`` is the maximum size of the high score list in the score dialog (``-1`` for unlimited).
      *
      * ``score_type`` is a custom header for the scores column in the scores dialog (e.g. "Moves").
      *
      */
-    public Context (string app_name,
+    public Context (string score_directory,
                     string category_type,
                     CategoryRequestFunc category_request,
                     Style style,
@@ -161,10 +163,10 @@ public class Context : Object
                     int max_high_scores = 10,
                     string? score_type = null)
     {
-        Object (app_name: app_name,
+        Object (score_directory: score_directory,
                 category_type: category_type,
                 style: style,
-                icon_name: icon_name ?? app_name,
+                icon_name: icon_name ?? score_directory,
                 max_high_scores: max_high_scores <= -1 ? int.MAX : max_high_scores,
                 score_type: score_type);
 
@@ -184,7 +186,7 @@ public class Context : Object
 
     public override void constructed ()
     {
-        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), app_name, "scores", null);
+        user_score_dir = Path.build_filename (Environment.get_user_data_dir (), score_directory, "scores", null);
     }
 
     public Category[] get_categories ()
