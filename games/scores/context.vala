@@ -94,6 +94,13 @@ public class Context : Object
      */
     public int max_high_scores { get; construct; }
 
+    /**
+     * Custom header for the scores column in the scores dialog (e.g. "Moves").
+     * This should be translated.
+     *
+     */
+    public string? score_type { get; construct; }
+
     private Category? current_category = null;
 
     private HashTable<Category, GenericArray<Score>> scores_per_category =
@@ -143,19 +150,23 @@ public class Context : Object
      *
      * ``max_high_scores`` is the maximum size of the high score list in the score dialog (``-1`` for unlimited).
      *
+     * ``score_type`` is a custom header for the scores column in the scores dialog (e.g. "Moves").
+     *
      */
     public Context (string app_name,
                     string category_type,
                     CategoryRequestFunc category_request,
                     Style style,
                     string? icon_name = null,
-                    int max_high_scores = 10)
+                    int max_high_scores = 10,
+                    string? score_type = null)
     {
         Object (app_name: app_name,
                 category_type: category_type,
                 style: style,
                 icon_name: icon_name ?? app_name,
-                max_high_scores: max_high_scores <= -1 ? int.MAX : max_high_scores);
+                max_high_scores: max_high_scores <= -1 ? int.MAX : max_high_scores,
+                score_type: score_type);
 
         /* Note: the following functionality can be performed manually by
          * calling Context.load_scores, to ensure Context is usable even if
@@ -323,7 +334,7 @@ public class Context : Object
         var action = AddScoreAction.NONE;
         if (high_score_added && game_window != null)
         {
-            var dialog = new Dialog (this, category_type, style, score, current_category, icon_name);
+            var dialog = new Dialog (this, category_type, style, score, current_category, icon_name, score_type);
             dialog.closed.connect (() => add_score_full.callback ());
             dialog.present (game_window);
             if (show_action_buttons)
@@ -425,7 +436,7 @@ public class Context : Object
         if (selected_category == null || !scores_per_category.contains (selected_category))
             selected_category = current_category;
 
-        var dialog = new Dialog (this, category_type, style, null, selected_category, icon_name);
+        var dialog = new Dialog (this, category_type, style, null, selected_category, icon_name, score_type);
         dialog.closed.connect (() => dialog_closed ());
         dialog.present (game_window);
     }
