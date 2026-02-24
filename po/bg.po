@@ -1,7 +1,8 @@
 # Bulgarian translation of libgnome-games-support po-file.
 # Copyright (C) 2016, 2017 Free Software Foundation, Inc.
 # Copyright (C) 2022 Alexander Shopov <ash@kambanaria.org>.
-# Alexander Shopov <ash@kambanaria.org>, 20016, 2017, 2022.
+# Alexander Shopov <ash@kambanaria.org>, 2016, 2017, 2022.
+# kraft_werk <kraft_werk@tutanota.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: libgnome-games-support master\n"
@@ -9,7 +10,7 @@ msgstr ""
 "issues\n"
 "POT-Creation-Date: 2026-02-23 16:11+0000\n"
 "PO-Revision-Date: 2026-02-24 14:03+0100\n"
-"Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
+"Last-Translator: kraft_werk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
