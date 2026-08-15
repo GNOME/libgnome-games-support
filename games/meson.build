@@ -9,8 +9,8 @@ lggs_interface_deps = [
 
 files = [
     'config.vapi',
+    'appearance-group.vala',
     'gridframe.vala',
-    'theme-selector-dialog.vala',
     'scores/category.vala',
     'scores/context.vala',
     'scores/dialog.vala',
