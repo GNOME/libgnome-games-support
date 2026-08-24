@@ -76,6 +76,10 @@ thumbnail {
   border-radius: 8px;
 }
 
+thumbnail.selected {
+  box-shadow: none;
+}
+
 thumbnail.selected image {
   border-radius: 9999px;
   background-color: @theme_selected_bg_color;
