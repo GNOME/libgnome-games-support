@@ -398,6 +398,8 @@ private class Dialog : Adw.Dialog
             });
         }
 
+        uint query_tooltip_id = Signal.lookup ("query-tooltip", Type.from_name ("GtkWidget"));
+
         factory.unbind.connect ((factory, object) => {
             unowned var list_item = object as Gtk.ListItem;
             unowned var score = list_item.item as Score;
@@ -405,7 +407,7 @@ private class Dialog : Adw.Dialog
             if (score != new_high_score)
                 SignalHandler.disconnect_matched (list_item.child,
                                                   SignalMatchType.ID,
-                                                  Signal.lookup ("query-tooltip", list_item.child.get_type ()),
+                                                  query_tooltip_id,
                                                   0,
                                                   null,
                                                   null,
