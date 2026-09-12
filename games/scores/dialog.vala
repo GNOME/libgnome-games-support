@@ -405,7 +405,7 @@ private class Dialog : Adw.Dialog
             if (score != new_high_score)
                 SignalHandler.disconnect_matched (list_item.child,
                                                   SignalMatchType.ID,
-                                                  Signal.lookup("query-tooltip", list_item.child.get_type ()),
+                                                  Signal.lookup ("query-tooltip", list_item.child.get_type ()),
                                                   0,
                                                   null,
                                                   null,
