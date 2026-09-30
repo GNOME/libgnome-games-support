@@ -170,9 +170,6 @@ private class Dialog : Adw.Dialog
 
             drop_down.notify["selected"].connect (drop_down_selected_cb);
 
-            unowned var button = drop_down.get_first_child () as Gtk.Button;
-            button.has_frame = false;
-
             unowned var popover = drop_down.get_last_child () as Gtk.Popover;
             popover.halign = Gtk.Align.CENTER;
 
