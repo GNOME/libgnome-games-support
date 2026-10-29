@@ -377,6 +377,16 @@ private class Dialog : Adw.Dialog
             }
             else
             {
+                if (list_item.child is Gtk.Entry)
+                {
+                    var label = new Gtk.Inscription (null);
+
+                    label.has_tooltip = true;
+                    label.text_overflow = Gtk.InscriptionOverflow.ELLIPSIZE_END;
+
+                    list_item.child = label;
+                }
+
                 unowned var label = list_item.child as Gtk.Inscription;
 
                 label.text = score.user;
