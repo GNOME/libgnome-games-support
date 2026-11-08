@@ -289,9 +289,9 @@ private class Dialog : Adw.Dialog
         });
 
         if (scores_style == Style.POINTS_GREATER_IS_BETTER || scores_style == Style.TIME_GREATER_IS_BETTER)
-            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) Score.score_greater_sorter));
+            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) Score.rank_greater_sorter));
         else
-            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) Score.score_less_sorter));
+            sorter.append (new Gtk.CustomSorter ((CompareDataFunc<Score>) Score.rank_less_sorter));
 
         rank_column = new Gtk.ColumnViewColumn ("Rank", factory);
         rank_column.sorter = sorter;
