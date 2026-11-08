@@ -123,14 +123,14 @@ public class Score : Object
         return a.score == b.score && a.time == b.time && a.user == b.user;
     }
 
-    internal static int score_greater_sorter (Score a, Score b)
+    internal static int rank_greater_sorter (Score a, Score b)
     {
-        return (int) (a.score < b.score) - (int) (a.score > b.score);
+        return (int) (a.rank < b.rank) - (int) (a.rank > b.rank);
     }
 
-    internal static int score_less_sorter (Score a, Score b)
+    internal static int rank_less_sorter (Score a, Score b)
     {
-        return (int) (a.score > b.score) - (int) (a.score < b.score);
+        return (int) (a.rank > b.rank) - (int) (a.rank < b.rank);
     }
 }
 
